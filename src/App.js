@@ -1,12 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
-<<<<<<< HEAD
+import Home from './components/Home';
 import './css/App.css';
-
-=======
-import Home from './Home';
->>>>>>> master
 import Canvas from './components/Canvas';
 import WaitPage from './components/WaitPage';
 
@@ -17,7 +13,8 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: true
+      activePlayer: true,
+      drawEnd: false
     };  
   }
 
@@ -71,9 +68,25 @@ class App extends React.Component {
 
   }
 
-  _setDrawingData = (object) => {
+  _sendDrawing = async () => {  
+    this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
+   
     this.setState({
-      drawingData: object
+     drawingData: ''
+    })
+   }
+   
+   _setDrawingData = (object) => {
+    this.setState({
+     drawingData: object
+    })
+   }
+
+
+
+  _drawTimeCount = () => {
+    this.setState({
+      drawEnd: true
     })
   }
 
