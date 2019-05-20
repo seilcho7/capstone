@@ -2,7 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import Home from './components/Home';
+import './css/App.css';
 import Canvas from './components/Canvas';
+import WaitPage from './components/WaitPage';
 
 class App extends React.Component {
 
