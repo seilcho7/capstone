@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
-import CanvasDraw from 'react-canvas-draw';
+
+import Canvas from './components/Canvas';
+
 class App extends React.Component {
 
   constructor(props) {
@@ -40,7 +42,7 @@ class App extends React.Component {
     // player enters the room. 
 
     // const { host } = window.location;
-    const url = `ws:64.124.76.250:31337/ws`;  // Sadly, the react proxy not playing well with websockets
+    const url = `ws://localhost:31337/ws`;  // Sadly, the react proxy not playing well with websockets
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
@@ -56,47 +58,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1>Canvas App</h1>
-        {/*           Save button  */}
-            <button onClick={() => {
-                  // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
-                  // Retrieves from local storage and  pushes into empty array 
-                  // const save = localStorage.getItem("savedDrawing")
-
-                  // stores canvas data in variable and pushes to array 
-
-                  const saveData = this.saveableCanvas.getSaveData(); 
-                  const object = []
-                  object.push(saveData)
-                    this.setState({
-                      drawingData: object
-                  })
-                  console.log(this.state.drawingData)
-                }}>
-                Save
-              </button>
-
-              {/*               Load button will retrieve the last drawing from state  */}
-              <button
-              onClick={() => {
-                console.log('loading data')
-                console.log(this.state.drawing)
-                this.saveableCanvas.loadSaveData(
-                  this.state.drawing
-                )
-              }}
-              >Load</button>
-            <button
-                onClick={this._sendDrawing}
-              >
-                SendDrawing
-              </button>
-          <CanvasDraw
-          ref={canvasDraw => (this.saveableCanvas = canvasDraw)} />
-    
-  
-
-        
+        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
       </div>
     );
   }
@@ -106,6 +68,12 @@ class App extends React.Component {
   
     this.setState({
       drawingData: ''
+    })
+  }
+
+  _setDrawingData = (object) => {
+    this.setState({
+      drawingData: object
     })
   }
 
