@@ -1,7 +1,7 @@
 import React from 'react';
-import '../css/waitpage.css';
+import '../css/joinpage.css';
 
-export default function WaitPage() {
+export default function JoinPage() {
     return (
         <div>
             <div className="text">

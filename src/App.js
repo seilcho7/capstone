@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
+import './css/App.css';
 
 import Canvas from './components/Canvas';
+import WaitPage from './components/WaitPage';
 
 class App extends React.Component {
 
@@ -58,7 +60,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
+        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
+        <WaitPage />
       </div>
     );
   }
