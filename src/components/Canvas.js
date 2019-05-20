@@ -1,11 +1,10 @@
-
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 
 export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData}) {
     return (
         <div>
-        {/*           Save button  */}
+        {/* Save button */}
             <button onClick={() => {
                   // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
                   // Retrieves from local storage and  pushes into empty array 
@@ -22,10 +21,10 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
                 // })
                 // console.log(drawingData)
             }}>
-            Save
+                Save
             </button>
 
-            {/*               Load button will retrieve the last drawing from state  */}
+            {/* Load button will retrieve the last drawing from state */}
             <button
                 onClick={() => {
                     console.log('loading data')
@@ -34,14 +33,19 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
                         drawing
                     )
             }}
-            >Load</button>
-        <button
-            onClick={handleSend}
             >
-            SendDrawing
+                Load
             </button>
-        <CanvasDraw
-            ref={canvasDraw => (saveableCanvas = canvasDraw)} />
+
+            <button
+                onClick={handleSend}
+            >
+                SendDrawing
+            </button>
+            
+            <CanvasDraw
+                ref={canvasDraw => (saveableCanvas = canvasDraw)} 
+            />
         </div>
     )
 }
