@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
+<<<<<<< HEAD
 import './css/App.css';
 
+=======
+import Home from './Home';
+>>>>>>> master
 import Canvas from './components/Canvas';
 import WaitPage from './components/WaitPage';
 
@@ -56,22 +60,15 @@ class App extends React.Component {
       console.log (this.state.drawing)    
     }
   }
-
+  
   render() {
     return (
       <div className="App">
-        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
-        <WaitPage />
+        <Home />
+        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
       </div>
     );
-  }
 
-  _sendDrawing = async () => {   
-    this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
-  
-    this.setState({
-      drawingData: ''
-    })
   }
 
   _setDrawingData = (object) => {
