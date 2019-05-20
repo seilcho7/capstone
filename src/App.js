@@ -59,7 +59,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Home />
-        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
+        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
       </div>
     );
 
