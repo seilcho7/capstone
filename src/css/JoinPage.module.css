@@ -1,0 +1,33 @@
+.text {
+    margin: 10% 1%;
+    text-align: center;
+}
+
+.inputContainer {
+    width: 100%;
+}
+
+.nameInputContainer {
+    text-align: center;
+}
+
+.nameInput {
+    border: 2px black solid;
+}
+
+.pinInputContainer {
+    text-align: center;
+}
+
+.pinInput {
+    border: 2px black solid;
+}
+
+.joinButtonContainer {
+    text-align: center;
+}
+
+.joinButton {
+    border: 2px black solid;
+    margin: 5%;
+}
