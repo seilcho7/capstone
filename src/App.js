@@ -62,7 +62,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {/* <Home /> */}
+        <Home />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
         {/* <WaitPage /> */}
         <JoinPage />
