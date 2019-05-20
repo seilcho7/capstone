@@ -1,32 +1,32 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import Modal from 'react-bootstrap/Modal';
-import logo from './Logo1.png'
+import logo from '../img/Logo1.png';
 
 class Home extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-          show: false,
+            show: false,
         };
-      }
+    }
     
-      _handleClose = () => {
+    _handleClose = () => {
         this.setState({ show: false });
-      }
+    }
     
-      _handleShow = () => {
+    _handleShow = () => {
         this.setState({ show: true });
-      }
+    }
     
-      render() {
+    render() {
         return (
             <HomePage>
                 <img src={logo} />
                 <Button>Click to play</Button>
-          <>
+            <>
             <Button onClick={this._handleShow}>
-              How to Play
+                How to Play
             </Button>
             <Modal show={this.state.show}>
                 <ModalWrapper>
@@ -40,11 +40,11 @@ class Home extends React.Component {
                         </Modal.Footer>
                 </ModalWrapper>
             </Modal>
-          </>
+            </>
             </HomePage>
         );
-      }
     }
+}
     
 
 export default Home;
@@ -93,10 +93,10 @@ const Button2 = styled.button`
 `;
 
 const ModalWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #4d4dff;
-  color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #4d4dff;
+    color: white;
 `;
