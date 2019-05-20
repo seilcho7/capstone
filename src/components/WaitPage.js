@@ -1,16 +1,16 @@
 import React from 'react';
-import '../css/waitpage.css';
+import styles from '../css/WaitPage.module.css';
 
 export default function WaitPage() {
     return (
         <div>
-            <div className="text">
+            <div className={styles.text}>
                 <h1>PicMe</h1>
                 <h3>Join this Game using the Pin:</h3>
                 <h3>1234</h3>
             </div>
-            <div className="user-list-container">
-                <ul className="user-list">
+            <div className={styles.userListContainer}>
+                <ul className={styles.userList}>
                     <li>seil</li>
                     <li>ashish</li>
                     <li>antonio</li>
@@ -20,9 +20,9 @@ export default function WaitPage() {
                     <li>samson</li>
                 </ul>
             </div>
-            <div className="button-container">
-                <button className="start-button">Start Game</button>
-                <button className="cancel-button">Cancel Game</button>
+            <div className={styles.buttonContainer}>
+                <button className={styles.startButton}>Start Game</button>
+                <button className={styles.cancelButton}>Cancel Game</button>
             </div>
         </div>
     )

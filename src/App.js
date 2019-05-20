@@ -5,6 +5,7 @@ import Home from './components/Home';
 import './css/App.css';
 import Canvas from './components/Canvas';
 import WaitPage from './components/WaitPage';
+import JoinPage from './components/JoinPage';
 
 class App extends React.Component {
 
@@ -61,8 +62,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Home />
-        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
+        {/* <Home /> */}
+        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
+        {/* <WaitPage /> */}
+        <JoinPage />
       </div>
     );
 
