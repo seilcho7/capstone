@@ -1,8 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
+<<<<<<< HEAD
+import './css/App.css';
+
+=======
 import Home from './Home';
+>>>>>>> master
 import Canvas from './components/Canvas';
+import WaitPage from './components/WaitPage';
 
 class App extends React.Component {
 

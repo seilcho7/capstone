@@ -1,0 +1,32 @@
+.text {
+    margin: 10% 1%;
+    text-align: center;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.start-button {
+    border: 2px black solid;
+    margin: 5%;
+}
+
+.cancel-button {
+    border: 2px black solid;
+    margin: 5%;
+}
+
+.user-list-container {
+    border: 2px black solid;
+    overflow: auto;
+    width: 100%;
+    height: 200px;
+    margin: auto;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
