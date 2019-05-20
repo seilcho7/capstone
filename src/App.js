@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
-
+import Home from './Home';
 import Canvas from './components/Canvas';
 
 class App extends React.Component {
@@ -54,21 +54,15 @@ class App extends React.Component {
       console.log (this.state.drawing)    
     }
   }
-
+  
   render() {
     return (
       <div className="App">
+        <Home />
         <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
       </div>
     );
-  }
 
-  _sendDrawing = async () => {   
-    this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
-  
-    this.setState({
-      drawingData: ''
-    })
   }
 
   _setDrawingData = (object) => {
