@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
-import Home from './Home';
+import Home from './components/Home';
 import Canvas from './components/Canvas';
 
 class App extends React.Component {
@@ -11,7 +11,8 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: true
+      activePlayer: true,
+      drawEnd: false
     };  
   }
 
@@ -65,9 +66,25 @@ class App extends React.Component {
 
   }
 
-  _setDrawingData = (object) => {
+  _sendDrawing = async () => {  
+    this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
+   
     this.setState({
-      drawingData: object
+     drawingData: ''
+    })
+   }
+   
+   _setDrawingData = (object) => {
+    this.setState({
+     drawingData: object
+    })
+   }
+
+
+
+  _drawTimeCount = () => {
+    this.setState({
+      drawEnd: true
     })
   }
 
