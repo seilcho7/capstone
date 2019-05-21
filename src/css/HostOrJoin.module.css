@@ -1,0 +1,18 @@
+.hostButtonContainer {
+    text-align: center;
+}
+
+.hostButton {
+    border: 2px black solid;
+    margin: 5%;
+}
+
+.joinButtonContainer {
+    text-align: center;
+}
+
+
+.joinButton {
+    border: 2px black solid;
+    margin: 5%;
+}

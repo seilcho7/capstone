@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../css/WaitPage.module.css';
+import styles from '../css/HostPage.module.css';
 
-export default function WaitPage() {
+export default function HostPage() {
     return (
         <div>
             <div className={styles.text}>

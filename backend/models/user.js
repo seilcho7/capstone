@@ -25,20 +25,12 @@ class User {
             })
     }
 
+    // get user by id
     static getUserById(id) {
         return db.any(`select * from users where id=${id}`)
-            // .then((userData) => {
-            //     const userInstance = new User(
-            //         userData.id,
-            //         userData.room_id, 
-            //         userData.name,
-            //         userData.points,
-            //         userData.answer
-            //     );
-            // return userInstance;
-            // })
     }
 
+    // add a user
     static add(roomId, name) {
         return db.one(`
         insert into users
@@ -51,9 +43,6 @@ class User {
             return data;
         })
     }
-
-    
-
 }
 
 module.exports = User;
