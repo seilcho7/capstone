@@ -28,16 +28,6 @@ class User {
     // gets a user by their id
     static getUserById(id) {
         return db.any(`select * from users where id=${id}`)
-            // .then((userData) => {
-            //     const userInstance = new User(
-            //         userData.id,
-            //         userData.room_id, 
-            //         userData.name,
-            //         userData.points,
-            //         userData.answer
-            //     );
-            // return userInstance;
-            // })
     }
 
     // Adds new user to the databass
@@ -76,6 +66,7 @@ class User {
             WHERE id='${userId}'
         `)
     }
+
 
 
 }
