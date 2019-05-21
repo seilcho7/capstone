@@ -32,8 +32,9 @@ wss.on('connection', function connection(socket) {
 });
 
 const User = require('./models/user');
+const Drawing = require('./models/drawing');
 async function getData() {
-    const userInstance = await User.add('99', 'test');
+    const userInstance = await Drawing.updateDrawing(2, 'drawingdatalollll')
     console.log(userInstance);
 }
 // // When GET request comes in,
@@ -55,6 +56,6 @@ async function getData() {
 // });
 
 // app.listen(31337, () => {
-server.listen(31337, () => {
+server.listen(4000, () => {
     console.log(`You're cooking with gasoline!`);
 });

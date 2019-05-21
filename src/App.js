@@ -47,7 +47,7 @@ class App extends React.Component {
     // player enters the room. 
 
     // const { host } = window.location;
-    const url = `ws://localhost:31337/ws`;  // Sadly, the react proxy not playing well with websockets
+    const url = `ws://localhost:4000/ws`;  // Sadly, the react proxy not playing well with websockets
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
@@ -64,12 +64,18 @@ class App extends React.Component {
     return (
       <div className="App">
         <Home />
-        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
-        {/* <WaitPage /> */}
+        <button onClick={this._login}> join</button>
+        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
+        <WaitPage />
         <JoinPage />
       </div>
     );
 
+  }
+  _login = async () => {
+    this.connection.send(JSON.stringify({
+      login: 1
+    }))
   }
 
   _sendDrawing = async () => {  
