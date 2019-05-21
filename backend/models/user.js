@@ -59,6 +59,14 @@ class User {
         return db.any(`select answer from users where room_id='${roomId}'`)
     }
 
+    static givePoint(answer, room_id){
+        return db.any(`
+            UPDATE users
+            SET points = points + 1
+            WHERE room_id='${room_id}' AND answer='${answer}'
+        `)
+    }
+
 }
 
 module.exports = User;

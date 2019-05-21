@@ -34,7 +34,7 @@ wss.on('connection', function connection(socket) {
 
 const User = require('./models/user');
 async function getData() {
-    const testVar = await User.getAllAnswers('5545');
+    const testVar = await User.givePoint('Tesla the Electrician','5545');
     console.log(testVar);
 }
 // // When GET request comes in,
