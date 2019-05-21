@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.0",
+    "pg-promise": "^8.7.2",
+    "ws": "^7.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon index.js",
+    "db:create": "createdb picme-app",
+    "db:init": "psql -f schema.sql picme-app && psql -f seed.sql picme-app",
+    "db:destroy": "dropdb picme-app",
+    "db:reset": "npm run db:destroy; npm run db:create && npm run db:init",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
