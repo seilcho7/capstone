@@ -38,6 +38,22 @@ class User {
             // return userInstance;
             // })
     }
+
+    static add(roomId, name) {
+        return db.one(`
+        insert into users
+            (room_id, name, points, answer)
+        values
+            ($1, $2, $3, $4)
+        returning id, room_id, name, points, answer
+        `,[roomId, name, 0, ''])
+        .then((data) => {
+            return data;
+        })
+    }
+
+    
+
 }
 
 module.exports = User;
