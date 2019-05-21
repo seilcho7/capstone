@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../css/HostPage.module.css';
+import { Link } from 'react-router-dom';
 
 export default function HostPage() {
     return (
@@ -21,8 +22,8 @@ export default function HostPage() {
                 </ul>
             </div>
             <div className={styles.buttonContainer}>
-                <button className={styles.startButton}>Start Game</button>
-                <button className={styles.cancelButton}>Cancel Game</button>
+                <Link className={styles.startButton}>Start Game</Link>
+                <Link to='/' className={styles.cancelButton}>Cancel Game</Link>
             </div>
         </div>
     )

@@ -12,9 +12,17 @@
     margin: 5%;
 }
 
+.startButton a {
+    text-decoration: none;
+}
+
 .cancelButton {
     border: 2px black solid;
     margin: 5%;
+}
+
+.cancelButton a {
+    text-decoration: none;
 }
 
 .userListContainer {

@@ -1,0 +1,9 @@
+.leaveButtonContainer {
+    text-align: center;
+}
+
+.leaveButton {
+    border: 2px black solid;
+    margin: 5%;
+    display: contents;
+}

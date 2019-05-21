@@ -6,10 +6,10 @@ export default function HostOrJoin() {
     return (
         <div>
             <div className={styles.hostButtonContainer}>
-                <Link to='/host'><button className={styles.hostButton}>Host</button></Link>
+                <Link className={styles.hostButton} to='/host'>Host</Link>
             </div>
             <div className={styles.joinButtonContainer}>
-                <Link to='join'><button className={styles.joinButton}>Join</button></Link>
+                <Link className={styles.joinButton} to='/join'>Join</Link>
             </div>
         </div>
     )
