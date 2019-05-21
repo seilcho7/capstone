@@ -11,7 +11,7 @@ class User {
     }
 
     // get all data from all users
-    static getAll() {
+    static getAllUsers() {
         return db.any(`select * from users`)
             .then((arrayOfUsers) => {
                 return arrayOfUsers.map((userData) => {
@@ -25,6 +25,7 @@ class User {
             })
     }
 
+    // gets a user by their id
     static getUserById(id) {
         return db.any(`select * from users where id=${id}`)
             // .then((userData) => {
@@ -39,6 +40,7 @@ class User {
             // })
     }
 
+    // Adds new user to the databass
     static add(roomId, name) {
         return db.one(`
         insert into users
@@ -52,7 +54,10 @@ class User {
         })
     }
 
-    
+    // Gets all answers by room_id
+    static getAllAnswers(roomId) {
+        return db.any(`select answer from users where room_id='${roomId}'`)
+    }
 
 }
 
