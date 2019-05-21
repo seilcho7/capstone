@@ -2,10 +2,12 @@ const db = require('./conn');
 
 class User {
 
-    constructor(id, points, name) {
+    constructor(id, roomId, name, points, answer) {
         this.id = id;
-        this.points = points;
+        this.roomId = roomId;
         this.name = name;
+        this.points = points;
+        this.answer = answer;
     }
 
     // get all data from all users
@@ -23,8 +25,18 @@ class User {
             })
     }
 
-    static getAllDrawings() {
-        return db.any(`select * from drawing`);
+    static getUserById(id) {
+        return db.any(`select * from users where id=${id}`)
+            // .then((userData) => {
+            //     const userInstance = new User(
+            //         userData.id,
+            //         userData.room_id, 
+            //         userData.name,
+            //         userData.points,
+            //         userData.answer
+            //     );
+            // return userInstance;
+            // })
     }
 }
 
