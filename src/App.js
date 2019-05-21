@@ -75,6 +75,11 @@ class App extends React.Component {
       </div>
     );
   }
+  _login = async () => {
+    this.connection.send(JSON.stringify({
+      login: 1
+    }))
+  }
 
   _sendDrawing = async () => {  
     this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
