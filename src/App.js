@@ -15,7 +15,8 @@ class App extends React.Component {
       drawingData: '',
       drawing: '',
       activePlayer: true,
-      drawEnd: false
+      drawEnd: false,
+      users: ''
     };  
   }
 
