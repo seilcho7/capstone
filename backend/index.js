@@ -33,7 +33,7 @@ wss.on('connection', function connection(socket) {
 
 const User = require('./models/user');
 async function getData() {
-    const userInstance = await User.getAllDrawings();
+    const userInstance = await User.add('99', 'test');
     console.log(userInstance);
 }
 // // When GET request comes in,
