@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Modal from 'react-bootstrap/Modal';
 import logo from '../img/Logo1.png';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
     constructor(props, context) {
@@ -23,7 +24,7 @@ class Home extends React.Component {
         return (
             <HomePage>
                 <img src={logo} />
-                <Button>Click to play</Button>
+                <Link to='/host-or-join'><Button>Click to play</Button></Link>
             <>
             <Button onClick={this._handleShow}>
                 How to Play
@@ -34,9 +35,9 @@ class Home extends React.Component {
                         Draw something and have people guess what you're drawing. Pick your favorite guess.
                     </Modal.Body>
                         <Modal.Footer>
-                            <Button2 onClick={this._handleClose}>
+                        <Link to='/host-or-join'><Button2 onClick={this._handleClose}>
                             Let's play!
-                            </Button2>
+                            </Button2></Link>
                         </Modal.Footer>
                 </ModalWrapper>
             </Modal>

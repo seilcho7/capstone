@@ -1,32 +1,9 @@
-.text {
-    margin: 10% 1%;
+.leaveButtonContainer {
     text-align: center;
 }
 
-.buttonContainer {
-    text-align: center;
-}
-
-.startButton {
+.leaveButton {
     border: 2px black solid;
     margin: 5%;
-}
-
-.cancelButton {
-    border: 2px black solid;
-    margin: 5%;
-}
-
-.userListContainer {
-    border: 2px black solid;
-    overflow: auto;
-    width: 100%;
-    height: 200px;
-    margin: auto;
-}
-
-.userList {
-    list-style: none;
-    padding: 0;
-    text-align: center;
+    display: contents;
 }
