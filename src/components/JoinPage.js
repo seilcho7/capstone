@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../css/JoinPage.module.css';
+import { Link } from 'react-router-dom'; 
 
 export default function JoinPage() {
     return (
@@ -19,7 +20,7 @@ export default function JoinPage() {
                 </div>
             </div>
             <div className={styles.joinButtonContainer}>
-                <button className={styles.joinButton}>Join</button>
+                <Link className={styles.joinButton}>Join</Link>
             </div>
         </div>
     )

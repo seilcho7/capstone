@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const app = express();
@@ -10,6 +11,8 @@ const wss = new WebSocket.Server({
 }); 
 
 app.use(express.urlencoded({extended: true}));
+
+const PORT = process.env.DB_HOST;
 
 // This is my "database"
 const db = [];
@@ -56,6 +59,6 @@ async function getData() {
 // });
 
 // app.listen(31337, () => {
-server.listen(4000, () => {
+server.listen(PORT, () => {
     console.log(`You're cooking with gasoline!`);
 });

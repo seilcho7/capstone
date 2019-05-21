@@ -1,11 +1,16 @@
 import React from 'react';
+import {
+  Link,
+  Route
+} from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
 import Home from './components/Home';
 import './css/App.css';
 import Canvas from './components/Canvas';
-import WaitPage from './components/WaitPage';
+import HostPage from './components/HostPage';
 import JoinPage from './components/JoinPage';
+import HostOrJoin from './components/HostOrJoin';
 
 class App extends React.Component {
 
@@ -15,8 +20,7 @@ class App extends React.Component {
       drawingData: '',
       drawing: '',
       activePlayer: true,
-      drawEnd: false,
-      users: ''
+      drawEnd: false
     };  
   }
 
@@ -63,14 +67,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Home />
-        <button onClick={this._login}> join</button>
-        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} />
-        <WaitPage />
-        <JoinPage />
+        <Route exact path='/' component={Home} />
+        <Route path='/host-or-join' component={HostOrJoin} />
+        <Route path='/host' component={HostPage} />
+        <Route path='/join' component={JoinPage} />
+        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
       </div>
     );
-
   }
   _login = async () => {
     this.connection.send(JSON.stringify({
@@ -80,19 +83,16 @@ class App extends React.Component {
 
   _sendDrawing = async () => {  
     this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
-   
     this.setState({
-     drawingData: ''
+      drawingData: ''
     })
-   }
-   
-   _setDrawingData = (object) => {
+  }
+  
+  _setDrawingData = (object) => {
     this.setState({
-     drawingData: object
+      drawingData: object
     })
-   }
-
-
+  }
 
   _drawTimeCount = () => {
     this.setState({
