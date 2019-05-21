@@ -11,7 +11,7 @@ class User {
     }
 
     // get all data from all users
-    static getAll() {
+    static getAllUsers() {
         return db.any(`select * from users`)
             .then((arrayOfUsers) => {
                 return arrayOfUsers.map((userData) => {
@@ -25,12 +25,12 @@ class User {
             })
     }
 
-    // get user by id
+    // gets a user by their id
     static getUserById(id) {
         return db.any(`select * from users where id=${id}`)
     }
 
-    // add a user
+    // Adds new user to the databass
     static add(roomId, name) {
         return db.one(`
         insert into users
@@ -43,6 +43,32 @@ class User {
             return data;
         })
     }
+
+    // Gets all answers by room_id
+    static getAllAnswers(roomId) {
+        return db.any(`select answer from users where room_id='${roomId}'`)
+    }
+
+    // Increment point based on answer and roomId
+    static givePoint(answer, room_id){
+        return db.any(`
+            UPDATE users
+            SET points = points + 1
+            WHERE room_id='${room_id}' AND answer='${answer}'
+        `)
+    }
+
+    // Update user's answer
+    static updateAnswer(userId, newAnswer) {
+        return db.any(`
+            UPDATE users
+            SET answer = '${newAnswer}'
+            WHERE id='${userId}'
+        `)
+    }
+
+
+
 }
 
 module.exports = User;

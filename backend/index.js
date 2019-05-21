@@ -19,7 +19,8 @@ const db = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
-    socket.send(JSON.stringify(getData()));
+    // socket.send(JSON.stringify(getData()));
+    getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     socket.send(JSON.stringify(db));
     socket.on('message', (data) => {
@@ -37,8 +38,9 @@ wss.on('connection', function connection(socket) {
 const User = require('./models/user');
 const Drawing = require('./models/drawing');
 async function getData() {
-    const userInstance = await Drawing.updateDrawing(2, 'drawingdatalollll')
-    console.log(userInstance);
+    const testVar = await User.updateAnswer(2,'heehee');
+    console.log(testVar);
+
 }
 // // When GET request comes in,
 // // send back all the messages.
