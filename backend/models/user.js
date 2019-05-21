@@ -59,6 +59,7 @@ class User {
         return db.any(`select answer from users where room_id='${roomId}'`)
     }
 
+    // Increment point based on answer and roomId
     static givePoint(answer, room_id){
         return db.any(`
             UPDATE users
@@ -66,6 +67,16 @@ class User {
             WHERE room_id='${room_id}' AND answer='${answer}'
         `)
     }
+
+    // Update user's answer
+    static updateAnswer(userId, newAnswer) {
+        return db.any(`
+            UPDATE users
+            SET answer = '${newAnswer}'
+            WHERE id='${userId}'
+        `)
+    }
+
 
 }
 
