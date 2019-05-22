@@ -126,10 +126,14 @@ _handleChangePin =(event)=> {
     })
 }
 _handleSubmitJoin = async ()=>{
+  if (this.state.gamePin === this.state.socketRoomId) {
     this.connection.send(JSON.stringify(
         {name: this.state.name,
         gamePin: this.state.gamePin
     }));
+  } else if(this.state.gamePin !== this.state.socketRoomId){
+    alert("WRONG PIN YOU FUCK")
+  }
 }
 
   _setPin = async (roomId) => {
