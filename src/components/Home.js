@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import Modal from 'react-bootstrap/Modal';
 import logo from '../img/picme-logo.png';
 import { Link } from 'react-router-dom';
+import '../css/App.css';
 
 class Home extends React.Component {
     constructor(props, context) {
