@@ -23,11 +23,16 @@
     border: 2px black solid;
 }
 
-.joinButtonContainer {
+.ButtonContainer {
     text-align: center;
 }
 
 .joinButton {
+    border: 2px black solid;
+    margin: 5%;
+}
+
+.cancelButton {
     border: 2px black solid;
     margin: 5%;
 }

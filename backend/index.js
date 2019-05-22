@@ -12,7 +12,7 @@ const wss = new WebSocket.Server({
 
 app.use(express.urlencoded({extended: true}));
 
-const PORT = process.env.DB_HOST;
+const PORT = process.env.PORT;
 
 // This is my "database"
 const db = [];
@@ -20,11 +20,13 @@ const db = [];
 wss.on('connection', function connection(socket) {
     console.log('new connection');
     // socket.send(JSON.stringify(getData()));
-    getData();
+    // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     socket.send(JSON.stringify(db));
     socket.on('message', (data) => {
-        const {message} = JSON.parse(data);
+        const {message, roomId} = JSON.parse(data);
+        // const {roomId} = JSON.parse(data);
+        console.log(roomId);
         console.log('received: %s', message);
         db.push(message);
         wss.clients.forEach(function each(client) {
@@ -37,11 +39,10 @@ wss.on('connection', function connection(socket) {
 
 const User = require('./models/user');
 const Drawing = require('./models/drawing');
-async function getData() {
-    const testVar = await User.updateAnswer(2,'heehee');
-    console.log(testVar);
-
-}
+// async function getData() {
+//     const testVar = await User.updateAnswer(2,'heehee');
+//     console.log(testVar);
+// }
 // // When GET request comes in,
 // // send back all the messages.
 // app.get('/api', (req, res) => {
@@ -62,5 +63,5 @@ async function getData() {
 
 // app.listen(31337, () => {
 server.listen(PORT, () => {
-    console.log(`You're cooking with gasoline!`);
+    console.log(`Server running on ${PORT}`);
 });

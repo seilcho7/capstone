@@ -19,8 +19,9 @@ export default function JoinPage() {
                     <input className={styles.pinInput} />
                 </div>
             </div>
-            <div className={styles.joinButtonContainer}>
+            <div className={styles.ButtonContainer}>
                 <Link className={styles.joinButton}>Join</Link>
+                <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link>
             </div>
         </div>
     )
