@@ -35,14 +35,18 @@ wss.on('connection', function connection(socket) {
             const confirmedNewUser= await User.add(gamePin,name);
             console.log(confirmedNewUser);
         }
-        
+        const userData = await User.getAllUsers();
+        const usersString = JSON.stringify(userData);
+        const usersObject = JSON.parse(usersString);
+
+        const users = [];
+        usersObject.forEach((user) => {
+            if (!users.includes(user)) {
+                users.push(user.name);
+            }
+        })
+
         await Host.createHost(roomId);
-        // console.log(roomId);
-
-
-        // console.log(JSON.parse(data));
-        // console.log(pin);
-        // roomId.push(JSON.parse(data));
         // console.log('received: %s', message);
         // console.log('received: %s', name)
         // console.log('received: %s', gamePin)
@@ -51,7 +55,8 @@ wss.on('connection', function connection(socket) {
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 // client.send(JSON.stringify(db[db.length-1]));
-                client.send(data);
+                // client.send(data);
+                client.send(JSON.stringify(users));
             }
         });    
     });

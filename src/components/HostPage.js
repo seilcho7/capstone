@@ -2,8 +2,8 @@ import React from 'react';
 import styles from '../css/HostPage.module.css';
 import { Link } from 'react-router-dom';
 
-export default function HostPage({pin}) {
-    console.log(pin)
+export default function HostPage({pin, resetPin, users}) {
+    console.log(pin);
     return (
         <div>
             <div className={styles.text}>
@@ -13,18 +13,12 @@ export default function HostPage({pin}) {
             </div>
             <div className={styles.userListContainer}>
                 <ul className={styles.userList}>
-                    <li>seil</li>
-                    <li>ashish</li>
-                    <li>antonio</li>
-                    <li>rebecca</li>
-                    <li>rebecca</li>
-                    <li>chris</li>
-                    <li>samson</li>
+                    {users ? users.map((user, i) => (<li key={i}>{users[i]}</li>)) : null}
                 </ul>
             </div>
             <div className={styles.buttonContainer}>
                 <Link to='/' className={styles.startButton}>Start Game</Link>
-                <Link to='/host-or-join' className={styles.cancelButton}>Cancel Game</Link>
+                <Link to='/host-or-join' onClick={resetPin} className={styles.cancelButton}>Cancel Game</Link>
             </div>
         </div>
     )
