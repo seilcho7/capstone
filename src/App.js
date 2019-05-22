@@ -24,7 +24,8 @@ class App extends React.Component {
       name: '',
       gamePin: '',
       roomId: '',
-      socketRoomId: ''
+      socketRoomId: '',
+      users: ''
     };  
   }
 
@@ -59,12 +60,15 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      const pinObject = JSON.parse(e.data);
-      console.log(pinObject);
-      const pin = pinObject.roomId;
+      // const pinObject = JSON.parse(e.data);
+      console.log(e);
+      const userObject = JSON.parse(e.data);
+      console.log(userObject);
+      // const pin = pinObject.roomId;
       this.setState({
         // drawing: JSON.parse(e.data),
-        socketRoomId: pin
+        // socketRoomId: pin,
+        users: userObject
 
       });  
       // console.log(this.state.socketRoomId.roomId);
@@ -81,7 +85,7 @@ class App extends React.Component {
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} pin={this.state.roomId} />
+            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} />
           )} />
         <Route path='/join' render={(props) => (
           <div><JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/></div>
@@ -119,29 +123,34 @@ class App extends React.Component {
     this.setState({
         name: event.target.value
     })
-}
-_handleChangePin =(event)=> {
-    console.log (event.target.value)
-    this.setState({
-        gamePin: event.target.value
-    })
-}
-_handleSubmitJoin = async ()=>{
-  if (this.state.gamePin === this.state.socketRoomId) {
-    this.connection.send(JSON.stringify(
-        {name: this.state.name,
-        gamePin: this.state.gamePin
-    }));
-  } else if(this.state.gamePin !== this.state.socketRoomId){
-    alert("WRONG PIN YOU FUCK")
   }
-}
-
+  _handleChangePin =(event)=> {
+      console.log (event.target.value)
+      this.setState({
+          gamePin: event.target.value
+      })
+  }
+  _handleSubmitJoin = async ()=>{
+    if (this.state.gamePin === this.state.socketRoomId) {
+      this.connection.send(JSON.stringify({
+        name: this.state.name,
+        gamePin: this.state.gamePin
+      }));
+    } else if(this.state.gamePin !== this.state.socketRoomId){
+      alert("WRONG PIN YOU FUCK")
+    }
+  }
   _setPin = async (roomId) => {
     await this.setState({
       roomId
     })
     this.connection.send(JSON.stringify({roomId: this.state.roomId}));
+  }
+  _resetPin = () => {
+    this.setState({
+      roomId: '',
+      socketRoomId: ''
+    })
   }
 }
 
