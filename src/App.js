@@ -21,6 +21,8 @@ class App extends React.Component {
       drawing: '',
       activePlayer: true,
       drawEnd: false,
+      name: '',
+      gamePin: '',
       roomId: ''
     };  
   }
@@ -75,10 +77,12 @@ class App extends React.Component {
         <Route path='/host' render={(props) => (
             <HostPage {...props} pin={this.state.roomId} />
           )} />
-        <Route path='/join' component={JoinPage} />
+        <Route path='/join' render={(props) => (
+          <div><JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/></div>
+        )} />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
       </div>
-    );
+    )
   }
   _login = async () => {
     this.connection.send(JSON.stringify({
@@ -104,6 +108,24 @@ class App extends React.Component {
       drawEnd: true
     })
   }
+  _handleChangeName =(event)=> {
+    console.log (event.target.value)
+    this.setState({
+        name: event.target.value
+    })
+}
+_handleChangePin =(event)=> {
+    console.log (event.target.value)
+    this.setState({
+        gamePin: event.target.value
+    })
+}
+_handleSubmitJoin = async ()=>{
+    this.connection.send(JSON.stringify(
+        {name: this.state.name,
+        gamePin: this.state.gamePin
+    }));
+}
 
   _setPin = async (roomId) => {
     await this.setState({

@@ -3,6 +3,9 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const WebSocket = require('ws');
+const User = require('./models/user');
+const Drawing = require('./models/drawing');
+
 
 const server = http.createServer(app);      // create a plain http server that uses the express app
 const wss = new WebSocket.Server({
@@ -22,12 +25,19 @@ wss.on('connection', function connection(socket) {
     // socket.send(JSON.stringify(getData()));
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
-    socket.send(JSON.stringify(db));
-    socket.on('message', (data) => {
-        const {message, roomId} = JSON.parse(data);
-        // const {roomId} = JSON.parse(data);
-        console.log(roomId);
-        console.log('received: %s', message);
+    // socket.send(JSON.stringify(db));
+    socket.on('message', async (data) => {
+        const {message, name, gamePinm roomId} = JSON.parse(data);
+        console.log(data);
+        const ashishData = await Object.keys(JSON.parse(data))
+        if(ashishData[0]==='name' && ashishData[1]==='gamePin') {
+            const testVar= await User.add(gamePin,name)
+            console.log(testVar)
+        }
+        // console.log('received: %s', message);
+        // console.log('received: %s', name)
+        // console.log('received: %s', gamePin)
+        // console.log('received: %s', message);
         db.push(message);
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN && db.length > 0) {
@@ -37,31 +47,13 @@ wss.on('connection', function connection(socket) {
     });
 });
 
-const User = require('./models/user');
-const Drawing = require('./models/drawing');
+// const User = require('./models/user');
+// const Drawing = require('./models/drawing');
 // async function getData() {
 //     const testVar = await User.updateAnswer(2,'heehee');
 //     console.log(testVar);
 // }
-// // When GET request comes in,
-// // send back all the messages.
-// app.get('/api', (req, res) => {
-//     res.json(db);
-// });
 
-// // When POST request comes in,
-// // add message to array of messages.
-// app.post('/api', (req, res) => {
-//     // what do we do here?
-//     console.log(req.body);
-//     console.log(req.body.message);
-//     db.push(req.body.message);
-//     res.json({
-//         'message': req.body.message
-//     })
-// });
-
-// app.listen(31337, () => {
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
 });
