@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Modal from 'react-bootstrap/Modal';
-import logo from '../img/Logo1.png';
+import logo from '../img/picme-logo.png';
 import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
@@ -23,7 +23,7 @@ class Home extends React.Component {
     render() {
         return (
             <HomePage>
-                <img src={logo} />
+                    <AppLogo src={logo} />
                 <Link to='/host-or-join'><Button>Click to play</Button></Link>
             <>
             <Button onClick={this._handleShow}>
@@ -41,6 +41,8 @@ class Home extends React.Component {
                         </Modal.Footer>
                 </ModalWrapper>
             </Modal>
+
+          
             </>
             </HomePage>
         );
@@ -62,7 +64,7 @@ const HomePage = styled.div`
 `;
     
 const Button = styled.button`
-    background-color: black;
+    background-color: #ed1e79;
     color: white;
     width: 200px;
     height: 50px;
@@ -72,8 +74,8 @@ const Button = styled.button`
     font-size: 20px;
     &:hover {
         cursor: pointer;
-        background-color: #39FF14;
-        color: black;
+        background-color: black;
+        color: white;
     }
 `;
 
@@ -88,8 +90,8 @@ const Button2 = styled.button`
     margin-left: 20px;
     &:hover {
         cursor: pointer;
-        background-color: #39FF14;
-        color: black;
+        background-color: black;
+        color: white;
     }
 `;
 
@@ -101,3 +103,21 @@ const ModalWrapper = styled.div`
     background-color: #4d4dff;
     color: white;
 `;
+
+
+const rotate360 = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+
+const AppLogo = styled.img`
+//   animation: ${rotate360} infinite 120s linear;
+  height: 200px;
+  &:hover {
+    animation: ${rotate360} infinite 3s linear;
+  }
+`
