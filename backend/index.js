@@ -3,7 +3,9 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const WebSocket = require('ws');
-const User = require('./models/user')
+const User = require('./models/user');
+const Drawing = require('./models/drawing');
+
 
 const server = http.createServer(app);      // create a plain http server that uses the express app
 const wss = new WebSocket.Server({
@@ -13,8 +15,7 @@ const wss = new WebSocket.Server({
 
 app.use(express.urlencoded({extended: true}));
 
-// const PORT = process.env.DB_HOST;
-const PORT = process.env.PORT
+const PORT = process.env.PORT;
 
 // This is my "database"
 const db = [];
@@ -26,14 +27,14 @@ wss.on('connection', function connection(socket) {
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
-        const {message, name, gamePin} = JSON.parse(data);
+        const {message, name, gamePinm roomId} = JSON.parse(data);
         console.log(data);
         const ashishData = await Object.keys(JSON.parse(data))
         if(ashishData[0]==='name' && ashishData[1]==='gamePin') {
             const testVar= await User.add(gamePin,name)
             console.log(testVar)
         }
-    
+        // console.log('received: %s', message);
         // console.log('received: %s', name)
         // console.log('received: %s', gamePin)
         // console.log('received: %s', message);
@@ -53,7 +54,6 @@ wss.on('connection', function connection(socket) {
 //     console.log(testVar);
 // }
 
-
 server.listen(PORT, () => {
-    console.log(`You're cooking with gasoline!`);
+    console.log(`Server running on ${PORT}`);
 });

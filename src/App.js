@@ -22,7 +22,8 @@ class App extends React.Component {
       activePlayer: true,
       drawEnd: false,
       name: '',
-      gamePin: ''
+      gamePin: '',
+      roomId: ''
     };  
   }
 
@@ -70,12 +71,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <Route exact path='/' component={Home} />
-        <Route path='/host-or-join' component={HostOrJoin} />
-        <Route path='/host' component={HostPage} />
+        <Route path='/host-or-join' render={(props) => (
+            <HostOrJoin {...props} handleClickHost={this._setPin} />
+          )} />
+        <Route path='/host' render={(props) => (
+            <HostPage {...props} pin={this.state.roomId} />
+          )} />
         <Route path='/join' render={(props) => (
           <div><JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/></div>
         )} />
-       
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
       </div>
     )
@@ -123,6 +127,12 @@ _handleSubmitJoin = async ()=>{
     }));
 }
 
+  _setPin = async (roomId) => {
+    await this.setState({
+      roomId
+    })
+    this.connection.send(JSON.stringify({roomId: this.state.roomId}));
+  }
 }
 
 

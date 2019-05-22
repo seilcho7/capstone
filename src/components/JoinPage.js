@@ -26,25 +26,10 @@ export default function JoinPage ({nameValue, name, pinValue, pin, submit}){
                     <button onClick={submit}>Submit</button>
                     {/* <Link className={styles.joinButton}>Join</Link> */}
                 </div>
+            <div className={styles.ButtonContainer}>
+                <Link className={styles.joinButton}>Join</Link>
+                <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link>
             </div>
-        )
-    }
-//     _handleChangeName =(event)=> {
-//         console.log (event.target.value)
-//         this.setState({
-//             name: event.target.value
-//         })
-//     }
-//     _handleChangePin =(event)=> {
-//         console.log (event.target.value)
-//         this.setState({
-//             gamePin: event.target.value
-//         })
-//     }
-//     _handleSubmit = async ()=>{
-//         this.connection.send(JSON.stringify(
-//             {name: this.state.name,
-//             gamePin: this.state.gamePin
-//         }));
-//     }
-// }
+        </div>
+    )
+}
