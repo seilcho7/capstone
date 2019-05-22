@@ -23,7 +23,8 @@ class App extends React.Component {
       drawEnd: false,
       name: '',
       gamePin: '',
-      roomId: ''
+      roomId: '',
+      socketRoomId: ''
     };  
   }
 
@@ -58,12 +59,16 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      console.log(e);
-      console.log(e.data);
+      const pinObject = JSON.parse(e.data);
+      console.log(pinObject);
+      const pin = pinObject.roomId;
       this.setState({
-        drawing: JSON.parse(e.data)
+        // drawing: JSON.parse(e.data),
+        socketRoomId: pin
+
       });  
-      console.log (this.state.drawing)    
+      // console.log(this.state.socketRoomId.roomId);
+      // console.log (this.state.drawing)
     }
   }
   

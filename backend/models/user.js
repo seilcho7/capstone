@@ -39,9 +39,6 @@ class User {
             ($1, $2, $3, $4)
         returning id, room_id, name, points, answer
         `,[roomId, name, 0, ''])
-        .then((data) => {
-            return data;
-        })
     }
 
     // Gets all answers by room_id

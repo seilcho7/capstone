@@ -9,8 +9,14 @@ class Host {
 
     // initialize host
     static createHost(genRoomKey) {
-        return db.one(`INSERT INTO host (roomId) 
-                       VALUES ($1)`, [genRoomKey]);
+        return db.none(`
+            INSERT INTO host 
+                (roomId) 
+            VALUES ($1)
+            `, [genRoomKey])
+            .then((data) => {
+                return data;
+            });
     }
 
 }
