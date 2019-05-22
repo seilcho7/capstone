@@ -27,7 +27,7 @@ wss.on('connection', function connection(socket) {
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
-        const {message, name, gamePinm roomId} = JSON.parse(data);
+        const {message, name, gamePin, roomId} = JSON.parse(data);
         console.log(data);
         const ashishData = await Object.keys(JSON.parse(data))
         if(ashishData[0]==='name' && ashishData[1]==='gamePin') {
