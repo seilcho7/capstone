@@ -6,11 +6,11 @@ import {
 import axios from 'axios';
 import qs from 'qs';
 import Home from './components/Home';
-import './css/App.css';
 import Canvas from './components/Canvas';
 import HostPage from './components/HostPage';
 import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
+import HowToPlay from './components/HowToPlay';
 
 class App extends React.Component {
 
@@ -71,6 +71,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Route exact path='/' component={Home} />
+        <Route exact path='/how-to-play' component={HowToPlay} />
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
