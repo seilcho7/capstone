@@ -60,28 +60,26 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      // const pinObject = JSON.parse(e.data);
       console.log(JSON.parse(e.data));
       const data = JSON.parse(e.data);
-      const pin = data.roomId;
-      const userList = data.users;
-      // switch(e.data[0]){
-      //   case "stuff":
-      //     console.log("STRING BOI");
-      //     break;
-      //   case "user":
-      //     console.log("YOU GOT OBJECT -AOL");
-      //     break;
-      //   default:
-      //     console.log("FAIL");
-      //     break;
-      // }
-      this.setState({
-        // drawing: JSON.parse(e.data),
-        socketRoomId: pin,
-        users: userList
+      const {drawData,roomId,users} = JSON.parse(e.data)
+      
+      switch(Object.keys(data)[1]){
+        case 'drawData':
+          this.setState({
+            drawingData: drawData
+          })
+        break;
+        case 'users': 
+          this.setState({
+            users,
+            socketRoomId:roomId
+          })
+        break;
+        default: 
+        console.log('nasty message')
+      }
 
-      });  
       // console.log(this.state.socketRoomId.roomId);
       // console.log (this.state.drawing)
     }
@@ -101,7 +99,7 @@ class App extends React.Component {
         <Route path='/join' render={(props) => (
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
         )} />
-        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
+        <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} />
       </div>
     )
   }
@@ -112,10 +110,7 @@ class App extends React.Component {
   }
 
   _sendDrawing = async () => {  
-    this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
-    this.setState({
-      drawingData: ''
-    })
+    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
   }
   
   _setDrawingData = (object) => {
