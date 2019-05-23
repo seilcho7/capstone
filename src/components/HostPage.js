@@ -24,7 +24,7 @@ export default function HostPage({pin, resetPin, users, confirmHost}) {
                 <Link to='/' onClick={confirmHost}>
                     <Button1>start</Button1>
                 </Link>
-                <Link to='/host-or-join' onClick={resetPin}>
+                <Link to='/host-or-join' onClick={resetData}>
                     <Button2>cancel</Button2>
                 </Link>
             </div>
