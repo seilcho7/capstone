@@ -30,8 +30,13 @@
 .joinButton {
     border: 2px black solid;
     margin: 5%;
+    pointer-events: none;
 }
 
+.joinButtonActivated {
+    border: 2px black solid;
+    margin: 5%;
+}
 .cancelButton {
     border: 2px black solid;
     margin: 5%;

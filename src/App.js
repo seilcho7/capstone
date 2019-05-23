@@ -12,6 +12,9 @@ import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
+import styles from './css/JoinPage.module.css';
+import Answer from './components/Answer';
+// import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
 
@@ -20,7 +23,7 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: true,
+      activePlayer: false,
       drawEnd: false,
       name: '',
       gamePin: '',
@@ -28,7 +31,10 @@ class App extends React.Component {
       saveRoomId: '',
       socketRoomId: '',
       users: '',
-      redirect: false
+      redirect: false,
+      joined: styles.joinButton
+      isHost: false,
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
   }
 
@@ -128,14 +134,20 @@ class App extends React.Component {
       <div className="App">
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
+        <Route path="/answer" component={(props) => (
+            <Answer {...props} answerChoices={this.state.answerChoices} />
+          )}/>
+        {/* <Route path="/submitanswer" component={(props) => (
+            <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
+          )}/> */}
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} />
+            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} confirmHost={this._confirmHost} />
           )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
+            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
         )} />
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} handleLeave={this._leaveWaitPage}/>
@@ -165,6 +177,13 @@ class App extends React.Component {
       drawEnd: true
     })
   }
+  _pinMatch =() => {
+    if(this.state.gamePin === this.state.socketRoomId) {
+      this.setState({
+        joined: styles.joinButtonActivated
+      })
+    }
+  }
   _handleChangeName =(event)=> {
     console.log (event.target.value)
     this.setState({
@@ -173,17 +192,25 @@ class App extends React.Component {
   }
   _handleChangePin =(event)=> {
       console.log (event.target.value)
+      
       this.setState({
           gamePin: event.target.value
       })
+      if(event.target.value === this.state.socketRoomId) {
+        this.setState({
+          joined: styles.joinButtonActivated
+        })
+      }
+     
+
   }
-  _handleSubmitJoin = async ()=>{
+  _handleSubmitJoin = e =>{
     if (this.state.gamePin === this.state.socketRoomId) {
       this.connection.send(JSON.stringify({
         name: this.state.name,
         gamePin: this.state.gamePin
       }))
-      window.location.assign('http://localhost:3000/wait')
+      // window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
       alert("WRONG PIN YOU FUCK")
     }
@@ -204,6 +231,20 @@ class App extends React.Component {
       this.connection.send(JSON.stringify({saveRoomId: this.state.saveRoomId}))
     })
   }
+
+  _confirmHost = () => {
+    this.setState({
+      isHost: true
+    })
+  }
+
+  _addAnswerChoice = (newAnswer) => {
+    this.setState({
+      answerChoices: [...this.state.answerChoices, newAnswer]
+    })
+    console.log("Did you ring?");
+  }
+
 }
 
 
