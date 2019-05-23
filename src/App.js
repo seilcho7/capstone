@@ -25,9 +25,9 @@ class App extends React.Component {
       name: '',
       gamePin: '',
       roomId: '',
+      saveRoomId: '',
       socketRoomId: '',
       users: '',
-      reset: false,
       redirect: false
     };  
   }
@@ -138,7 +138,7 @@ class App extends React.Component {
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
         )} />
         <Route path ='/wait' render={(props) =>(
-          <WaitPage {...props} />
+          <WaitPage {...props} handleLeave={this._leaveWaitPage}/>
         ) } />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
       </div>
@@ -188,19 +188,21 @@ class App extends React.Component {
       alert("WRONG PIN YOU FUCK")
     }
   }
-  _setPin = async (roomId) => {
-    await this.setState({
-      roomId
-    })
-    this.connection.send(JSON.stringify({roomId: this.state.roomId}));
-  }
-  _resetData = async () => {
+  _setPin = (roomId) => {
     this.setState({
+      roomId
+    }, () => {
+      this.connection.send(JSON.stringify({roomId: this.state.roomId}));
+    })
+  }
+  _resetData = () => {
+    this.setState({
+      saveRoomId: this.state.roomId,
       roomId: '',
-      socketRoomId: '',
-      reset: true
-    }, await this.connection.send(JSON.stringify({reset: this.state.reset})))
-    
+      socketRoomId: ''
+    }, () => {
+      this.connection.send(JSON.stringify({saveRoomId: this.state.saveRoomId}))
+    })
   }
 }
 
