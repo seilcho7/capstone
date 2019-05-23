@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 
-export default function HostPage({pin, resetPin, users, confirmHost}) {
+export default function HostPage({pin, resetData, users, confirmHost}) {
     // console.log(pin);
     return (
         <Wrapper>

@@ -30,7 +30,6 @@ wss.on('connection', function connection(socket) {
 
         const users = [];   
         const {drawData, name, gamePin, roomId, start,saveRoomId} = JSON.parse(data);
-        console.log(JSON.stringify(leaveWaitPage));
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
         if(newUser[0]==='name' && newUser[1]==='gamePin') {
