@@ -32,9 +32,10 @@ class App extends React.Component {
       socketRoomId: '',
       users: '',
       redirect: false,
-      joined: styles.joinButton
+      joined: styles.joinButton,
       isHost: false,
-      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
+      start: false
     };  
   }
 
@@ -119,6 +120,12 @@ class App extends React.Component {
               socketRoomId:roomId
             })
             break;
+          case 'start': 
+            console.log("start did a thing in new switch");
+            this.setState({
+              start: true
+            })
+            break;
           default: 
             console.log('Not working - NEW switch')
             break;
@@ -152,7 +159,7 @@ class App extends React.Component {
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} handleLeave={this._leaveWaitPage}/>
         ) } />
-        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
+        {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null}
       </div>
     )
   }
@@ -235,7 +242,11 @@ class App extends React.Component {
   _confirmHost = () => {
     this.setState({
       isHost: true
+    }, () => {
+      this.connection.send(JSON.stringify({start: true}));
     })
+    console.log(this.state.isHost);
+    console.log(this.state.start);
   }
 
   _addAnswerChoice = (newAnswer) => {
