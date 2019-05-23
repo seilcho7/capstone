@@ -12,6 +12,7 @@ import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
+import Answer from './components/Answer';
 
 class App extends React.Component {
 
@@ -128,6 +129,7 @@ class App extends React.Component {
       <div className="App">
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
+        <Route path="/answer" component={Answer}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
