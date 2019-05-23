@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Link,
-  Route
+  Route,
 } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
@@ -11,6 +11,7 @@ import HostPage from './components/HostPage';
 import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
+import WaitPage from './components/WaitPage';
 
 class App extends React.Component {
 
@@ -26,7 +27,8 @@ class App extends React.Component {
       roomId: '',
       socketRoomId: '',
       users: '',
-      reset: false
+      reset: false,
+      redirect: false
     };  
   }
 
@@ -64,35 +66,58 @@ class App extends React.Component {
       const data = JSON.parse(e.data);
       const {drawData,roomId,users} = JSON.parse(e.data)
 
-      switch(Object.keys(data)[0]){
-        case 'users':
-            this.setState({
-              users
-            })
-          break;
-        default:
-          console.log("Still not working - first switch");
-          break;
-      }
-      switch(Object.keys(data)[1]){
-        case 'drawData':
-          this.setState({
-            drawingData: drawData
-          })
-          break;
-        case 'users': 
-          this.setState({
-            users: users,
-            socketRoomId: roomId
-          })
-          break;
-        default: 
-          console.log('Not working - second switch')
-          break;
-      }
+      // switch(Object.keys(data)[0]){
+      //   case 'users':
+      //       this.setState({
+      //         users
+      //       })
+      //     break;
+      //   default:
+      //     console.log("Still not working - first switch");
+      //     break;
+      // }
+      // switch(Object.keys(data)[1]){
+      //   case 'drawData':
+      //     this.setState({
+      //       drawingData: drawData
+      //     })
+      //     break;
+      //   case 'users': 
+      //     this.setState({
+      //       users: users,
+      //       socketRoomId:roomId
+      //     })
+      //     break;
+      //   default: 
+      //     console.log('Not working - second switch')
+      //     break;
+      // }
 
-      // compare names to prevent duplication
-      // Object.keys(data).forEach((key) => {switch(key){}})
+      Object.keys(data).forEach((key) => {
+        switch(key){
+          case 'drawData':
+            console.log("drawData did a thing in new switch");
+            this.setState({
+              drawingData: drawData
+            })
+            break;
+          case 'users': 
+            console.log("users did a thing in new switch");
+            this.setState({
+              users: users
+            })
+            break;
+          case 'roomId': 
+            console.log("roomId did a thing in new switch");
+            this.setState({
+              socketRoomId:roomId
+            })
+            break;
+          default: 
+            console.log('Not working - NEW switch')
+            break;
+        }
+      })
       // console.log(this.state.socketRoomId.roomId);
       // console.log (this.state.drawing)
     }
@@ -112,6 +137,9 @@ class App extends React.Component {
         <Route path='/join' render={(props) => (
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
         )} />
+        <Route path ='/wait' render={(props) =>(
+          <WaitPage {...props} />
+        ) } />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
       </div>
     )
@@ -154,7 +182,8 @@ class App extends React.Component {
       this.connection.send(JSON.stringify({
         name: this.state.name,
         gamePin: this.state.gamePin
-      }));
+      }))
+      window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
       alert("WRONG PIN YOU FUCK")
     }
