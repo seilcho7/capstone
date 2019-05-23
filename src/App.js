@@ -13,6 +13,7 @@ import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import Answer from './components/Answer';
+import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
 
@@ -133,6 +134,9 @@ class App extends React.Component {
         <Route path="/answer" component={(props) => (
             <Answer {...props} answerChoices={this.state.answerChoices} />
           )}/>
+        <Route path="/submitanswer" component={(props) => (
+            <SubmitAnswer {...props} />
+          )}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
@@ -209,6 +213,12 @@ class App extends React.Component {
   _confirmHost = () => {
     this.setState({
       isHost: true
+    })
+  }
+
+  _addAnswerChoice = (newAnswer) => {
+    this.setState({
+      answerChoices: [...this.state.answerChoices, newAnswer]
     })
   }
 
