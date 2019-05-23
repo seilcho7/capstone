@@ -12,6 +12,7 @@ import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
+import Answer from './components/Answer';
 
 class App extends React.Component {
 
@@ -28,7 +29,8 @@ class App extends React.Component {
       socketRoomId: '',
       users: '',
       redirect: false,
-      isHost: false
+      isHost: false,
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
   }
 
@@ -128,6 +130,9 @@ class App extends React.Component {
       <div className="App">
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
+        <Route path="/answer" component={(props) => (
+            <Answer {...props} answerChoices={this.state.answerChoices} />
+          )}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
