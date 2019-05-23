@@ -68,7 +68,7 @@ wss.on('connection', function connection(socket) {
 
 // const Drawing = require('./models/drawing');
 async function getData() {
-    const testVar = await User.removeUsers('12');
+    const testVar = await Host.removeHost('643645345645636345');
     console.log(testVar);
 }
 

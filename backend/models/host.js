@@ -19,6 +19,14 @@ class Host {
             });
     }
 
+    // Remove host based on room id
+    static removeHost(roomId) {
+        return db.none(`
+            DELETE FROM host 
+            WHERE roomid='${roomId}'
+        `)
+    }
+
 }
 
 module.exports = Host;
