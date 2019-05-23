@@ -28,13 +28,14 @@ class App extends React.Component {
       name: '',
       gamePin: '',
       roomId: '',
+      saveRoomId: '',
       socketRoomId: '',
       users: '',
       redirect: false,
       joined: styles.joinButton,
       isHost: false,
-      gameStart: false,
-      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
+      start: false
     };  
   }
 
@@ -119,6 +120,12 @@ class App extends React.Component {
               socketRoomId:roomId
             })
             break;
+          case 'start': 
+            console.log("start did a thing in new switch");
+            this.setState({
+              start: true
+            })
+            break;
           default: 
             console.log('Not working - NEW switch')
             break;
@@ -150,9 +157,13 @@ class App extends React.Component {
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
         )} />
         <Route path ='/wait' render={(props) =>(
-          <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.gameStart}/>
+          <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
-        {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
+        <Route path ='/canvas' render={(props) =>(
+         <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} />
+        ) } />
+
+        {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )
   }
@@ -215,23 +226,31 @@ class App extends React.Component {
       alert("WRONG PIN YOU FUCK")
     }
   }
-  _setPin = async (roomId) => {
-    await this.setState({
-      roomId
-    })
-    this.connection.send(JSON.stringify({roomId: this.state.roomId}));
-  }
-  _resetPin = () => {
+  _setPin = (roomId) => {
     this.setState({
+      roomId
+    }, () => {
+      this.connection.send(JSON.stringify({roomId: this.state.roomId}));
+    })
+  }
+  _resetData = () => {
+    this.setState({
+      saveRoomId: this.state.roomId,
       roomId: '',
       socketRoomId: ''
+    }, () => {
+      this.connection.send(JSON.stringify({saveRoomId: this.state.saveRoomId}))
     })
   }
 
   _confirmHost = () => {
     this.setState({
       isHost: true
+    }, () => {
+      this.connection.send(JSON.stringify({start: true}));
     })
+    console.log(this.state.isHost);
+    console.log(this.state.start);
   }
 
   _addAnswerChoice = (newAnswer) => {
