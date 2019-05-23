@@ -18,20 +18,17 @@ export default function HostOrJoin({handleClickHost}) {
              <Link to='/'>
               <AppLogo src={logo} />
             </Link>
-                <Link onClick={() => (handleClickHost(generatePin()))} className={styles.hostButton} to='/host'>
+                <Link onClick={() => (handleClickHost(generatePin()))} to='/host'>
                     <Button1>host</Button1>
                 </Link>
     
-                <Link className={styles.joinButton} to='/join'>
+                <Link to='/join'>
                     <Button2>join</Button2>
                 </Link>
             
         </HomePage>
     )
 }
-
-
-
 
 // STYLED COMPONENTS
 
@@ -83,5 +80,4 @@ const Button2 = styled.button`
 
 const AppLogo = styled.img`
   height: 180px;
-  margin: 0;
 `

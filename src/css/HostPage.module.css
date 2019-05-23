@@ -1,24 +1,22 @@
+
 .text {
-    margin: 10% 1%;
+    /* margin: 5%; */
     text-align: center;
 }
 
 .buttonContainer {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .startButton {
-    border: 2px black solid;
-    margin: 5%;
+    border: 2px white solid;
 }
 
 .startButton a {
     text-decoration: none;
-}
-
-.cancelButton {
-    border: 2px black solid;
-    margin: 5%;
 }
 
 .cancelButton a {
@@ -26,11 +24,9 @@
 }
 
 .userListContainer {
-    border: 2px black solid;
-    overflow: auto;
+    /* overflow: auto; */
     width: 100%;
-    height: 200px;
-    margin: auto;
+    height: 114px;
 }
 
 .userList {
