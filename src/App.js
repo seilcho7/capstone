@@ -20,14 +20,15 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: true,
+      activePlayer: false,
       drawEnd: false,
       name: '',
       gamePin: '',
       roomId: '',
       socketRoomId: '',
       users: '',
-      redirect: false
+      redirect: false,
+      isHost: false
     };  
   }
 
