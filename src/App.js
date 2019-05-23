@@ -14,6 +14,7 @@ import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
+// import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
 
@@ -135,6 +136,9 @@ class App extends React.Component {
         <Route path="/answer" component={(props) => (
             <Answer {...props} answerChoices={this.state.answerChoices} />
           )}/>
+        {/* <Route path="/submitanswer" component={(props) => (
+            <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
+          )}/> */}
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
@@ -227,6 +231,13 @@ class App extends React.Component {
     this.setState({
       isHost: true
     })
+  }
+
+  _addAnswerChoice = (newAnswer) => {
+    this.setState({
+      answerChoices: [...this.state.answerChoices, newAnswer]
+    })
+    console.log("Did you ring?");
   }
 
 }
