@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Link,
-  Route
+  Route,
 } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
@@ -11,6 +11,7 @@ import HostPage from './components/HostPage';
 import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
+import WaitPage from './components/WaitPage';
 
 class App extends React.Component {
 
@@ -25,7 +26,8 @@ class App extends React.Component {
       gamePin: '',
       roomId: '',
       socketRoomId: '',
-      users: ''
+      users: '',
+      redirect: false
     };  
   }
 
@@ -134,6 +136,9 @@ class App extends React.Component {
         <Route path='/join' render={(props) => (
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
         )} />
+        <Route path ='/wait' render={(props) =>(
+          <WaitPage {...props} />
+        ) } />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
       </div>
     )
@@ -176,7 +181,8 @@ class App extends React.Component {
       this.connection.send(JSON.stringify({
         name: this.state.name,
         gamePin: this.state.gamePin
-      }));
+      }))
+      window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
       alert("WRONG PIN YOU FUCK")
     }
