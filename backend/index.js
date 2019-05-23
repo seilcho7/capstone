@@ -22,7 +22,7 @@ const db = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
-    // socket.send(JSON.stringify(getData()));
+    socket.send(JSON.stringify(getData()));
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
@@ -67,10 +67,10 @@ wss.on('connection', function connection(socket) {
 });
 
 // const Drawing = require('./models/drawing');
-// async function getData() {
-//     const testVar = await User.updateAnswer(2,'heehee');
-//     console.log(testVar);
-// }
+async function getData() {
+    const testVar = await User.removeUsers('12');
+    console.log(testVar);
+}
 
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
