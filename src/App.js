@@ -12,6 +12,7 @@ import JoinPage from './components/JoinPage';
 import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
+import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
 
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
       socketRoomId: '',
       users: '',
       redirect: false,
+      joined: styles.joinButton
       isHost: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
@@ -140,7 +142,7 @@ class App extends React.Component {
             <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} confirmHost={this._confirmHost} />
           )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
+            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
         )} />
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} />
@@ -170,6 +172,13 @@ class App extends React.Component {
       drawEnd: true
     })
   }
+  _pinMatch =() => {
+    if(this.state.gamePin === this.state.socketRoomId) {
+      this.setState({
+        joined: styles.joinButtonActivated
+      })
+    }
+  }
   _handleChangeName =(event)=> {
     console.log (event.target.value)
     this.setState({
@@ -178,17 +187,25 @@ class App extends React.Component {
   }
   _handleChangePin =(event)=> {
       console.log (event.target.value)
+      
       this.setState({
           gamePin: event.target.value
       })
+      if(event.target.value === this.state.socketRoomId) {
+        this.setState({
+          joined: styles.joinButtonActivated
+        })
+      }
+     
+
   }
-  _handleSubmitJoin = async ()=>{
+  _handleSubmitJoin = e =>{
     if (this.state.gamePin === this.state.socketRoomId) {
       this.connection.send(JSON.stringify({
         name: this.state.name,
         gamePin: this.state.gamePin
       }))
-      window.location.assign('http://localhost:3000/wait')
+      // window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
       alert("WRONG PIN YOU FUCK")
     }
