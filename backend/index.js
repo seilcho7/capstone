@@ -28,8 +28,8 @@ wss.on('connection', function connection(socket) {
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
         const users = [];        
-        const {drawData, name, gamePin, roomId} = JSON.parse(data);
-
+        const {drawData, name, gamePin, roomId, start} = JSON.parse(data);
+        console.log(start);
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
         if(newUser[0]==='name' && newUser[1]==='gamePin') {
@@ -60,7 +60,8 @@ wss.on('connection', function connection(socket) {
                 client.send(JSON.stringify({
                     roomId,
                     users,
-                    drawData
+                    drawData,
+                    start
                 }))
             }
         });    
