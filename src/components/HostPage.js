@@ -5,7 +5,7 @@ import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 
 export default function HostPage({pin, resetPin, users}) {
-    console.log(pin);
+    // console.log(pin);
     return (
         <Wrapper>
             <div className={styles.text}>

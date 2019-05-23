@@ -25,9 +25,19 @@ class User {
             })
     }
 
-    // gets a user by their id
-    static getUserById(id) {
-        return db.any(`select * from users where id=${id}`)
+    // gets a user by their Room ID
+    static getUserByRoomId(roomId) {
+        return db.any(`select * from users where room_id='${roomId}'`)
+            .then((arrayOfUsers) => {
+                return arrayOfUsers.map((userData) => {
+                    const userInstance = new User(
+                        userData.id, 
+                        userData.points, 
+                        userData.name
+                    );
+                    return userInstance;
+                })
+            })
     }
 
     // Adds new user to the databass
