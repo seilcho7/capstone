@@ -135,7 +135,7 @@ class App extends React.Component {
             <Answer {...props} answerChoices={this.state.answerChoices} />
           )}/>
         <Route path="/submitanswer" component={(props) => (
-            <SubmitAnswer {...props} />
+            <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
           )}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
@@ -220,6 +220,7 @@ class App extends React.Component {
     this.setState({
       answerChoices: [...this.state.answerChoices, newAnswer]
     })
+    console.log("Did you ring?");
   }
 
 }
