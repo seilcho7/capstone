@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 
 export default function JoinPage ({nameValue, name, pinValue, pin, submit}){
-    
         return (
             <div>
                 <div className={styles.text}>
@@ -22,12 +21,8 @@ export default function JoinPage ({nameValue, name, pinValue, pin, submit}){
                         <input value= {pinValue} className={styles.pinInput} onChange={pin}/>
                     </div>
                 </div>
-                {/* <div className={styles.joinButtonContainer}> */}
-                    {/* <button onClick={submit}>Submit</button> */}
-                    {/* <Link className={styles.joinButton}>Join</Link> */}
-                {/* </div> */}
             <div className={styles.ButtonContainer}>
-                <Link onClick={submit} className={styles.joinButton}>Join</Link>
+                <button onClick={submit} className={styles.joinButton}> Join </button>
                 <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link>
             </div>
         </div>
