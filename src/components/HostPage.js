@@ -1,13 +1,15 @@
 import React from 'react';
 import styles from '../css/HostPage.module.css';
 import { Link } from 'react-router-dom';
+import logo from '../img/picme-logo.png';
+import styled from 'styled-components';
 
 export default function HostPage({pin, resetPin, users}) {
     console.log(pin);
     return (
         <div>
             <div className={styles.text}>
-                <h1>PicMe</h1>
+            <AppLogo src={logo} />
                 <h3>Join this Game using the Pin:</h3>
                 <h3>{pin}</h3>
             </div>
@@ -23,3 +25,7 @@ export default function HostPage({pin, resetPin, users}) {
         </div>
     )
 }
+
+const AppLogo = styled.img`
+  height: 150px;
+`
