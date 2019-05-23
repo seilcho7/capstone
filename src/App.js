@@ -65,35 +65,58 @@ class App extends React.Component {
       const data = JSON.parse(e.data);
       const {drawData,roomId,users} = JSON.parse(e.data)
 
-      switch(Object.keys(data)[0]){
-        case 'users':
-            this.setState({
-              users
-            })
-          break;
-        default:
-          console.log("Still not working - first switch");
-          break;
-      }
-      switch(Object.keys(data)[1]){
-        case 'drawData':
-          this.setState({
-            drawingData: drawData
-          })
-          break;
-        case 'users': 
-          this.setState({
-            users: users,
-            socketRoomId:roomId
-          })
-          break;
-        default: 
-          console.log('Not working - second switch')
-          break;
-      }
+      // switch(Object.keys(data)[0]){
+      //   case 'users':
+      //       this.setState({
+      //         users
+      //       })
+      //     break;
+      //   default:
+      //     console.log("Still not working - first switch");
+      //     break;
+      // }
+      // switch(Object.keys(data)[1]){
+      //   case 'drawData':
+      //     this.setState({
+      //       drawingData: drawData
+      //     })
+      //     break;
+      //   case 'users': 
+      //     this.setState({
+      //       users: users,
+      //       socketRoomId:roomId
+      //     })
+      //     break;
+      //   default: 
+      //     console.log('Not working - second switch')
+      //     break;
+      // }
 
-      // compare names to prevent duplication
-      // Object.keys(data).forEach((key) => {switch(key){}})
+      Object.keys(data).forEach((key) => {
+        switch(key){
+          case 'drawData':
+            console.log("drawData did a thing in new switch");
+            this.setState({
+              drawingData: drawData
+            })
+            break;
+          case 'users': 
+            console.log("users did a thing in new switch");
+            this.setState({
+              users: users
+            })
+            break;
+          case 'roomId': 
+            console.log("roomId did a thing in new switch");
+            this.setState({
+              socketRoomId:roomId
+            })
+            break;
+          default: 
+            console.log('Not working - NEW switch')
+            break;
+        }
+      })
       // console.log(this.state.socketRoomId.roomId);
       // console.log (this.state.drawing)
     }
