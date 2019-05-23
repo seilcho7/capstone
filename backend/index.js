@@ -28,7 +28,7 @@ wss.on('connection', function connection(socket) {
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
         const users = [];        
-        const {drawData, name, gamePin, roomId} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, reset} = JSON.parse(data);
 
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
@@ -52,6 +52,13 @@ wss.on('connection', function connection(socket) {
         if (roomId) {
             await Host.createHost(roomId);
         }
+
+        console.log(reset);
+        // if (reset) {
+        //     await Host.removeHost();
+        // }
+        
+        
         
         // db.push(message);
         wss.clients.forEach(function each(client) {

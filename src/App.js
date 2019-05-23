@@ -25,7 +25,8 @@ class App extends React.Component {
       gamePin: '',
       roomId: '',
       socketRoomId: '',
-      users: ''
+      users: '',
+      reset: false
     };  
   }
 
@@ -82,7 +83,7 @@ class App extends React.Component {
         case 'users': 
           this.setState({
             users: users,
-            socketRoomId:roomId
+            socketRoomId: roomId
           })
           break;
         default: 
@@ -106,7 +107,7 @@ class App extends React.Component {
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} />
+            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} />
           )} />
         <Route path='/join' render={(props) => (
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
@@ -164,11 +165,13 @@ class App extends React.Component {
     })
     this.connection.send(JSON.stringify({roomId: this.state.roomId}));
   }
-  _resetPin = () => {
+  _resetData = async () => {
     this.setState({
       roomId: '',
-      socketRoomId: ''
-    })
+      socketRoomId: '',
+      reset: true
+    }, await this.connection.send(JSON.stringify({reset: this.state.reset})))
+    
   }
 }
 
