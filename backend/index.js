@@ -27,7 +27,7 @@ wss.on('connection', function connection(socket) {
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
-        const {message, name, gamePin, roomId} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId} = JSON.parse(data);
 
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
@@ -57,7 +57,8 @@ wss.on('connection', function connection(socket) {
                 // client.send(JSON.stringify(db[db.length-1]));
                 client.send(JSON.stringify({
                     roomId,
-                    users
+                    users,
+                    drawData
                 }))
                 // client.send(JSON.stringify(["stuff", data]));
                 // client.send(JSON.stringify(["user", users]));
@@ -68,7 +69,7 @@ wss.on('connection', function connection(socket) {
 
 // const Drawing = require('./models/drawing');
 // async function getData() {
-//     const testVar = await User.updateAnswer(2,'heehee');
+//     const testVar = await Host.removeHost('643645345645636345');
 //     console.log(testVar);
 // }
 

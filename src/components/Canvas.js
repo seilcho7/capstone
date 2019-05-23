@@ -18,6 +18,7 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
                 const object = [];
                 object.push(saveData);
                 setDrawingData(object);
+                console.log(object)
                 // this.setState({
                 //     drawingData: object
                 // })
