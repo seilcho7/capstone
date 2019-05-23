@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default function Answer() {
+export default function Answer({answerChoices}) {
     return (
         <div>
-            <h1>TESTING</h1>
+                <ul>
+                    {answerChoices ? answerChoices.map((answer, i) => (<li key={i}>{answer}</li>)) : null}
+                </ul>
         </div>
     )
 };

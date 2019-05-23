@@ -29,7 +29,8 @@ class App extends React.Component {
       socketRoomId: '',
       users: '',
       redirect: false,
-      isHost: false
+      isHost: false,
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
   }
 
@@ -129,7 +130,9 @@ class App extends React.Component {
       <div className="App">
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
-        <Route path="/answer" component={Answer}/>
+        <Route path="/answer" component={(props) => (
+            <Answer {...props} answerChoices={this.state.answerChoices} />
+          )}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
