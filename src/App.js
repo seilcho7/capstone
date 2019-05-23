@@ -61,14 +61,25 @@ class App extends React.Component {
 
     this.connection.onmessage = (e) => {
       // const pinObject = JSON.parse(e.data);
-      console.log(e);
-      const userObject = JSON.parse(e.data);
-      console.log(userObject);
-      // const pin = pinObject.roomId;
+      console.log(JSON.parse(e.data));
+      const data = JSON.parse(e.data);
+      const pin = data.roomId;
+      const userList = data.users;
+      // switch(e.data[0]){
+      //   case "stuff":
+      //     console.log("STRING BOI");
+      //     break;
+      //   case "user":
+      //     console.log("YOU GOT OBJECT -AOL");
+      //     break;
+      //   default:
+      //     console.log("FAIL");
+      //     break;
+      // }
       this.setState({
         // drawing: JSON.parse(e.data),
-        // socketRoomId: pin,
-        users: userObject
+        socketRoomId: pin,
+        users: userList
 
       });  
       // console.log(this.state.socketRoomId.roomId);
@@ -88,7 +99,7 @@ class App extends React.Component {
             <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} />
           )} />
         <Route path='/join' render={(props) => (
-          <div><JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/></div>
+            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin}/>
         )} />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawing} saveableCanvas={this.saveableCanvas} /> */}
       </div>

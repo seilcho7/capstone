@@ -55,8 +55,12 @@ wss.on('connection', function connection(socket) {
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 // client.send(JSON.stringify(db[db.length-1]));
-                // client.send(data);
-                client.send(JSON.stringify(users));
+                client.send(JSON.stringify({
+                    roomId,
+                    users
+                }))
+                // client.send(JSON.stringify(["stuff", data]));
+                // client.send(JSON.stringify(["user", users]));
             }
         });    
     });
