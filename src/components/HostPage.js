@@ -21,7 +21,7 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
                 </ul>
             </div>
             <div className={styles.buttonContainer}>
-                <Link to='/' onClick={confirmHost}>
+                <Link to='/canvas' onClick={confirmHost}>
                     <Button1>start</Button1>
                 </Link>
                 <Link to='/host-or-join' onClick={resetData}>
