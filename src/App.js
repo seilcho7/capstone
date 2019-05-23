@@ -13,6 +13,7 @@ import HostOrJoin from './components/HostOrJoin';
 import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
+import Answer from './components/Answer';
 
 class App extends React.Component {
 
@@ -21,7 +22,7 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: true,
+      activePlayer: false,
       drawEnd: false,
       name: '',
       gamePin: '',
@@ -30,6 +31,8 @@ class App extends React.Component {
       users: '',
       redirect: false,
       joined: styles.joinButton
+      isHost: false,
+      answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
   }
 
@@ -129,11 +132,14 @@ class App extends React.Component {
       <div className="App">
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
+        <Route path="/answer" component={(props) => (
+            <Answer {...props} answerChoices={this.state.answerChoices} />
+          )}/>
         <Route path='/host-or-join' render={(props) => (
             <HostOrJoin {...props} handleClickHost={this._setPin} />
           )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} />
+            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetPin={this._resetPin} confirmHost={this._confirmHost} />
           )} />
         <Route path='/join' render={(props) => (
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
@@ -216,6 +222,13 @@ class App extends React.Component {
       socketRoomId: ''
     })
   }
+
+  _confirmHost = () => {
+    this.setState({
+      isHost: true
+    })
+  }
+
 }
 
 
