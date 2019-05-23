@@ -31,8 +31,9 @@ class App extends React.Component {
       socketRoomId: '',
       users: '',
       redirect: false,
-      joined: styles.joinButton
+      joined: styles.joinButton,
       isHost: false,
+      gameStart: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!']
     };  
   }
@@ -149,7 +150,7 @@ class App extends React.Component {
             <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
         )} />
         <Route path ='/wait' render={(props) =>(
-          <WaitPage {...props} />
+          <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.gameStart}/>
         ) } />
         {/* <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> */}
       </div>
