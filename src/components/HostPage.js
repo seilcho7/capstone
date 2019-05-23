@@ -3,7 +3,7 @@ import styles from '../css/HostPage.module.css';
 import { Link } from 'react-router-dom';
 
 export default function HostPage({pin, resetPin, users}) {
-    console.log(pin);
+    // console.log(pin);
     return (
         <div>
             <div className={styles.text}>

@@ -60,26 +60,38 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      console.log(JSON.parse(e.data));
       const data = JSON.parse(e.data);
       const {drawData,roomId,users} = JSON.parse(e.data)
-      
+
+      switch(Object.keys(data)[0]){
+        case 'users':
+            this.setState({
+              users
+            })
+          break;
+        default:
+          console.log("Still not working - first switch");
+          break;
+      }
       switch(Object.keys(data)[1]){
         case 'drawData':
           this.setState({
             drawingData: drawData
           })
-        break;
+          break;
         case 'users': 
           this.setState({
-            users,
+            users: users,
             socketRoomId:roomId
           })
-        break;
+          break;
         default: 
-        console.log('nasty message')
+          console.log('Not working - second switch')
+          break;
       }
 
+      // compare names to prevent duplication
+      // Object.keys(data).forEach((key) => {switch(key){}})
       // console.log(this.state.socketRoomId.roomId);
       // console.log (this.state.drawing)
     }

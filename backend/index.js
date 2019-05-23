@@ -27,6 +27,7 @@ wss.on('connection', function connection(socket) {
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
+        const users = [];        
         const {drawData, name, gamePin, roomId} = JSON.parse(data);
 
         // Adds new user to the databass
@@ -35,22 +36,23 @@ wss.on('connection', function connection(socket) {
             const confirmedNewUser= await User.add(gamePin,name);
             console.log(confirmedNewUser);
         }
-        const userData = await User.getAllUsers();
+
+        const userData = await User.getUserByRoomId(gamePin);
         const usersString = JSON.stringify(userData);
         const usersObject = JSON.parse(usersString);
 
-        const users = [];
-        usersObject.forEach((user) => {
+        // Adds all users inside users array
+        usersObject.map((user) => {
             if (!users.includes(user)) {
                 users.push(user.name);
             }
-        })
+        });
 
-        await Host.createHost(roomId);
-        // console.log('received: %s', message);
-        // console.log('received: %s', name)
-        // console.log('received: %s', gamePin)
-        // console.log('received: %s', message);
+        // When host click host button, save roomId inside database
+        if (roomId) {
+            await Host.createHost(roomId);
+        }
+        
         // db.push(message);
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
@@ -60,8 +62,6 @@ wss.on('connection', function connection(socket) {
                     users,
                     drawData
                 }))
-                // client.send(JSON.stringify(["stuff", data]));
-                // client.send(JSON.stringify(["user", users]));
             }
         });    
     });
