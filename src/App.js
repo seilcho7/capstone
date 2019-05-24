@@ -66,14 +66,15 @@ class App extends React.Component {
     // player enters the room. 
 
     // const { host } = window.location;
-    const url = `ws://localhost:4000/ws`;  // Sadly, the react proxy not playing well with websockets
+    // const url = `ws://localhost:4000/ws`;
+    const url = `ws://192.168.0.108:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {drawData,roomId,users, newUsers, roomPin, start} = JSON.parse(e.data)
+      const {drawData, users, newUsers, roomPin, start} = JSON.parse(e.data)
       console.log(newUsers);
 
       Object.keys(data).forEach((key) => {
