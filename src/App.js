@@ -138,7 +138,8 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-          <Canvas hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} />
+
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}

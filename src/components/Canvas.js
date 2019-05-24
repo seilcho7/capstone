@@ -93,7 +93,12 @@ export default class Canvas extends React.Component {
                     // })
                 
                 }}
-                /></div> : <div onPointerUp={async() => {
+
+                />
+                    <ul>
+                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {this.props.users[i]}</li>)) : null}
+                    </ul> 
+                    </div> : <div onPointerUp={async() => {
                     const saveData = await this.saveableCanvas.getSaveData();
                     const object = [];
                     object.push(saveData);
