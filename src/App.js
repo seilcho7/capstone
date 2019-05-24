@@ -66,8 +66,8 @@ class App extends React.Component {
     // player enters the room. 
 
     // const { host } = window.location;
-    // const url = `ws://localhost:4000/ws`;
-    const url = `ws://192.168.0.108:4000/ws`;
+    const url = `ws://localhost:4000/ws`;
+    // const url = `ws://10.150.40.191:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
@@ -138,7 +138,8 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
+
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}

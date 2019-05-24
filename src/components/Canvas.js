@@ -92,6 +92,7 @@ export default class Canvas extends React.Component {
                     // })
                 
                 }}
+
                 />
                     <ul>
                         {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {this.props.users[i]}</li>)) : null}
