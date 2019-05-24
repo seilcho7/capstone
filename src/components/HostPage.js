@@ -8,7 +8,7 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
     // console.log(pin);
     return (
         <Wrapper>
-            <div className={styles.text}>
+            <div className={styles.pinNum}>
            <Link to='/'>
               <AppLogo src={logo} />
             </Link>
@@ -28,11 +28,12 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
                     <Button2>cancel</Button2>
                 </Link>
             </div>
+        
         </Wrapper>
     )
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,11 +44,11 @@ const Wrapper = styled.div`
 const AppLogo = styled.img`
   height: 150px;
 `
-const Pin = styled.text`
+const Pin = styled.div`
   font-size: 60px;
 `
 
-const Button1 = styled.button`
+export const Button1 = styled.button`
     background-color: #FF2D55;
     color: white;
     width: 200px;
@@ -67,7 +68,7 @@ const Button1 = styled.button`
 `;
 
 // how to play button
-const Button2 = styled.button`
+export const Button2 = styled.button`
     background-color: black;
     color: white;
     width: px;

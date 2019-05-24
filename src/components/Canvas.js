@@ -102,7 +102,6 @@ export default class Canvas extends React.Component {
             </div>
         )
     }
-
 }
 
 
@@ -111,7 +110,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
-    background-color: #E5E5E5;
+    background-color: black;
 `;
     
 const Button = styled.button`
