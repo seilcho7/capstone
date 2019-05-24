@@ -70,8 +70,9 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
+      // console.log(e);
       const data = JSON.parse(e.data);
-      const {drawData,roomId,users} = JSON.parse(e.data)
+      const {drawData,roomId,users, roomPin} = JSON.parse(e.data)
 
       // switch(Object.keys(data)[0]){
       //   case 'users':
@@ -114,10 +115,10 @@ class App extends React.Component {
               users: users
             })
             break;
-          case 'roomId': 
+          case 'roomPin': 
             console.log("roomId did a thing in new switch");
             this.setState({
-              socketRoomId:roomId
+              socketRoomId: roomPin
             })
             break;
           case 'start': 
@@ -160,7 +161,7 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-         <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
+          <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
@@ -202,18 +203,16 @@ class App extends React.Component {
     })
   }
   _handleChangePin =(event)=> {
-      console.log (event.target.value)
-      
+    console.log (event.target.value)
+    
+    this.setState({
+        gamePin: event.target.value
+    })
+    if(event.target.value === this.state.socketRoomId) {
       this.setState({
-          gamePin: event.target.value
+        joined: styles.joinButtonActivated
       })
-      if(event.target.value === this.state.socketRoomId) {
-        this.setState({
-          joined: styles.joinButtonActivated
-        })
-      }
-     
-
+    }
   }
   _handleSubmitJoin = e =>{
     if (this.state.gamePin === this.state.socketRoomId) {
