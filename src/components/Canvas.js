@@ -2,64 +2,106 @@ import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
 
+export default class Canvas extends React.Component {
+    // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
+    constructor(props) {
+        super(props);
+        this.state = {
+            saveableCanvas: props.saveableCanvas || {loadSaveData: () => {}}
+        }
+    }
 
-
-
-
-export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData, isHost, users}) {
-    return (
-        <div>
-        <Wrapper> 
-            <Button onClick={() => {
-                  // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
-                  // Retrieves from local storage and  pushes into empty array 
-                  // const save = localStorage.getItem("savedDrawing")
-
-                  // stores canvas data in variable and pushes to array 
-
-                const saveData = saveableCanvas.getSaveData(); 
-                const object = [];
-                object.push(saveData);
-                setDrawingData(object);
-                console.log(object)
-                // this.setState({
-                //     drawingData: object
-                // })
+    componentDidMount(){
+        setInterval(() => {
+            if(this.props.hostStatus){
+                console.log("YOU ARE IN IF HOSTSTATUS")
+                // console.log(saveableCanvas);
                 // console.log(drawingData)
-            }}>
-            Save
-            </Button>
-
-            {/*               Load button will retrieve the last drawing from state  */}
-            <Button
-                onClick={() => {
-                    console.log('loading data')
-                    console.log(drawing)
-                    saveableCanvas.loadSaveData(
-                        drawing
+                if(this.props.drawingData){
+                    console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
+                    this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
+                        this.props.drawingData
                     )
-            }}
-            >Load</Button>
-        <Button
-            onClick={handleSend}
-            >
-            Send Drawing
-            </Button>
-            <div onMouseEnter={() => {console.log("enter")}} onMouseLeave={() => {console.log("leave")}}>
-            { isHost ?  
-            <div> 
-                <CanvasDraw  disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}/>   
-                <ul>
-                    {users ? users.map((user, i) => (<li key={i}> {users[i]}</li>)) : null}
-                </ul> 
+                }
+            }
+        }, 5000);
+    }
+
+    // static getDerivedStateFromProps(props, state) {
+    //     console.log("did you call me?")
+    //     state.saveableCanvas.loadSaveData( 
+    //         props.drawingData
+    //     )
+    //     console.log(props.drawingData)
+    // }
+    
+    render() {
+        return (
+            <div>
+            <Wrapper> 
+                <Button onClick={() => {
+                      // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
+                      // Retrieves from local storage and  pushes into empty array 
+                      // const save = localStorage.getItem("savedDrawing")
+    
+                      // stores canvas data in variable and pushes to array 
+    
+                    const saveData = this.saveableCanvas.getSaveData(); 
+                    const object = [];
+                    object.push(saveData);
+                    this.props.setDrawingData(object);
+                    console.log(object)
+                    // this.setState({
+                    //     drawingData: object
+                    // })
+                    // console.log(drawingData)
+                }}>
+                Save
+                </Button>
+    
+                {/*               Load button will retrieve the last drawing from state  */}
+                <Button
+                    onClick={() => {
+                        console.log('loading data')
+                        console.log(this.props.drawingData)
+                        this.saveableCanvas.loadSaveData(
+                            this.props.drawingData
+                        )
+                }}
+                >Load</Button>
+            <Button
+                onClick={this.props.handleSend}
+                >
+                Send Drawing
+                </Button>
+                { this.props.hostStatus ?  <div ><CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
+                    (this.saveableCanvas = canvasDraw)
+                    // this.setState({
+                    //     saveableCanvas: canvasDraw
+                    // })
+                
+                }}
+                /></div> : <div onMouseUp={async() => {
+                    const saveData = await this.saveableCanvas.getSaveData();
+                    const object = [];
+                    object.push(saveData);
+                    this.props.setDrawingData(object);
+                    console.log(object);
+                    this.props.handleSend();
+                }}>
+                    <CanvasDraw immediateLoading={true} ref={canvasDraw => {
+                        (this.saveableCanvas = canvasDraw)
+                        // this.setState({
+                        //     saveableCanvas: canvasDraw
+                        // })
+                    }}
+                    /></div>}
+            
+            </Wrapper>
+                <div> Hello</div>
             </div>
-                    : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)} />}
-            </div>
-        
-        </Wrapper>
-        </div>
-    )
-                    
+        )
+    }
 }
 
 
@@ -71,7 +113,7 @@ const Wrapper = styled.div`
     background-color: black;
 `;
     
-    const Button = styled.button`
+const Button = styled.button`
     background-color: #1A2230;
     color: white;
     width: 125px;

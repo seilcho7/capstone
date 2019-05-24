@@ -35,7 +35,7 @@ class App extends React.Component {
       joined: styles.joinButton,
       isHost: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
-      start: false,
+      start: false
     };  
   }
 
@@ -75,33 +75,6 @@ class App extends React.Component {
       console.log(data);
       const {drawData,roomId,users, newUsers, roomPin, start} = JSON.parse(e.data)
       console.log(newUsers);
-
-      // switch(Object.keys(data)[0]){
-      //   case 'users':
-      //       this.setState({
-      //         users
-      //       })
-      //     break;
-      //   default:
-      //     console.log("Still not working - first switch");
-      //     break;
-      // }
-      // switch(Object.keys(data)[1]){
-      //   case 'drawData':
-      //     this.setState({
-      //       drawingData: drawData
-      //     })
-      //     break;
-      //   case 'users': 
-      //     this.setState({
-      //       users: users,
-      //       socketRoomId:roomId
-      //     })
-      //     break;
-      //   default: 
-      //     console.log('Not working - second switch')
-      //     break;
-      // }
 
       Object.keys(data).forEach((key) => {
         switch(key){
@@ -164,7 +137,7 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-         <Canvas {...props} users={this.state.users} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
+          <Canvas hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
