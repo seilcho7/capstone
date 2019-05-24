@@ -32,7 +32,7 @@ export default function HostPage({pin, resetPin, users}) {
     )
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,7 +47,7 @@ const Pin = styled.text`
   font-size: 60px;
 `
 
-const Button1 = styled.button`
+export const Button1 = styled.button`
     background-color: #FF2D55;
     color: white;
     width: 200px;
@@ -67,7 +67,7 @@ const Button1 = styled.button`
 `;
 
 // how to play button
-const Button2 = styled.button`
+export const Button2 = styled.button`
     background-color: black;
     color: white;
     width: px;

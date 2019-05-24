@@ -1,30 +1,51 @@
 import React from 'react';
 import styles from '../css/JoinPage.module.css';
 import { Link } from 'react-router-dom'; 
-
+import logo from '../img/picme-logo.png';
+import styled from 'styled-components';
+import { Button1, Button2, Wrapper } from './HostPage';
 
 
 export default function JoinPage ({nameValue, name, pinValue, pin, submit}){
         return (
-            <div>
+            <Wrapper>
                 <div className={styles.text}>
-                    <h1>PicMe</h1>
-                    <h3>Join a Game</h3>
+                <Link to='/'>
+                    <AppLogo src={logo} />
+                </Link>
                 </div>
                 <div className={styles.inputContainer}>
                     <div className={styles.nameInputContainer}>
-                        <h3>Display Name</h3>
-                        <input value ={nameValue} className={styles.nameInput} type="text" onChange={name}/>
+
+                        <Input placeholder={'display name'} value ={nameValue} className={styles.nameInput} type="text" onChange={name}/>
                     </div>
                     <div className={styles.pinInputContainer}>
-                        <h3>Game Pin</h3>
-                        <input value= {pinValue} className={styles.pinInput} onChange={pin}/>
+                        
+                        <Input placeholder={'game pin'} value={pinValue} className={styles.pinInput} onChange={pin}/>
                     </div>
                 </div>
             <div className={styles.ButtonContainer}>
-                <button onClick={submit} className={styles.joinButton}> Join </button>
-                <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link>
+                <Button1 onClick={submit} className={styles.joinButton}> Join </Button1>
+                <Link to='/host-or-join' className={styles.cancelButton}>
+                    <Button2>cancel</Button2>
+                </Link>
             </div>
-        </div>
+        </Wrapper>
     )
 }
+
+
+const AppLogo = styled.img`
+  height: 150px;
+`
+
+const Input = styled.input`
+    margin: 5px;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-size: 18px;
+    font-family: 'Montserrat';
+    background-color: darkgray;
+    outline: none;
+`;
