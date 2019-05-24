@@ -45,9 +45,11 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
             >
             Send Drawing
             </Button>
-            { isHost ?  <CanvasDraw disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}
+            <div onMouseEnter={() => {console.log("enter")}} onMouseLeave={() => {console.log("leave")}}>
+            { isHost ?  <CanvasDraw  disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}
              /> : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)}
               />}
+              </div>
         
         </Wrapper>
             <div> Hello</div>
