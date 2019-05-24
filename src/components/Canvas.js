@@ -93,7 +93,7 @@ export default class Canvas extends React.Component {
                     // })
                 
                 }}
-                /></div> : <div onMouseUp={async() => {
+                /></div> : <div onPointerUp={async() => {
                     const saveData = await this.saveableCanvas.getSaveData();
                     const object = [];
                     object.push(saveData);
