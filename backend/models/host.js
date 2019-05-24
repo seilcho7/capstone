@@ -30,10 +30,3 @@ class Host {
 }
 
 module.exports = Host;
-
-//  function to generate roomkey 
-function generateRoomKey() {
-    let random = Math.floor((Math.random() * 500) + 1000)
-    let genRoomKey = random.toString();
-    return genRoomKey
-}

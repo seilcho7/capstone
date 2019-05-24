@@ -3,10 +3,13 @@ import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
 
 
-export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData}) {
+
+
+
+export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData, isHost}) {
     return (
-        <Wrapper>
-        {/*           Save button  */}
+        <div>
+        <Wrapper> 
             <Button onClick={() => {
                   // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
                   // Retrieves from local storage and  pushes into empty array 
@@ -42,9 +45,15 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
             >
             Send Drawing
             </Button>
-        <CanvasDraw
-            ref={canvasDraw => (saveableCanvas = canvasDraw)} />
+            <div onMouseEnter={() => {console.log("enter")}} onMouseLeave={() => {console.log("leave")}}>
+            { isHost ?  <CanvasDraw  disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}
+             /> : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)}
+              />}
+              </div>
+        
         </Wrapper>
+            <div> Hello</div>
+        </div>
     )
 }
 
