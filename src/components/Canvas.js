@@ -7,25 +7,26 @@ export default class Canvas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            saveableCanvas: props.saveableCanvas || {loadSaveData: () => {}}
+            saveableCanvas: ''
         }
     }
 
-    componentDidMount(){
-        setInterval(() => {
-            if(this.props.hostStatus){
-                console.log("YOU ARE IN IF HOSTSTATUS")
-                // console.log(saveableCanvas);
-                // console.log(drawingData)
-                if(this.props.drawingData){
-                    console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
-                    this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
-                        this.props.drawingData
-                    )
-                }
-            }
-        }, 5000);
-    }
+    // componentDidMount(){
+    //     setInterval(() => {
+    //         if(this.props.hostStatus){
+    //             console.log("YOU ARE IN IF HOSTSTATUS")
+    //             // console.log(saveableCanvas);
+    //             // console.log(drawingData)
+    //             if(this.props.drawingData){
+    //                 console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
+    //                 this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
+    //                     this.props.drawingData
+    //                 )
+    //             }
+    //         }
+    //     }, 5000);
+    // }
+    
 
     // static getDerivedStateFromProps(props, state) {
     //     console.log("did you call me?")
@@ -36,6 +37,17 @@ export default class Canvas extends React.Component {
     // }
     
     render() {
+        if(this.props.hostStatus){
+            console.log("YOU ARE IN IF HOSTSTATUS")
+            // console.log(saveableCanvas);
+            // console.log(drawingData)
+            if(this.props.drawingData){
+                console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
+                this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
+                    this.props.drawingData
+                )
+            }
+        }
         return (
             <div>
             <Wrapper> 
