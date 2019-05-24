@@ -24,12 +24,13 @@ export default function JoinPage ({nameValue, name, pinValue, pin, submit, activ
                     </div>
                 </div>
             <div className={styles.ButtonContainer}>
-//                 <Button1 onClick={submit} className={styles.joinButton}> Join </Button1>
-//                 <Link to='/host-or-join' className={styles.cancelButton}>
-//                     <Button2>cancel</Button2>
-//                 </Link>
-                <Link to= '/wait' onClick={submit} className={activate}> Join </Link>
-                <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link>
+            <Link to= '/wait' onClick={submit} className={activate}>
+                 <Button1 onClick={submit} className={styles.joinButton}> Join </Button1></Link>
+                 <Link to='/host-or-join' className={styles.cancelButton}>
+                     <Button2>cancel</Button2>
+                 </Link>
+                {/* <Link to= '/wait' onClick={submit} className={activate}> Join </Link> */}
+                {/* <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link> */}
             </div>
         </Wrapper>
     )
