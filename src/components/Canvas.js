@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 
 
-export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData, isHost}) {
+export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingData, isHost, users}) {
     return (
         <div>
         <Wrapper> 
@@ -49,10 +49,20 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
              /> : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)}
               />}
         
+                <ul>
+                    {users ? users.map((user, i) => (
+                        <li key={i}>
+                            {users[i]}
+                        </li>)) 
+                    : null
+                    }
+                </ul>
+
+
         </Wrapper>
-            <div> Hello</div>
         </div>
     )
+                    
 }
 
 
@@ -61,7 +71,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
-    background-color: #E5E5E5;
+    background-color: black;
 `;
     
     const Button = styled.button`

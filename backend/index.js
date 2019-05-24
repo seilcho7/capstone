@@ -57,7 +57,30 @@ wss.on('connection', function connection(socket) {
             await Host.removeHost(saveRoomId);
             await User.removeUsers(saveRoomId);
         }
-        
+
+        const newUsers = [];
+        const usersPoints = [];
+        if (start) {
+            console.log(newUsers);
+            console.log(roomId);
+            const userData = await User.getUserByRoomId(roomId);
+            console.log(userData);
+            userData.map((user) => {
+                if (!users.includes(user)) {
+                    newUsers.push(user.name);
+                    usersPoints.push(user.points);
+                }
+            });
+            console.log(newUsers);
+            // wss.clients.forEach(function each(client) {
+            //     if (client.readyState === WebSocket.OPEN) {
+            //     client.send(
+            //         newUsers
+            //     )
+            //     }
+            // })
+        } 
+
         // db.push(message);
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
@@ -66,7 +89,9 @@ wss.on('connection', function connection(socket) {
                     roomId,
                     users,
                     drawData,
-                    start
+                    start,
+                    newUsers,
+                    usersPoints
                 }))
             }
         });    

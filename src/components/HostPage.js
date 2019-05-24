@@ -8,7 +8,7 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
     // console.log(pin);
     return (
         <Wrapper>
-            <div className={styles.text}>
+            <div className={styles.pinNum}>
            <Link to='/'>
               <AppLogo src={logo} />
             </Link>
@@ -28,6 +28,7 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
                     <Button2>cancel</Button2>
                 </Link>
             </div>
+        
         </Wrapper>
     )
 }
@@ -43,7 +44,7 @@ const Wrapper = styled.div`
 const AppLogo = styled.img`
   height: 150px;
 `
-const Pin = styled.text`
+const Pin = styled.div`
   font-size: 60px;
 `
 
