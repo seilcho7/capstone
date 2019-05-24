@@ -35,7 +35,8 @@ class App extends React.Component {
       joined: styles.joinButton,
       isHost: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
-      start: false
+      start: false,
+      drawReady: false
     };  
   }
 
@@ -72,7 +73,7 @@ class App extends React.Component {
     this.connection.onmessage = (e) => {
       // console.log(e);
       const data = JSON.parse(e.data);
-      const {drawData,roomId,users, roomPin} = JSON.parse(e.data)
+      const {drawData, users, roomPin} = JSON.parse(e.data)
 
       // switch(Object.keys(data)[0]){
       //   case 'users':
@@ -161,7 +162,7 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-          <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
+          <Canvas drawReady={this.state.drawReady} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
