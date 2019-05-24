@@ -26,7 +26,6 @@ export default class Canvas extends React.Component {
     //         }
     //     }, 5000);
     // }
-    
 
     // static getDerivedStateFromProps(props, state) {
     //     console.log("did you call me?")
@@ -98,7 +97,15 @@ export default class Canvas extends React.Component {
                     <ul>
                         {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {this.props.users[i]}</li>)) : null}
                     </ul> 
-                    </div> : <div onPointerUp={async() => {
+                    </div> : <div onTouchEnd={async() => {
+                    const saveData = await this.saveableCanvas.getSaveData();
+                    const object = [];
+                    object.push(saveData);
+                    this.props.setDrawingData(object);
+                    console.log(object);
+                    this.props.handleSend();
+                }}
+                onMouseUp={async() => {
                     const saveData = await this.saveableCanvas.getSaveData();
                     const object = [];
                     object.push(saveData);

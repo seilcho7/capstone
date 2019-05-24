@@ -74,7 +74,7 @@ class App extends React.Component {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {drawData,roomId,users, newUsers, roomPin, start} = JSON.parse(e.data)
+      const {drawData, users, newUsers, roomPin, start} = JSON.parse(e.data)
       console.log(newUsers);
 
       Object.keys(data).forEach((key) => {
