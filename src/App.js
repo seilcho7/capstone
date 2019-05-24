@@ -35,7 +35,7 @@ class App extends React.Component {
       joined: styles.joinButton,
       isHost: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
-      start: false
+      start: false,
     };  
   }
 
@@ -70,9 +70,11 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      // console.log(e);
+      console.log(e.data);
       const data = JSON.parse(e.data);
-      const {drawData,roomId,users, roomPin} = JSON.parse(e.data)
+      console.log(data);
+      const {drawData,roomId,users, newUsers, roomPin, start} = JSON.parse(e.data)
+      console.log(newUsers);
 
       // switch(Object.keys(data)[0]){
       //   case 'users':
@@ -124,7 +126,8 @@ class App extends React.Component {
           case 'start': 
             console.log("start did a thing in new switch");
             this.setState({
-              start: true
+              start,
+              users: newUsers
             })
             break;
           default: 
@@ -161,21 +164,21 @@ class App extends React.Component {
           <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-          <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
+         <Canvas {...props} users={this.state.users} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} isHost={this.state.isHost} />
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )
   }
-  _login = async () => {
+  _login = () => {
     this.connection.send(JSON.stringify({
       login: 1
     }))
   }
 
-  _sendDrawing = async () => {  
-    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
+  _sendDrawing = () => {  
+    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0], gamePin: this.state.gamePin}));
   }
   
   _setDrawingData = (object) => {
@@ -242,11 +245,12 @@ class App extends React.Component {
     })
   }
 
+
   _confirmHost = () => {
     this.setState({
       isHost: true
     }, () => {
-      this.connection.send(JSON.stringify({start: true}));
+      this.connection.send(JSON.stringify({start: true, roomId: this.state.socketRoomId}));
     })
     console.log(this.state.isHost);
     console.log(this.state.start);

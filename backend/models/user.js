@@ -32,8 +32,10 @@ class User {
                 return arrayOfUsers.map((userData) => {
                     const userInstance = new User(
                         userData.id, 
+                        roomId,
+                        userData.name,
                         userData.points, 
-                        userData.name
+                        userData.answer
                     );
                     return userInstance;
                 })
