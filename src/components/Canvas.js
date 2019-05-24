@@ -45,20 +45,17 @@ export default function Canvas({handleSend, drawing, saveableCanvas, setDrawingD
             >
             Send Drawing
             </Button>
-            { isHost ?  <CanvasDraw disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}
-             /> : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)}
-              />}
-        
+            <div onMouseEnter={() => {console.log("enter")}} onMouseLeave={() => {console.log("leave")}}>
+            { isHost ?  
+            <div> 
+                <CanvasDraw  disabled ref={canvasDraw => (saveableCanvas = canvasDraw)}/>   
                 <ul>
-                    {users ? users.map((user, i) => (
-                        <li key={i}>
-                            {users[i]}
-                        </li>)) 
-                    : null
-                    }
-                </ul>
-
-
+                    {users ? users.map((user, i) => (<li key={i}> {users[i]}</li>)) : null}
+                </ul> 
+            </div>
+                    : <CanvasDraw ref={canvasDraw => (saveableCanvas = canvasDraw)} />}
+            </div>
+        
         </Wrapper>
         </div>
     )

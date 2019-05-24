@@ -73,7 +73,7 @@ class App extends React.Component {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {drawData,roomId,users, newUsers} = JSON.parse(e.data)
+      const {drawData,roomId,users, newUsers, roomPin, start} = JSON.parse(e.data)
       console.log(newUsers);
 
       // switch(Object.keys(data)[0]){
@@ -117,16 +117,16 @@ class App extends React.Component {
               users: users
             })
             break;
-          case 'roomId': 
+          case 'roomPin': 
             console.log("roomId did a thing in new switch");
             this.setState({
-              socketRoomId:roomId
+              socketRoomId: roomPin
             })
             break;
           case 'start': 
             console.log("start did a thing in new switch");
             this.setState({
-              start: true,
+              start,
               users: newUsers
             })
             break;
@@ -171,14 +171,14 @@ class App extends React.Component {
       </div>
     )
   }
-  _login = async () => {
+  _login = () => {
     this.connection.send(JSON.stringify({
       login: 1
     }))
   }
 
-  _sendDrawing = async () => {  
-    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
+  _sendDrawing = () => {  
+    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0], gamePin: this.state.gamePin}));
   }
   
   _setDrawingData = (object) => {
@@ -206,18 +206,16 @@ class App extends React.Component {
     })
   }
   _handleChangePin =(event)=> {
-      console.log (event.target.value)
-      
+    console.log (event.target.value)
+    
+    this.setState({
+        gamePin: event.target.value
+    })
+    if(event.target.value === this.state.socketRoomId) {
       this.setState({
-          gamePin: event.target.value
+        joined: styles.joinButtonActivated
       })
-      if(event.target.value === this.state.socketRoomId) {
-        this.setState({
-          joined: styles.joinButtonActivated
-        })
-      }
-     
-
+    }
   }
   _handleSubmitJoin = e =>{
     if (this.state.gamePin === this.state.socketRoomId) {

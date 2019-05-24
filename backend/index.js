@@ -12,6 +12,7 @@ const wss = new WebSocket.Server({
     path: '/ws',
     server // piggyback the websocket server onto our http server
 }); 
+const newUsers = [];
 
 app.use(express.urlencoded({extended: true}));
 
@@ -19,9 +20,16 @@ const PORT = process.env.PORT;
 
 // This is my "database"
 const db = [];
+let roomPin = '';
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
+
+    socket.send(JSON.stringify({
+        roomPin,
+        newUsers
+    }))
+
     // socket.send(JSON.stringify(getData()));
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
@@ -51,6 +59,8 @@ wss.on('connection', function connection(socket) {
         // When host click host button, save roomId inside database
         if (roomId) {
             await Host.createHost(roomId);
+            roomPin = roomId;
+            console.log(roomPin);
         }
 
         if (saveRoomId) {
@@ -58,8 +68,7 @@ wss.on('connection', function connection(socket) {
             await User.removeUsers(saveRoomId);
         }
 
-        const newUsers = [];
-        const usersPoints = [];
+    
         if (start) {
             console.log(newUsers);
             console.log(roomId);
@@ -68,7 +77,6 @@ wss.on('connection', function connection(socket) {
             userData.map((user) => {
                 if (!users.includes(user)) {
                     newUsers.push(user.name);
-                    usersPoints.push(user.points);
                 }
             });
             console.log(newUsers);
@@ -86,12 +94,11 @@ wss.on('connection', function connection(socket) {
             if (client.readyState === WebSocket.OPEN) {
                 // client.send(JSON.stringify(db[db.length-1]));
                 client.send(JSON.stringify({
-                    roomId,
+                    roomPin,
                     users,
                     drawData,
                     start,
-                    newUsers,
-                    usersPoints
+                    newUsers
                 }))
             }
         });    
