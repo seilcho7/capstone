@@ -41,3 +41,7 @@
     border: 2px black solid;
     margin: 5%;
 }
+
+::-webkit-input-placeholder {
+    color: black;
+}

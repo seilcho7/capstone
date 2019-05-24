@@ -135,6 +135,7 @@ const Wrapper = styled.div`
     align-items: center;
     flex-wrap: wrap;
     background-color: black;
+    position:fixed;
 `;
     
 const Button = styled.button`
