@@ -140,7 +140,7 @@ class App extends React.Component {
         ) } />
         <Route path ='/canvas' render={(props) =>(
 
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} />
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} connection={this.connection}/>
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
@@ -201,7 +201,7 @@ class App extends React.Component {
       }))
       // window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
-      alert("WRONG PIN YOU FUCK")
+      alert("WRONG PIN")
     }
   }
   _setPin = (roomId) => {

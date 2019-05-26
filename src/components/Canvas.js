@@ -1,16 +1,17 @@
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
+import AnswerSubmit from './AnswerSubmit'
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
     constructor(props) {
         super(props);
         this.state = {
-            saveableCanvas: ''
+            saveableCanvas: '',
+            userAnswer: ''
         }
     }
-
     // componentDidMount(){
     //     setInterval(() => {
     //         if(this.props.hostStatus){
@@ -85,19 +86,19 @@ export default class Canvas extends React.Component {
                 >
                 Send Drawing
                 </Button>
-                { this.props.hostStatus ?  <div ><CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
+                {/*   Host disabled canvas ternary render  */}
+                { this.props.hostStatus ?  
+                <div >
+                    <CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
-                    // this.setState({
-                    //     saveableCanvas: canvasDraw
-                    // })
-                
-                }}
-
-                />
+                    }} />
+                    {/*   User list and user points data render  */}
                     <ul>
                         {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {this.props.users[i]}</li>)) : null}
                     </ul> 
-                    </div> : <div onTouchEnd={async() => {
+                </div> : 
+                //  User enabled canvas ternary render
+                <div onTouchEnd={async() => {
                     const saveData = await this.saveableCanvas.getSaveData();
                     const object = [];
                     object.push(saveData);
@@ -118,13 +119,26 @@ export default class Canvas extends React.Component {
                         // this.setState({
                         //     saveableCanvas: canvasDraw
                         // })
-                    }}
-                    /></div>}
+                    }} />
+                    <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+
+                    </div>}
             
             </Wrapper>
-                <div> Hello</div>
+                
             </div>
         )
+    }
+    _handleChangeAnswer =(event)=> {
+        console.log (event.target.value)
+        this.setState({
+            userAnswer: event.target.value
+        })
+    }
+    _handleSubmit = () => {
+        console.log('submitted! Now have to send to the host')
+        const connection = this.props.connection 
+        connection.send(JSON.stringify({answer: this.state.userAnswer}))
     }
 }
 
