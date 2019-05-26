@@ -12,7 +12,6 @@ export default class Canvas extends React.Component {
             userAnswer: ''
         }
     }
-
     // componentDidMount(){
     //     setInterval(() => {
     //         if(this.props.hostStatus){
@@ -138,6 +137,8 @@ export default class Canvas extends React.Component {
     }
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
+        const connection = this.props.connection 
+        connection.send(JSON.stringify({answer: this.state.userAnswer}))
     }
 }
 
