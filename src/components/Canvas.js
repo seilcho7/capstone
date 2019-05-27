@@ -44,10 +44,11 @@ export default class Canvas extends React.Component {
                     console.log(this.state.userAnswers)
                     break;
                    case 'nextPlayer':
-                       console.log('activePlayer did a thing')
+                       console.log('nextPlayer did a thing')
                     this.setState({
                         activePlayer: nextPlayer,
-                        submittedAnswer:false
+                        submittedAnswer:false,
+                        userAnswers: ''
                     })
                     console.log(this.state.activePlayer)
                     break;
