@@ -21,8 +21,7 @@ const PORT = process.env.PORT;
 // This is my "database"
 const db = [];
 let roomPin = '';
-let userAnswers = [] 
-
+let userAnswers = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -31,7 +30,6 @@ wss.on('connection', function connection(socket) {
         roomPin,
         newUsers
     }))
-
     // socket.send(JSON.stringify(getData()));
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
@@ -61,11 +59,16 @@ wss.on('connection', function connection(socket) {
 
         // Pushes answer to array and removes answers if everyone has submitted 
         if(answer) {
-            if(userAnswers.length < newUsers.length) {
-                userAnswers.push(answer) 
-            } else if  (userAnswers.length >= newUsers.length) {
-                userAnswers.push(answer) 
-                userAnswers.splice(0,userAnswers.length-1)
+            userAnswers.push(answer) 
+            console.log('useranswerllength: ', userAnswers.length)
+            console.log('userlength: ', newUsers.length)
+
+            if (userAnswers.length > newUsers.length-1) {
+                console.log('splice triggered')
+                // userAnswers.push(answer) 
+                console.log(userAnswers)
+                userAnswers.splice(0,newUsers.length-1)
+                console.log(userAnswers)
             } 
         }
         // if nextPlayer reaches last player, nextPlayer is p.0 
