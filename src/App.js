@@ -113,7 +113,7 @@ class App extends React.Component {
         ) } />
         <Route path ='/canvas' render={(props) =>(
 
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection}/>
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name}/>
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}

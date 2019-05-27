@@ -13,16 +13,22 @@ export default class Canvas extends React.Component {
             drawingData: '',
             userAnswers: '',
             submittedAnswer: false,
-            activePlayer:  0
+            playerNumber: '',
+            activePlayer: 0
         }
     }
     
     componentDidMount(){
+
     if(this.props.connection) {
-         console.log(this.props.connection)
+        this.setState({
+            playerNumber:this.props.users.indexOf(this.props.name)
+        })
+
         this.props.connection.onmessage = (e) => {
             const data = JSON.parse(e.data);
-            const {drawData, userAnswers} = JSON.parse(e.data);
+            console.log(data)
+            const {drawData, userAnswers, nextPlayer} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
                   case 'drawData':
@@ -36,6 +42,13 @@ export default class Canvas extends React.Component {
                         userAnswers
                     })
                     console.log(this.state.userAnswers)
+                    break;
+                   case 'nextPlayer':
+                       console.log('activePlayer did a thing')
+                    this.setState({
+                        activePlayer: nextPlayer
+                    })
+                    console.log(this.state.activePlayer)
                     break;
                 default:
                     break;
@@ -127,7 +140,7 @@ export default class Canvas extends React.Component {
                     </ul> 
                     <h4> Answers </h4>
                         {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
-                </div> :
+                </div> : (this.state.activePlayer === this.state.playerNumber) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {
                         const saveData = await this.saveableCanvas.getSaveData();
@@ -147,15 +160,18 @@ export default class Canvas extends React.Component {
                     }}>
                         <CanvasDraw immediateLoading={true} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
-                            // this.setState({
-                            //     saveableCanvas: canvasDraw
-                            // })
-                        }} />   
-                </div> }
-                {!this.state.submittedAnswer ? <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
-                : <div> Submitted answer! Good luck</div> }
-            </Wrapper>
-            </div>
+                        }} />
+                        {/* Maps user answers as buttons to the active player */}
+                        { this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer}>{answer}</button></li>)) : null}
+                    </div> : 
+                    // Answer Submit form
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
+                    <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+                    // Submitted answer 
+                    : (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
+                    : null}
+                </Wrapper>
+                </div>
         )
     }
     _sendDrawing = () => {  
@@ -179,6 +195,15 @@ export default class Canvas extends React.Component {
         this.setState({
             submittedAnswer: true
         })
+    }
+    _chooseAnswer = () => {
+        console.log('add points and send to host')
+        console.log('before increment :', this.state.activePlayer)
+        // this.setState({
+        //     activePlayer: this.state.activePlayer+1
+        // })
+        console.log('after increment: ',this.state.activePlayer)
+        this.props.connection.send(JSON.stringify({nextPlayer: this.state.activePlayer+1}))
     }
 }
 
