@@ -57,9 +57,15 @@ wss.on('connection', function connection(socket) {
                 users.push(user.name);
             }
         });
+
+        // Pushes answer to array and removes answers if everyone has submitted 
         if(answer) {
-            userAnswers.push(answer) 
-            console.log(userAnswers)
+            if(userAnswers.length < newUsers.length) {
+                userAnswers.push(answer) 
+            } else if  (userAnswers.length >= newUsers.length) {
+                userAnswers.push(answer) 
+                userAnswers.splice(0,userAnswers.length-1)
+            } 
         }
         // When host click host button, save roomId inside database
         if (roomId) {

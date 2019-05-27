@@ -12,6 +12,8 @@ export default class Canvas extends React.Component {
             userAnswer: '',
             drawingData: '',
             userAnswers: '',
+            submittedAnswer: false,
+            activePlayer:  0
         }
     }
     
@@ -148,9 +150,10 @@ export default class Canvas extends React.Component {
                             // this.setState({
                             //     saveableCanvas: canvasDraw
                             // })
-                        }} />
-                        <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+                        }} />   
                 </div> }
+                {!this.state.submittedAnswer ? <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+                : <div> Submitted answer! Good luck</div> }
             </Wrapper>
             </div>
         )
@@ -173,6 +176,9 @@ export default class Canvas extends React.Component {
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
         this.props.connection.send(JSON.stringify({answer: this.state.userAnswer}))
+        this.setState({
+            submittedAnswer: true
+        })
     }
 }
 
