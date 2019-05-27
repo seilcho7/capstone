@@ -21,6 +21,8 @@ const PORT = process.env.PORT;
 // This is my "database"
 const db = [];
 let roomPin = '';
+let userAnswers = [] 
+
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -55,7 +57,10 @@ wss.on('connection', function connection(socket) {
                 users.push(user.name);
             }
         });
-
+        if(answer) {
+            userAnswers.push(answer) 
+            console.log(userAnswers)
+        }
         // When host click host button, save roomId inside database
         if (roomId) {
             await Host.createHost(roomId);
@@ -98,7 +103,8 @@ wss.on('connection', function connection(socket) {
                     users,
                     drawData,
                     start,
-                    newUsers
+                    newUsers,
+                    userAnswers
                 }))
             }
         });    

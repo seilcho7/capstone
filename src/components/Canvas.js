@@ -9,9 +9,42 @@ export default class Canvas extends React.Component {
         super(props);
         this.state = {
             saveableCanvas: '',
-            userAnswer: ''
+            userAnswer: '',
+            drawingData: '',
+            userAnswers: '',
         }
     }
+    
+    componentDidMount(){
+    if(this.props.connection) {
+         console.log(this.props.connection)
+        this.props.connection.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            const {drawData, userAnswers} = JSON.parse(e.data);
+            Object.keys(data).forEach((key) => {
+                switch(key){
+                  case 'drawData':
+                    console.log("drawData did a thing in new switch");
+                    this.setState({
+                      drawingData: drawData
+                    })
+                    break;
+                   case 'userAnswers':
+                    this.setState({
+                        userAnswers
+                    })
+                    console.log(this.state.userAnswers)
+                    break;
+                default:
+                    break;
+                }
+            })
+        }
+    } else {
+        console.log('no props! Start again from the beginning :)')
+    }
+}
+
     // componentDidMount(){
     //     setInterval(() => {
     //         if(this.props.hostStatus){
@@ -39,25 +72,19 @@ export default class Canvas extends React.Component {
     render() {
         if(this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
-            // console.log(saveableCanvas);
-            // console.log(drawingData)
-            if(this.props.drawingData){
-                console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
+            if(this.state.drawingData){
+                console.log("YOU ARE INSIDE THE OF set interval. check to see if data is still there")
                 this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
-                    this.props.drawingData
+                    this.state.drawingData
                 )
             }
         }
+        
         return (
             <div>
             <Wrapper> 
                 <Button onClick={() => {
-                      // localStorage.setItem( "savedDrawing",this.saveableCanvas.getSaveData());
-                      // Retrieves from local storage and  pushes into empty array 
-                      // const save = localStorage.getItem("savedDrawing")
-    
                       // stores canvas data in variable and pushes to array 
-    
                     const saveData = this.saveableCanvas.getSaveData(); 
                     const object = [];
                     object.push(saveData);
@@ -80,7 +107,7 @@ export default class Canvas extends React.Component {
                             this.props.drawingData
                         )
                 }}
-                >Load</Button>
+                >Loadz</Button>
             <Button
                 onClick={this.props.handleSend}
                 >
@@ -94,41 +121,49 @@ export default class Canvas extends React.Component {
                     }} />
                     {/*   User list and user points data render  */}
                     <ul>
-                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {this.props.users[i]}</li>)) : null}
+                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {user}</li>)) : null}
                     </ul> 
-                </div> : 
-                //  User enabled canvas ternary render
-                <div onTouchEnd={async() => {
-                    const saveData = await this.saveableCanvas.getSaveData();
-                    const object = [];
-                    object.push(saveData);
-                    this.props.setDrawingData(object);
-                    console.log(object);
-                    this.props.handleSend();
-                }}
-                onMouseUp={async() => {
-                    const saveData = await this.saveableCanvas.getSaveData();
-                    const object = [];
-                    object.push(saveData);
-                    this.props.setDrawingData(object);
-                    console.log(object);
-                    this.props.handleSend();
-                }}>
-                    <CanvasDraw immediateLoading={true} ref={canvasDraw => {
-                        (this.saveableCanvas = canvasDraw)
-                        // this.setState({
-                        //     saveableCanvas: canvasDraw
-                        // })
-                    }} />
-                    <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
-
-                    </div>}
-            
+                    <h4> Answers </h4>
+                        {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                </div> :
+                // {/* //  User enabled canvas ternary render */}
+                    <div onTouchEnd={async() => {
+                        const saveData = await this.saveableCanvas.getSaveData();
+                        const object = [];
+                        object.push(saveData);
+                        this._setDrawingData(object);
+                        console.log(object);
+                        this._sendDrawing();
+                    }}
+                    onMouseUp={async() => {
+                        const saveData = await this.saveableCanvas.getSaveData();
+                        const object = [];
+                        object.push(saveData);
+                        this._setDrawingData(object);
+                        console.log(object);
+                        this._sendDrawing();
+                    }}>
+                        <CanvasDraw immediateLoading={true} ref={canvasDraw => {
+                            (this.saveableCanvas = canvasDraw)
+                            // this.setState({
+                            //     saveableCanvas: canvasDraw
+                            // })
+                        }} />
+                        <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+                </div> }
             </Wrapper>
-                
             </div>
         )
     }
+    _sendDrawing = () => {  
+        this.props.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
+      }
+
+    _setDrawingData = (object) => {
+        this.setState({
+          drawingData: object
+        })
+      }
     _handleChangeAnswer =(event)=> {
         console.log (event.target.value)
         this.setState({
@@ -137,8 +172,7 @@ export default class Canvas extends React.Component {
     }
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
-        const connection = this.props.connection 
-        connection.send(JSON.stringify({answer: this.state.userAnswer}))
+        this.props.connection.send(JSON.stringify({answer: this.state.userAnswer}))
     }
 }
 
@@ -149,7 +183,6 @@ const Wrapper = styled.div`
     align-items: center;
     flex-wrap: wrap;
     background-color: black;
-    position:fixed;
 `;
     
 const Button = styled.button`
