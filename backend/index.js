@@ -21,6 +21,8 @@ const PORT = process.env.PORT;
 // This is my "database"
 const db = [];
 let roomPin = '';
+let userAnswers = [] 
+
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -37,7 +39,7 @@ wss.on('connection', function connection(socket) {
     socket.on('message', async (data) => {
 
         const users = [];   
-        const {drawData, name, gamePin, roomId, start,saveRoomId, answer} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, start,saveRoomId, answer, nextPlayer} = JSON.parse(data);
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
         if(newUser[0]==='name' && newUser[1]==='gamePin') {
@@ -56,6 +58,15 @@ wss.on('connection', function connection(socket) {
             }
         });
 
+        // Pushes answer to array and removes answers if everyone has submitted 
+        if(answer) {
+            if(userAnswers.length < newUsers.length) {
+                userAnswers.push(answer) 
+            } else if  (userAnswers.length >= newUsers.length) {
+                userAnswers.push(answer) 
+                userAnswers.splice(0,userAnswers.length-1)
+            } 
+        }
         // When host click host button, save roomId inside database
         if (roomId) {
             await Host.createHost(roomId);
@@ -98,7 +109,9 @@ wss.on('connection', function connection(socket) {
                     users,
                     drawData,
                     start,
-                    newUsers
+                    newUsers,
+                    userAnswers,
+                    nextPlayer
                 }))
             }
         });    

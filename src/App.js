@@ -40,52 +40,25 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-          //  If player is active player, draw data from state will be sent over websocket to database 
-        // if (this.state.activePlayer=== true) {
-        //     setInterval(async () => {
-        //       const saveData = this.saveableCanvas.getSaveData(); 
-        //           const object = []
-        //           object.push(saveData)
-        //             this.setState({
-        //               drawingData: object
-        //           })
-        //       this.connection.send(JSON.stringify({message: this.state.drawingData[0]}));
-        //       // this.saveableCanvas.loadSaveData(this.state.drawing[this.state.drawing.length-1])
-        //     }, 8000);
-
-        //       // If player is not active player, canvas should load new save data from state every 10 seconds
-        // } else if (this.state.activePlayer=== false) {
-        //     setInterval(async () => {
-        //       this.saveableCanvas.loadSaveData(this.state.drawing[this.state.drawing.length-1])
-        //     }, 10000)
-
-
-        // }
-    /// need to create countdown (30-45 seconds) that sets activePlayer to false;
-    /// perhaps have another state variable that passes in ID of sorts based on when the 
-    // player enters the room. 
-
     // const { host } = window.location;
     const url = `ws://localhost:4000/ws`;
-    // const url = `ws://192.168.0.108:4000/ws`;
-    // const url = `ws://10.150.40.191:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {drawData, users, newUsers, roomPin, start} = JSON.parse(e.data)
+      const {users, newUsers, roomPin, start} = JSON.parse(e.data)
       console.log(newUsers);
 
       Object.keys(data).forEach((key) => {
         switch(key){
-          case 'drawData':
-            console.log("drawData did a thing in new switch");
-            this.setState({
-              drawingData: drawData
-            })
-            break;
+          // case 'drawData':
+          //   console.log("drawData did a thing in new switch");
+          //   this.setState({
+          //     drawingData: drawData
+          //   })
+          //   break;
           case 'users': 
             console.log("users did a thing in new switch");
             this.setState({
@@ -140,7 +113,7 @@ class App extends React.Component {
         ) } />
         <Route path ='/canvas' render={(props) =>(
 
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawingData={this.state.drawingData} isHost={this.state.isHost} connection={this.connection}/>
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name}/>
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
@@ -151,16 +124,6 @@ class App extends React.Component {
     this.connection.send(JSON.stringify({
       login: 1
     }))
-  }
-
-  _sendDrawing = () => {  
-    this.connection.send(JSON.stringify({drawData: this.state.drawingData[0], gamePin: this.state.gamePin}));
-  }
-  
-  _setDrawingData = (object) => {
-    this.setState({
-      drawingData: object
-    })
   }
 
   _drawTimeCount = () => {
