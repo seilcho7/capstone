@@ -24,7 +24,8 @@ export default class Canvas extends React.Component {
             timerOn: true,
             receivedPoint: false,
             selectedUser: '',
-            timerOn: true        
+            timerOn: true,
+            picked: false        
         }
     }
     
@@ -50,9 +51,16 @@ export default class Canvas extends React.Component {
                         })
                     break;
                     case 'userAnswers':
+                        console.log('userAnswers is getting pushed to setState')
+                        if(userAnswers.length >= this.props.users.length -1 && this.state.picked === true) {
+                            this.setState({
+                                userAnswers: '' 
+                            })
+                        } else {
                         this.setState({
                             userAnswers
                         })
+                    }
                         console.log(this.state.userAnswers)
                         break;
                     case 'nextPlayer':
@@ -61,7 +69,7 @@ export default class Canvas extends React.Component {
                             receivedPoint: true,
                             selectedUser
                         })
-
+                        if(this.state.selectedUser !== this.state.activePlayer) {
                         setTimeout(() => {
                             this.setState({
                                 activePlayer: nextPlayer,
@@ -75,6 +83,7 @@ export default class Canvas extends React.Component {
                                 receivedPoint: false
                             })
                         }, 4500);
+                    }
                         console.log(this.state.activePlayer)
                         break;
                     case 'pointsArray':
@@ -112,8 +121,8 @@ export default class Canvas extends React.Component {
             <Wrapper> 
                 {/* Prompts */}
                 <div>
+                {(this.state.selectedUser === this.state.playerNumber) ? <h1>YOU DID IT</h1> : null}
                     <p>
-                        {(this.state.selectedUser === this.state.playerNumber) ? <h1>YOU DID IT</h1> : null}
                         {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
@@ -171,7 +180,7 @@ export default class Canvas extends React.Component {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
-                        { this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
+                        { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
@@ -209,9 +218,9 @@ export default class Canvas extends React.Component {
     }
 
     _chooseAnswer = (event) => {
-        console.log(event.target.value)
         this.setState({
             userAnswers: '',
+            picked: true 
         })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
