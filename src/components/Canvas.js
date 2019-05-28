@@ -97,7 +97,7 @@ export default class Canvas extends React.Component {
                 {/*   Host disabled canvas ternary render  */}
                 { this.props.hostStatus ?  
                 <div >
-                    <CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
+                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
                     {/*   User list and user points data render  */}
@@ -127,7 +127,7 @@ export default class Canvas extends React.Component {
 
                     
 
-                        <CanvasDraw immediateLoading={true} ref={canvasDraw => {
+                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
