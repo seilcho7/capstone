@@ -84,7 +84,6 @@ export default class Canvas extends React.Component {
                 )
             }
         }
-          
         // let max = this.state.prompts.length;
         // let min = 0;
         // let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
