@@ -81,35 +81,19 @@ export default class Canvas extends React.Component {
             }
         }
           
+        let max = this.state.prompts.length;
+        let min = 0;
+        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+
         return (
             <div>
             <Wrapper> 
-                <Button onClick={() => {
-                      // stores canvas data in variable and pushes to array 
-                    const saveData = this.saveableCanvas.getSaveData(); 
-                    const object = [];
-                    object.push(saveData);
-                    this.props.setDrawingData(object);
-                    console.log(object)
-                }}>
-                Save
-                </Button>
-    
-                {/*               Load button will retrieve the last drawing from state  */}
-                <Button
-                    onClick={() => {
-                        console.log('loading data')
-                        console.log(this.props.drawingData)
-                        this.saveableCanvas.loadSaveData(
-                            this.props.drawingData
-                        )
-                }}
-                >Loadz</Button>
-            <Button
-                onClick={this.props.handleSend}
-                >
-                Send Drawing
-                </Button>
+                {/* Prompts */}
+                <div>
+                    <p>
+                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[randomNum] : null}
+                    </p>
+                </div>
                 {/*   Host disabled canvas ternary render  */}
                 { this.props.hostStatus ?  
                 <div >
@@ -140,6 +124,9 @@ export default class Canvas extends React.Component {
                         console.log(object);
                         this._sendDrawing();
                     }}>
+
+                    
+
                         <CanvasDraw immediateLoading={true} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
@@ -191,6 +178,16 @@ export default class Canvas extends React.Component {
             selectedAnswer: event.target.value
         }))
     }
+
+    _displayRandomPrompts = () => {
+        let promptArray = this.state.prompts;
+        let max = promptArray.length;
+        let min = 0;
+        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+        console.log(promptArray[randomNum]);
+        return promptArray[randomNum];
+    }
+
 }
 
 
