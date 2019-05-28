@@ -23,6 +23,7 @@ const db = [];
 let roomPin = '';
 let userAnswers = [];
 let pointsArray = [];
+let selectedUser = -1;
 let disableHostButton = false;
 
 wss.on('connection', function connection(socket) {
@@ -76,9 +77,11 @@ wss.on('connection', function connection(socket) {
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
 
-        if(nextPlayer && selectedAnswer && timerOn) {
-            await User.givePoint(roomPin, selectedAnswer)
+        if(nextPlayer && selectedAnswer && timerOn === false ) {
+           const awardPoint= await User.givePoint(roomPin, selectedAnswer)
+           console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
+            console.log(userData)
             oldPoints = []
             userData.forEach((user)=>{
                 oldPoints.push(user.points)
@@ -86,7 +89,11 @@ wss.on('connection', function connection(socket) {
             // Looks through and updates Pointsarray based on sql query
             for(let i=0; i< userData.length; i++) {
                 pointsArray[i] = oldPoints[i]
+                if (userData[i].answer == selectedAnswer){
+                    selectedUser = i
+                }
             }
+            console.log(selectedUser)
             console.log(userData)
             console.log(pointsArray)
             if(nextPlayer >= newUsers.length) {
@@ -145,6 +152,7 @@ wss.on('connection', function connection(socket) {
                     nextPlayer,
                     pointsArray,
                     timerOn,
+                    selectedUser,
                     disableHostButton
                 }))
             }
