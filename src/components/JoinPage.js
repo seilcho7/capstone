@@ -39,13 +39,15 @@ const AppLogo = styled.img`
   height: 150px;
 `
 
-const Input = styled.input`
+export const Input = styled.input`
     margin: 5px;
     width: 200px;
     height: 50px;
     text-align: center;
     font-size: 18px;
     font-family: 'Montserrat';
-    background-color: darkgray;
+    background-color: lightgray;
     outline: none;
+    border-radius: 25px;
+    border: 2px solid black;
 `;
