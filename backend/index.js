@@ -38,7 +38,7 @@ wss.on('connection', function connection(socket) {
     socket.on('message', async (data) => {
 
         const users = [];   
-        const {drawData, name, gamePin, roomId, start,saveRoomId, answer, selectedAnswer} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, start,saveRoomId, answer, selectedAnswer, timerOn} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
@@ -75,7 +75,7 @@ wss.on('connection', function connection(socket) {
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
 
-        if(nextPlayer && selectedAnswer) {
+        if(nextPlayer && selectedAnswer && timerOn) {
             await User.givePoint(roomPin, selectedAnswer)
             const userData = await User.getUserByRoomId(roomPin);
             oldPoints = []
@@ -140,7 +140,8 @@ wss.on('connection', function connection(socket) {
                     newUsers,
                     userAnswers,
                     nextPlayer,
-                    pointsArray
+                    pointsArray,
+                    timerOn
                 }))
             }
         });    
