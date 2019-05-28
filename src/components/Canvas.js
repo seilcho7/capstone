@@ -18,7 +18,8 @@ export default class Canvas extends React.Component {
             activePlayer: 0,
             currentPoints: 0,
             pointsArray: '',
-            timer: false
+            timer: false,
+            prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena']
         }
     }
     
@@ -82,35 +83,19 @@ export default class Canvas extends React.Component {
             }
         }
           
+        let max = this.state.prompts.length;
+        let min = 0;
+        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+
         return (
             <div>
             <Wrapper> 
-                <Button onClick={() => {
-                      // stores canvas data in variable and pushes to array 
-                    const saveData = this.saveableCanvas.getSaveData(); 
-                    const object = [];
-                    object.push(saveData);
-                    this.props.setDrawingData(object);
-                    console.log(object)
-                }}>
-                Save
-                </Button>
-    
-                {/*               Load button will retrieve the last drawing from state  */}
-                <Button
-                    onClick={() => {
-                        console.log('loading data')
-                        console.log(this.props.drawingData)
-                        this.saveableCanvas.loadSaveData(
-                            this.props.drawingData
-                        )
-                }}
-                >Loadz</Button>
-            <Button
-                onClick={this.props.handleSend}
-                >
-                Send Drawing
-                </Button>
+                {/* Prompts */}
+                <div>
+                    <p>
+                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[randomNum] : null}
+                    </p>
+                </div>
                 {/*   Host disabled canvas ternary render  */}
                 { this.props.hostStatus ?  
                 <div >
@@ -131,7 +116,8 @@ export default class Canvas extends React.Component {
                             // pausedText="00"
                             //  onComplete={myCallback} 
                         />}
-                    <CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
+                    
+                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
                     {/*   User list and user points data render  */}
@@ -158,7 +144,10 @@ export default class Canvas extends React.Component {
                         console.log(object);
                         this._sendDrawing();
                     }}>
-                        <CanvasDraw immediateLoading={true} ref={canvasDraw => {
+
+                    
+
+                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
@@ -201,6 +190,9 @@ export default class Canvas extends React.Component {
 
     _chooseAnswer = (event) => {
         console.log(event.target.value)
+        this.setState({
+            userAnswers: ''
+        })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
             selectedAnswer: event.target.value
@@ -213,6 +205,15 @@ export default class Canvas extends React.Component {
                 timer: true
             })
         },3000)
+    }
+
+    _displayRandomPrompts = () => {
+        let promptArray = this.state.prompts;
+        let max = promptArray.length;
+        let min = 0;
+        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+        console.log(promptArray[randomNum]);
+        return promptArray[randomNum];
     }
 }
 
