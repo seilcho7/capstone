@@ -9,16 +9,22 @@ import { Button1} from './HostPage';
 
 class WaitPage extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        error: null,
-        isLoaded: false,
-        gifs: []
-      };
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            gifs: [],
+            gifType: ['cat', 'funny', 'start', 'cool', 'fun', 'awesome', 'dancing', 'play', 'games', 'ready', 'yay', 'dance', 'yeet', 'great', 'party', 'waiting', 'loading', 'wait']
+        };
     }
-  
+    
+    
     componentDidMount() {
-      fetch("http://api.giphy.com/v1/gifs/search?q=cat&api_key=1bfsUoRTBMhc1TV6tyg8jyIc8ddhB23f&limit=1")
+        let max = this.state.gifType.length;
+        let min = 0;
+        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+
+      fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.gifType[randomNum]}&api_key=1bfsUoRTBMhc1TV6tyg8jyIc8ddhB23f&limit=1`)
         .then(res => res.json())
         .then(
           (result) => {
