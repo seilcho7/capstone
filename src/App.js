@@ -23,7 +23,6 @@ class App extends React.Component {
     this.state = {
       drawingData: '',
       drawing: '',
-      activePlayer: false,
       drawEnd: false,
       name: '',
       gamePin: '',
@@ -50,6 +49,7 @@ class App extends React.Component {
       const data = JSON.parse(e.data);
       console.log(data);
       const {users, newUsers, roomPin, start, pointsArray} = JSON.parse(e.data)
+      console.log("================= You put a console log here =================");
       console.log(newUsers);
 
       Object.keys(data).forEach((key) => {
