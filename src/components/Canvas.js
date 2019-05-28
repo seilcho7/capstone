@@ -14,7 +14,9 @@ export default class Canvas extends React.Component {
             userAnswers: '',
             submittedAnswer: false,
             playerNumber: '',
-            activePlayer: 0
+            activePlayer: 0,
+            currentPoints: 0,
+            pointsArray: ''
         }
     }
     
@@ -28,30 +30,35 @@ export default class Canvas extends React.Component {
         this.props.connection.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
-                  case 'drawData':
-                    console.log("drawData did a thing in new switch");
-                    this.setState({
-                      drawingData: drawData
-                    })
+                    case 'drawData':
+                        console.log("drawData did a thing in new switch");
+                        this.setState({
+                        drawingData: drawData
+                        })
                     break;
-                   case 'userAnswers':
-                    this.setState({
-                        userAnswers
-                    })
-                    console.log(this.state.userAnswers)
-                    break;
-                   case 'nextPlayer':
-                       console.log('nextPlayer did a thing')
-                    this.setState({
-                        activePlayer: nextPlayer,
-                        submittedAnswer:false,
-                        userAnswers: ''
-                    })
-                    console.log(this.state.activePlayer)
-                    break;
+                    case 'userAnswers':
+                        this.setState({
+                            userAnswers
+                        })
+                        console.log(this.state.userAnswers)
+                        break;
+                    case 'nextPlayer':
+                        console.log('nextPlayer did a thing')
+                        this.setState({
+                            activePlayer: nextPlayer,
+                            submittedAnswer:false,
+                            userAnswers: ''
+                        })
+                        console.log(this.state.activePlayer)
+                        break;
+                    case 'pointsArray':
+                        console.log('pointsArray did a thing')
+                        this.setState({
+                            pointsArray
+                        })
                 default:
                     break;
                 }
@@ -61,30 +68,6 @@ export default class Canvas extends React.Component {
         console.log('no props! Start again from the beginning :)')
     }
 }
-
-    // componentDidMount(){
-    //     setInterval(() => {
-    //         if(this.props.hostStatus){
-    //             console.log("YOU ARE IN IF HOSTSTATUS")
-    //             // console.log(saveableCanvas);
-    //             // console.log(drawingData)
-    //             if(this.props.drawingData){
-    //                 console.log("YOU ARE INSIDE THE OF fucking set interval. check to see if data is still there")
-    //                 this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
-    //                     this.props.drawingData
-    //                 )
-    //             }
-    //         }
-    //     }, 5000);
-    // }
-
-    // static getDerivedStateFromProps(props, state) {
-    //     console.log("did you call me?")
-    //     state.saveableCanvas.loadSaveData( 
-    //         props.drawingData
-    //     )
-    //     console.log(props.drawingData)
-    // }
     
     render() {
         if(this.props.hostStatus){
@@ -96,7 +79,7 @@ export default class Canvas extends React.Component {
                 )
             }
         }
-        
+          
         return (
             <div>
             <Wrapper> 
@@ -107,10 +90,6 @@ export default class Canvas extends React.Component {
                     object.push(saveData);
                     this.props.setDrawingData(object);
                     console.log(object)
-                    // this.setState({
-                    //     drawingData: object
-                    // })
-                    // console.log(drawingData)
                 }}>
                 Save
                 </Button>
@@ -138,7 +117,7 @@ export default class Canvas extends React.Component {
                     }} />
                     {/*   User list and user points data render  */}
                     <ul>
-                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}> {user}</li>)) : null}
+                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.state.pointsArray[i]}</li>)) : null}
                     </ul> 
                     <h4> Answers </h4>
                         {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
@@ -155,7 +134,7 @@ export default class Canvas extends React.Component {
                     onMouseUp={async() => {
                         const saveData = await this.saveableCanvas.getSaveData();
                         const object = [];
-                        object.push(saveData);
+                        object.push(saveData); 
                         this._setDrawingData(object);
                         console.log(object);
                         this._sendDrawing();
@@ -164,7 +143,7 @@ export default class Canvas extends React.Component {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
-                        { this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer}>{answer}</button></li>)) : null}
+                        { this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
@@ -193,19 +172,20 @@ export default class Canvas extends React.Component {
     }
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
-        this.props.connection.send(JSON.stringify({answer: this.state.userAnswer}))
+        this.props.connection.send(JSON.stringify({
+            answer: this.state.userAnswer,
+            name: this.props.name}))
         this.setState({
             submittedAnswer: true
         })
     }
-    _chooseAnswer = () => {
-        console.log('add points and send to host')
-        console.log('before increment :', this.state.activePlayer)
-        // this.setState({
-        //     activePlayer: this.state.activePlayer+1
-        // })
-        console.log('after increment: ',this.state.activePlayer)
-        this.props.connection.send(JSON.stringify({nextPlayer: this.state.activePlayer+1}))
+
+    _chooseAnswer = (event) => {
+        console.log(event.target.value)
+        this.props.connection.send(JSON.stringify({
+            nextPlayer: this.state.activePlayer+1,
+            selectedAnswer: event.target.value
+        }))
     }
 }
 

@@ -35,7 +35,8 @@ class App extends React.Component {
       joined: styles.joinButton,
       isHost: false,
       answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
-      start: false
+      start: false,
+      pointsArray: ''
     };  
   }
 
@@ -48,7 +49,7 @@ class App extends React.Component {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {users, newUsers, roomPin, start} = JSON.parse(e.data)
+      const {users, newUsers, roomPin, start, pointsArray} = JSON.parse(e.data)
       console.log(newUsers);
 
       Object.keys(data).forEach((key) => {
@@ -75,9 +76,13 @@ class App extends React.Component {
             console.log("start did a thing in new switch");
             this.setState({
               start,
-              users: newUsers
+              users: newUsers,
             })
             break;
+          case 'pointsArray':
+            this.setState({
+              pointsArray
+            })
           default: 
             console.log('Not working - NEW switch')
             break;
@@ -113,7 +118,7 @@ class App extends React.Component {
         ) } />
         <Route path ='/canvas' render={(props) =>(
 
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name}/>
+          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
         ) } />
 
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
