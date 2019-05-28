@@ -1,7 +1,8 @@
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
-import AnswerSubmit from './AnswerSubmit'
+import AnswerSubmit from './AnswerSubmit';
+import ReactCountdownClock from 'react-countdown-clock';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -16,13 +17,16 @@ export default class Canvas extends React.Component {
             playerNumber: '',
             activePlayer: 0,
             currentPoints: 0,
+            pointsArray: '',
             prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena'],
-            pointsArray: ''
+            randomNum: 0
         }
     }
     
     componentDidMount(){
-
+    let max = this.state.prompts.length;
+    let min = 0;
+    this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
     if(this.props.connection) {
         this.setState({
             playerNumber:this.props.users.indexOf(this.props.name)
@@ -81,9 +85,9 @@ export default class Canvas extends React.Component {
             }
         }
           
-        let max = this.state.prompts.length;
-        let min = 0;
-        let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+        // let max = this.state.prompts.length;
+        // let min = 0;
+        // let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
 
         return (
             <div>
@@ -91,12 +95,21 @@ export default class Canvas extends React.Component {
                 {/* Prompts */}
                 <div>
                     <p>
-                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[randomNum] : null}
+                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
                 {/*   Host disabled canvas ternary render  */}
                 { this.props.hostStatus ?  
                 <div >
+                    <ReactCountdownClock seconds={20}
+                        color="#E50066"
+                        alpha={1}
+                        size={100}
+                        paused={false}
+                        // pausedText="00"
+                        // onComplete={}
+                    />
+                    
                     <CanvasDraw lazyRadius={0} immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
@@ -187,7 +200,6 @@ export default class Canvas extends React.Component {
         console.log(promptArray[randomNum]);
         return promptArray[randomNum];
     }
-
 }
 
 
