@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 
 function generatePin() {
-    let random = Math.floor((Math.random() * 500) + 1000);
+    let random = Math.floor((Math.random() * 8999) + 1000);
     let pin = random.toString();
     return pin;
 }
