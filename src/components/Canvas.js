@@ -1,7 +1,8 @@
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
-import AnswerSubmit from './AnswerSubmit';
+import logo from '../img/picme-logo.png';
+import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
 
 export default class Canvas extends React.Component {
@@ -18,12 +19,12 @@ export default class Canvas extends React.Component {
             activePlayer: 0,
             currentPoints: 0,
             pointsArray: '',
-            prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena'],
+            prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena', 'jake from state farm', 'tony the tiger eating the fruit loops bird', 'running turtle', 'm&m rapping', 'a packet of eminems', 'couch on fire', 'embarassing photo of spongebob', 'christmas tree during halloween', 'crying dinosaur', 'pug on a treadmill', 'pirate in a hammock', 'person with donuts for eyes', 'cowboy on a polar bear', 'flamingo doing ballet', 'coal under pressure', 'shakesbeer', 'souperhero', 'a person under a tack'],
             randomNum: 0,
             timerOn: true,
             receivedPoint: false,
-            selectedUser: ''
-        
+            selectedUser: '',
+            timerOn: true        
         }
     }
     
@@ -107,11 +108,12 @@ export default class Canvas extends React.Component {
 
         return (
             <div>
-                {(this.state.selectedUser === this.state.playerNumber) ? <h1>YOU DID IT</h1> : null}
+            <AppLogo src={logo} />
             <Wrapper> 
                 {/* Prompts */}
                 <div>
                     <p>
+                        {(this.state.selectedUser === this.state.playerNumber) ? <h1>YOU DID IT</h1> : null}
                         {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
@@ -255,4 +257,8 @@ const Button = styled.button`
         background-color: red;
     }
 `;
+
+const AppLogo = styled.img`
+  height: 70px;
+`
 
