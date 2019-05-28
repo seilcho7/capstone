@@ -53,7 +53,7 @@ export const Button1 = styled.button`
     color: white;
     width: 200px;
     height: 50px;
-    margin-top: 80px;
+    margin-top: 30px;
     margin-bottom: 10px;
     border-radius: 25px;
     border-color: black;
@@ -69,17 +69,19 @@ export const Button1 = styled.button`
 
 // how to play button
 export const Button2 = styled.button`
-    background-color: black;
+    background-color: #5856D6;
     color: white;
-    width: px;
+    width: 200px;
     height: 50px;
     margin: 10px;
     border-radius: 25px;
     border-color: black;
     font-family: 'Montserrat';
-    font-size: 12px;
+    font-weight: bold;
+    font-size: 20px;
     &:hover {
         cursor: pointer;
-        color: red;
+        background-color: #393898;
+        color: white;
     }
 `;
