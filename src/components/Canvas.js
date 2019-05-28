@@ -16,6 +16,7 @@ export default class Canvas extends React.Component {
             playerNumber: '',
             activePlayer: 0,
             currentPoints: 0,
+            prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena'],
             pointsArray: ''
         }
     }
@@ -182,6 +183,9 @@ export default class Canvas extends React.Component {
 
     _chooseAnswer = (event) => {
         console.log(event.target.value)
+        this.setState({
+            userAnswers: ''
+        })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
             selectedAnswer: event.target.value
