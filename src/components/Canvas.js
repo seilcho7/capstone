@@ -1,7 +1,8 @@
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
-import AnswerSubmit from './AnswerSubmit'
+import AnswerSubmit from './AnswerSubmit';
+import ReactCountdownClock from 'react-countdown-clock';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -16,12 +17,13 @@ export default class Canvas extends React.Component {
             playerNumber: '',
             activePlayer: 0,
             currentPoints: 0,
-            pointsArray: ''
+            pointsArray: '',
+            timer: false
         }
     }
     
     componentDidMount(){
-
+    this._countDown();
     if(this.props.connection) {
         this.setState({
             playerNumber:this.props.users.indexOf(this.props.name)
@@ -112,6 +114,23 @@ export default class Canvas extends React.Component {
                 {/*   Host disabled canvas ternary render  */}
                 { this.props.hostStatus ?  
                 <div >
+                    { !this.state.timer ? 
+                        <ReactCountdownClock seconds={20}
+                            color="#E50066"
+                            alpha={1}
+                            size={100}
+                            paused={true}
+                            pausedText="00"
+                            //  onComplete={myCallback} 
+                        /> : 
+                        <ReactCountdownClock seconds={20}
+                            color="#E50066"
+                            alpha={1}
+                            size={100}
+                            paused={false}
+                            // pausedText="00"
+                            //  onComplete={myCallback} 
+                        />}
                     <CanvasDraw immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
@@ -186,6 +205,14 @@ export default class Canvas extends React.Component {
             nextPlayer: this.state.activePlayer+1,
             selectedAnswer: event.target.value
         }))
+    }
+
+    _countDown = () => {
+        setInterval(() => {
+            this.setState({
+                timer: true
+            })
+        },3000)
     }
 }
 
