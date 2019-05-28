@@ -23,13 +23,14 @@ const db = [];
 let roomPin = '';
 let userAnswers = [];
 let pointsArray = [];
+let disableHostButton = false;
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
 
     socket.send(JSON.stringify({
         roomPin,
-        newUsers
+        disableHostButton
     }))
     // socket.send(JSON.stringify(getData()));
     // getData();
@@ -38,12 +39,12 @@ wss.on('connection', function connection(socket) {
     socket.on('message', async (data) => {
 
         const users = [];   
-        const {drawData, name, gamePin, roomId, start,saveRoomId, answer, selectedAnswer, timerOn} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, disableHost} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
         if(newUser[0]==='name' && newUser[1]==='gamePin') {
-            const confirmedNewUser= await User.add(gamePin,name);
+            const confirmedNewUser= await User.add(gamePin, name);
             console.log(confirmedNewUser);
         }
         
@@ -89,22 +90,24 @@ wss.on('connection', function connection(socket) {
             console.log(userData)
             console.log(pointsArray)
             if(nextPlayer >= newUsers.length) {
-                 nextPlayer = 0
+                nextPlayer = 0
             }
         }
         // When host click host button, save roomId inside database
         if (roomId) {
             await Host.createHost(roomId);
             roomPin = roomId;
+            console.log(disableHostButton);
             console.log(roomPin);
         }
+
+        disableHostButton = disableHost;
 
         if (saveRoomId) {
             await Host.removeHost(saveRoomId);
             await User.removeUsers(saveRoomId);
         }
 
-    
         if (start) {
             console.log(newUsers);
             console.log(roomId);
@@ -141,7 +144,8 @@ wss.on('connection', function connection(socket) {
                     userAnswers,
                     nextPlayer,
                     pointsArray,
-                    timerOn
+                    timerOn,
+                    disableHostButton
                 }))
             }
         });    
