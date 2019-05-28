@@ -27,7 +27,7 @@ class User {
 
     // gets a user by their Room ID
     static getUserByRoomId(roomId) {
-        return db.any(`select * from users where room_id='${roomId}'`)
+        return db.any(`select * from users where room_id='${roomId}' ORDER BY id ASC`)
             .then((arrayOfUsers) => {
                 return arrayOfUsers.map((userData) => {
                     const userInstance = new User(
@@ -59,7 +59,7 @@ class User {
     }
 
     // Increment point based on answer and roomId
-    static givePoint(answer, room_id){
+    static givePoint(room_id, answer){
         return db.any(`
             UPDATE users
             SET points = points + 1
@@ -68,11 +68,11 @@ class User {
     }
 
     // Update user's answer
-    static updateAnswer(userId, newAnswer) {
+    static updateAnswer(name, newAnswer) {
         return db.any(`
             UPDATE users
             SET answer = '${newAnswer}'
-            WHERE id='${userId}'
+            WHERE name='${name}'
         `)
     }
 

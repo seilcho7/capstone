@@ -22,6 +22,7 @@ const PORT = process.env.PORT;
 const db = [];
 let roomPin = '';
 let userAnswers = [];
+let pointsArray = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -37,7 +38,7 @@ wss.on('connection', function connection(socket) {
     socket.on('message', async (data) => {
 
         const users = [];   
-        const {drawData, name, gamePin, roomId, start,saveRoomId, answer} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, start,saveRoomId, answer, selectedAnswer} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
@@ -58,10 +59,9 @@ wss.on('connection', function connection(socket) {
         });
 
         // Pushes answer to array and removes answers if everyone has submitted 
-        if(answer) {
+        if(answer && name) {
+            await User.updateAnswer(name, answer)
             userAnswers.push(answer) 
-            console.log('useranswerllength: ', userAnswers.length)
-            console.log('userlength: ', newUsers.length)
 
             if (userAnswers.length > newUsers.length-1) {
                 console.log('splice triggered')
@@ -72,7 +72,22 @@ wss.on('connection', function connection(socket) {
             } 
         }
         // if nextPlayer reaches last player, nextPlayer is p.0 
-        if(nextPlayer) {
+        //  This also now is used for determining who receives a point based 
+        //  on room number as well as what the activePlayer selected 
+
+        if(nextPlayer && selectedAnswer) {
+            await User.givePoint(roomPin, selectedAnswer)
+            const userData = await User.getUserByRoomId(roomPin);
+            oldPoints = []
+            userData.forEach((user)=>{
+                oldPoints.push(user.points)
+            })
+            // Looks through and updates Pointsarray based on sql query
+            for(let i=0; i< userData.length; i++) {
+                pointsArray[i] = oldPoints[i]
+            }
+            console.log(userData)
+            console.log(pointsArray)
             if(nextPlayer >= newUsers.length) {
                  nextPlayer = 0
             }
@@ -98,8 +113,11 @@ wss.on('connection', function connection(socket) {
             userData.map((user) => {
                 if (!users.includes(user)) {
                     newUsers.push(user.name);
+                    pointsArray.push(user.points);
+                    console.log(pointsArray)
                 }
             });
+            console.log(pointsArray)
             console.log(newUsers);
             // wss.clients.forEach(function each(client) {
             //     if (client.readyState === WebSocket.OPEN) {
@@ -121,7 +139,8 @@ wss.on('connection', function connection(socket) {
                     start,
                     newUsers,
                     userAnswers,
-                    nextPlayer
+                    nextPlayer,
+                    pointsArray
                 }))
             }
         });    
