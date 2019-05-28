@@ -15,11 +15,9 @@ export default function JoinPage ({nameValue, name, pinValue, pin, submit, activ
                 </div>
                 <div className={styles.inputContainer}>
                     <div className={styles.nameInputContainer}>
-
                         <Input placeholder={'display name'} value ={nameValue} className={styles.nameInput} type="text" onChange={name}/>
                     </div>
                     <div className={styles.pinInputContainer}>
-                        
                         <Input placeholder={'game pin'} value={pinValue} className={styles.pinInput} onChange={pin}/>
                     </div>
                 </div>

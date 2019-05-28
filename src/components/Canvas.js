@@ -1,6 +1,7 @@
 import React from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import styled from 'styled-components';
+import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 
 export default class Canvas extends React.Component {
@@ -87,6 +88,8 @@ export default class Canvas extends React.Component {
 
         return (
             <div>
+            <AppLogo src={logo} />
+              
             <Wrapper> 
                 {/* Prompts */}
                 <div>
@@ -212,4 +215,8 @@ const Button = styled.button`
         background-color: red;
     }
 `;
+
+const AppLogo = styled.img`
+  height: 70px;
+`
 
