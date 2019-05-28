@@ -157,7 +157,7 @@ export default class Canvas extends React.Component {
                     </ul> 
                     <h4> Answers </h4>
                         {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
-                </div> : (this.state.activePlayer === this.state.playerNumber) ?
+                </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {
                         const saveData = await this.saveableCanvas.getSaveData();
@@ -220,7 +220,8 @@ export default class Canvas extends React.Component {
     _chooseAnswer = (event) => {
         this.setState({
             userAnswers: '',
-            picked: true 
+            picked: true,
+            timerOn: false
         })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
