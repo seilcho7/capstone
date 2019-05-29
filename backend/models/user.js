@@ -91,6 +91,14 @@ class User {
         `)
     }
 
+    static resetAnswers(roomId) {
+        return db.none(`
+            UPDATE users 
+            SET answer='' 
+            WHERE room_id='${roomId}'
+            `)
+    }
+
 }
 
 module.exports = User;

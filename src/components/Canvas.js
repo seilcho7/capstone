@@ -91,6 +91,7 @@ export default class Canvas extends React.Component {
                             console.log('nextplayer',nextPlayer)
 
                             this.setState({
+                                hideGrid: false,
                                 disabled: false,
                                 picked:false,
                                 activePlayer: nextPlayer,
@@ -181,7 +182,7 @@ export default class Canvas extends React.Component {
                     {/* <h4> Answers </h4> */}
                         <div className='answerList'>
                             answers:
-                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<button key={i}>{answer}</button>)): null}
                         </div>
                     </div>
                     <div>
@@ -267,7 +268,8 @@ export default class Canvas extends React.Component {
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
         this.setState({
-            submittedAnswer: true
+            submittedAnswer: true,
+            userAnswer: ''
         })
         this.props.connection.send(JSON.stringify({
             answer: this.state.userAnswer,

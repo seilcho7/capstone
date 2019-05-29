@@ -68,7 +68,7 @@ wss.on('connection', function connection(socket) {
             userAnswers.push(answer) 
 
             if (userAnswers.length > newUsers.length-1) {
-                // console.log('splice triggered')
+                // console.log('splice triggered') 
                 // userAnswers.push(answer) 
                 // console.log(userAnswers)
                 userAnswers.splice(0,newUsers.length-1)
@@ -81,6 +81,7 @@ wss.on('connection', function connection(socket) {
 
         if(nextPlayer && selectedAnswer && timerOn === false ) {
             const awardPoint= await User.givePoint(roomPin, selectedAnswer)
+            // await User.resetAnswers(roomPin);
             console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
             console.log(userData)
@@ -180,11 +181,6 @@ wss.on('connection', function connection(socket) {
     });
 });
 
-// const Drawing = require('./models/drawing');
-// async function getData() {
-//     const testVar = await Host.removeHost('643645345645636345');
-//     console.log(testVar);
-// }
 
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
