@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -28,8 +28,9 @@ export default class Canvas extends React.Component {
             timerOn: true,
             picked: false,
             disabled: false,
-            hideGrid: false ,
-            timesUp: false
+            hideGrid: false,
+            timesUp: false,
+            endGame: false
         }
     }
     
@@ -51,7 +52,7 @@ export default class Canvas extends React.Component {
                     case 'drawData':
                         console.log("drawData did a thing in new switch");
                         this.setState({
-                        drawingData: drawData
+                            drawingData: drawData
                         })
                     break;
                     case 'userAnswers':
@@ -71,7 +72,7 @@ export default class Canvas extends React.Component {
                         console.log('nextPlayer did a thing')
                         this.setState({
                             receivedPoint: true,
-                            selectedUser,
+                            selectedUser
                         })
                         
                         setTimeout(() => {
@@ -102,6 +103,7 @@ export default class Canvas extends React.Component {
                         this.setState({
                             pointsArray
                         })
+                        break;
                 default:
                     break;
                 }
@@ -113,7 +115,7 @@ export default class Canvas extends React.Component {
 }
     
     render() {
-        if(this.props.hostStatus){
+        if(this.props.hostStatus && !this.props.endGame){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
                 console.log("YOU ARE INSIDE THE OF set interval. check to see if data is still there")
@@ -138,7 +140,7 @@ export default class Canvas extends React.Component {
                     </p>
                 </div>
                 {/*   Host disabled canvas ternary render  */}
-                {this.state.timerOn ? <ReactCountdownClock seconds={30}
+                {this.state.timerOn && !this.props.endGame? <ReactCountdownClock seconds={30}
                         color="#E50066"
                         alpha={1}
                         size={100}
@@ -148,7 +150,7 @@ export default class Canvas extends React.Component {
                         // onComplete={}
                     /> : null }
                 
-                { this.props.hostStatus  ?  
+                { this.props.hostStatus ?  
                 <div >
                     {/* <ReactCountdownClock seconds={20}
                         color="#E50066"
@@ -159,21 +161,25 @@ export default class Canvas extends React.Component {
                         // onComplete={}
                     /> */}
                     
-                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
+                    {/* Host canvas */}
+                    {!this.props.endGame ? <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
-                    }} />
+                    }} /> : null}
                     {/* End Game Button */}
-                    <Link onClick={() => {
-                        console.log("You clicked endgame");
-                        
-                        }} to='/endgame'>
-                        <Button1>End Game</Button1>
-                    </Link>
+                    
+                    {!this.props.endGame ? <Button1 onClick={() => {
+                        this.props.setEndGame();
+                    }}>End Game</Button1> : null}
+                    
                     {/*   User list and user points data render  */}
                     <ul>
                         {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.state.pointsArray[i]}</li>)) : null}
                     </ul> 
-                    <h4> Answers </h4>
+                    {!this.props.endGame ? <h4> Answers </h4> : <Link to='/'>
+                    <Button1 onClick={() => {
+                        this.props.resetData();
+                        }}>Home</Button1> 
+                    </Link>}
                         {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}

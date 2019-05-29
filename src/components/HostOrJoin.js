@@ -18,7 +18,7 @@ export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
              {/* <Link to='/'> */}
                 <AppLogo src={logo} />
             {/* </Link> */}
-                {showHost?
+                {showHost ?
                 <Link onClick={() => (handleClickHost(generatePin()))} to='/host'>
                     <Button1>host</Button1>
                 </Link> : null}

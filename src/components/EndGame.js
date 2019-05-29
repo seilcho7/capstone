@@ -11,21 +11,35 @@ export class EndGame extends React.Component {
     }
 
     render() {
+        console.log(this.props.users);
+        console.log(this.props.pointsArray);
         return (
             <div>
-                <ul>
-                    {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.state.pointsArray[i]}</li>)) : null}
-                </ul>
-            
-                <Link onClick={() => {
-                        this.props.resetData();
-                        }} to='/'>
-                        <Button1>Go back home</Button1>
-                </Link>
+                <Wrapper>
+                    <ul>
+                        hello
+                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.props.pointsArray.length !== 0 ? this.state.pointsArray[i] : 0}</li>)) : null}
+                    </ul>
+                
+                    <Link onClick={() => {
+                            this.props.resetData();
+                            }} to='/'>
+                            <Button1>Go back home</Button1>
+                    </Link>
+                </Wrapper>
             </div>
         )
     }
 }
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: black;
+    font-color: white;
+`;
 
 const Button1 = styled.button`
     background-color: #FF2D55;
