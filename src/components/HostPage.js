@@ -53,7 +53,7 @@ export const Button1 = styled.button`
     color: white;
     width: 200px;
     height: 50px;
-    margin-top: 30px;
+    margin-top: 0px;
     margin-bottom: 10px;
     border-radius: 25px;
     border-color: black;
