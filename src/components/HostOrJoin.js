@@ -21,12 +21,11 @@ export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
                 {showHost?
                 <Link onClick={() => (handleClickHost(generatePin()))} to='/host'>
                     <Button1>host</Button1>
-                </Link> : null}
-                    
-                {showJoin ?
+                </Link> : <div><Button3></Button3></div>}
                 <Link to='/join'>
                     <Button2>join</Button2>
-                </Link> : null} 
+                </Link>
+    
             
         </HomePage>
     )
@@ -59,6 +58,15 @@ const Button1 = styled.button`
         background-color: #b82640;;
         color: white;
     }
+`;
+
+const Button3 = styled.button`
+    background-color: black;
+    width: 200px;
+    height: 50px;
+    margin-top: 80px;
+    margin-bottom: 10px;
+    border-color: black;
 `;
 
 // how to play button
