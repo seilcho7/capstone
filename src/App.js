@@ -131,7 +131,7 @@ class App extends React.Component {
             <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
           )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
+            <JoinPage {...props} resetJoinButton={this._resetJoinButton} resetNamePin={this._resetNamePin} kickUsers={this.state.kickUsers} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
         )} />
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} kickUsers={this.state.kickUsers} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
@@ -147,6 +147,7 @@ class App extends React.Component {
       </div>
     )
   }
+
   _login = () => {
     this.connection.send(JSON.stringify({
       login: 1
@@ -165,6 +166,7 @@ class App extends React.Component {
         name: event.target.value
     })
   }
+
   _handleChangePin =(event)=> {
     console.log (event.target.value)
     
@@ -177,6 +179,13 @@ class App extends React.Component {
       })
     }
   }
+
+  _resetJoinButton = () => {
+    this.setState({
+      joined: styles.joinButton
+    })
+  }
+
   _handleSubmitJoin = e =>{
     if (this.state.gamePin === this.state.socketRoomId) {
       this.connection.send(JSON.stringify({
@@ -189,6 +198,7 @@ class App extends React.Component {
       alert("WRONG PIN")
     }
   }
+
   _setPin = (roomId) => {
     this.setState({
       roomId,
@@ -204,21 +214,29 @@ class App extends React.Component {
       }));
     })
   }
+
   _resetData = () => {
     this.setState({
       saveRoomId: this.state.roomId,
       roomId: true,
       showHost: true,
       kickUsers: true,
-      showJoin: false
+      joined: styles.joinButton
     }, () => {
       this.connection.send(JSON.stringify({
-        showJoin: this.state.showJoin, 
+        showJoin: false,
         kickUsers: this.state.kickUsers, 
         roomId: this.state.roomId, 
         saveRoomId: this.state.saveRoomId, 
         showHost: this.state.showHost
       }))
+    })
+  }
+
+  _resetNamePin = () => {
+    this.setState({
+      name: '',
+      gamePin: ''
     })
   }
 

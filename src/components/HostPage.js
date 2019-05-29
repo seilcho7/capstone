@@ -9,9 +9,9 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
     return (
         <Wrapper>
             <div className={styles.pinNum}>
-           <Link to='/'>
+           {/* <Link to='/'> */}
               <AppLogo src={logo} />
-            </Link>
+            {/* </Link> */}
                 <h3>join this game using the pin:</h3>
                 <Pin>{pin}</Pin>
             </div>

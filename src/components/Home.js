@@ -7,9 +7,9 @@ import '../css/App.css';
 function Home() {
     return (
         <HomePage>
-            <Link to='/'>
-              <AppLogo src={logo} />
-            </Link>
+            {/* <Link to='/'> */}
+                <AppLogo src={logo} />
+            {/* </Link> */}
             <Link to='/host-or-join'>
                 <Button1>start game</Button1>
             </Link>

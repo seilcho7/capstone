@@ -1,42 +1,59 @@
 import React from 'react';
 import styles from '../css/JoinPage.module.css';
-import { Link } from 'react-router-dom'; 
+import { Redirect, Link } from 'react-router-dom'; 
 import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 import { Button1, Button2, Wrapper } from './HostPage';
 
-export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate}){
+// export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate, kickUsers}){
+export default class JoinPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        }
+    }
+    
+    componentDidMount() {
+        this.props.resetNamePin();
+        this.props.resetJoinButton();
+    }
+
+    render () {
         return (
             <Wrapper>
+                { this.props.kickUsers ? <Redirect to='/host-or-join' /> : null}
                 <div className={styles.text}>
-                <Link to='/'>
+                {/* <Link to='/'> */}
                     <AppLogo src={logo} />
-                </Link>
+                {/* </Link> */}
                 </div>
                 <div className={styles.inputContainer}>
                     <div className={styles.nameInputContainer}>
-                        <Input placeholder={'display name'} value ={nameValue} className={styles.nameInput} type="text" onChange={name}/>
+                        <Input placeholder={'display name'} value ={this.props.nameValue} className={styles.nameInput} type="text" onChange={this.props.name}/>
                     </div>
                     <div className={styles.pinInputContainer}>
-                        <Input placeholder={'game pin'} value={pinValue} className={styles.pinInput} onChange={pin}/>
+                        <Input placeholder={'game pin'} value={this.props.pinValue} className={styles.pinInput} onChange={this.props.pin}/>
                     </div>
                 </div>
             <div className={styles.ButtonContainer}>
-            <Link to= '/wait' onClick={submit} className={activate}>
-                 <Button1 onClick={submit} className={styles.joinButton}> join </Button1></Link>
-                 {/* <Link to='/host-or-join' className={styles.cancelButton}>
-                     <Button2>cancel</Button2>
+            <Link to= '/wait' onClick={this.props.submit} className={this.props.activate}>
+                <Button1 onClick={this.props.submit} className={styles.joinButton}> join </Button1></Link>
+                {/* <Link to='/host-or-join' className={styles.cancelButton}>
+                    <Button2>cancel</Button2>
                  </Link> */}
                 {/* <Link to= '/wait' onClick={submit} className={activate}> Join </Link> */}
                 {/* <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link> */}
             </div>
         </Wrapper>
-    )
+        )
+
+    }
 }
 
 
 const AppLogo = styled.img`
-  height: 150px;
+    height: 150px;
 `
 
 export const Input = styled.input`
