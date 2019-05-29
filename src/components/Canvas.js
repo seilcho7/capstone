@@ -31,8 +31,10 @@ export default class Canvas extends React.Component {
             picked: false, 
             completed: false,
             disabled: false,
-            hideGrid: false,
-            timesUp: false
+
+            hideGrid: false ,
+            timesUp: false,
+            answerStyle: 'answerChoicesShow'
         }
     }
     
@@ -48,7 +50,7 @@ export default class Canvas extends React.Component {
         this.props.connection.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
                     case 'drawData':
@@ -92,17 +94,18 @@ export default class Canvas extends React.Component {
                                 disabled: false,
                                 picked:false,
                                 activePlayer: nextPlayer,
-                                submittedAnswer:false,
+                                submittedAnswer: false,
                                 userAnswers: '',
                                 timerOn: timerOn,
-                                selectedUser: -2
+                                selectedUser: -2,
+                                changeClass: 'answerChoicesHidden'
                             })
                             console.log('activeplayer', this.state.activePlayer)
                             console.log('nextplayer',nextPlayer)
                             this.setState({
                                 timerOn: true,
                                 receivedPoint: false,
-                                completed: false
+                                completed: false,
                             })
                         }, 4500);
                     
@@ -114,8 +117,13 @@ export default class Canvas extends React.Component {
                             pointsArray
                         })
                         break;
-                default:
-                    break;
+
+                    case 'changeClass':
+                        this.setState({
+                            changeClass
+                        })
+                    default:
+                        break;
                 }
             })
         }
@@ -215,8 +223,7 @@ export default class Canvas extends React.Component {
                     {/* <div className='answerChoices'>
                         {(this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i} onClick={this._chooseAnswer} value={answer}> {answer}</li>)) : null}
                     </div> */}
-                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li className='answerChoices' key={i} onClick={this._chooseAnswer} value={answer}>{answer}</li>)) : null}
-                    
+                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}   
                     </div> : 
                     // Answer Submit form
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false && this.state.timesUp === false) ? 
@@ -234,8 +241,6 @@ export default class Canvas extends React.Component {
                     : null}
                     {(this.state.activePlayer !== this.state.playerNumber && this.props.isHost === false) ? 
                     <Confetti active= {this.state.completed} /> : null }
-
-                    
                 </Wrapper>
                 </div>
         )
@@ -247,7 +252,7 @@ export default class Canvas extends React.Component {
 
     _setDrawingData = (object) => {
         this.setState({
-            drawingData: object
+            drawingData: object,
         })
     }
 
@@ -260,13 +265,14 @@ export default class Canvas extends React.Component {
 
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
-        this.props.connection.send(JSON.stringify({
-            answer: this.state.userAnswer,
-            name: this.props.name}))
         this.setState({
             submittedAnswer: true,
             userAnswer: ''
         })
+        this.props.connection.send(JSON.stringify({
+            answer: this.state.userAnswer,
+            name: this.props.name,
+            changeClass: 'answerChoicesShow'}))
     }
 
     _chooseAnswer = (event) => {

@@ -26,7 +26,26 @@
     line-height: 80px;
 }
 
-.answerChoices {
+.answerChoicesHidden {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    background-color: #FF2D55;
+    color: white;
+    width: 200px;
+    height: 50px;
+    margin: 10px;
+    border-radius: 25px;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+    margin-left: 25%;
+    visibility: hidden;
+}
+
+.answerChoicesShow {
     display: flex;
     justify-content: center;
     list-style: none;
@@ -44,7 +63,7 @@
     margin-left: 25%;
 }
 
-.answerChoices:hover {
+.answerChoicesShow:hover {
     cursor: pointer;
     background-color: #b82640;;
     color: white;
