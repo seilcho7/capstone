@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
+import {
+    Link
+  } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -151,6 +154,10 @@ export default class Canvas extends React.Component {
                     <CanvasDraw lazyRadius={0} immediateLoading={true} disabled ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
+                    {/* End Game Button */}
+                    <Link onClick={() => console.log("You clicked endgame")} to='/endgame'>
+                        <Button1>End Game</Button1>
+                    </Link>
                     {/*   User list and user points data render  */}
                     <ul>
                         {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.state.pointsArray[i]}</li>)) : null}
@@ -275,4 +282,22 @@ const Button = styled.button`
 const AppLogo = styled.img`
     height: 70px;
 `
-
+// start game button  
+const Button1 = styled.button`
+    background-color: #FF2D55;
+    color: white;
+    width: 200px;
+    height: 50px;
+    margin-top: 80px;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    border-color: black;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 20px;
+    &:hover {
+        cursor: pointer;
+        background-color: #b82640;;
+        color: white;
+    }
+`;
