@@ -119,29 +119,29 @@ class App extends React.Component {
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
         <Route path="/answer" component={(props) => (
-            <Answer {...props} answerChoices={this.state.answerChoices} />
-          )}/>
+          <Answer {...props} answerChoices={this.state.answerChoices} />
+        )}/>
         {/* <Route path="/submitanswer" component={(props) => (
             <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
           )}/> */}
         <Route path='/host-or-join' render={(props) => (
-            <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
-          )} />
+          <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
+        )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
-          )} />
+          <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
+        )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} resetJoinButton={this._resetJoinButton} resetNamePin={this._resetNamePin} kickUsers={this.state.kickUsers} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
+          <JoinPage {...props} resetJoinButton={this._resetJoinButton} resetNamePin={this._resetNamePin} kickUsers={this.state.kickUsers} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
         )} />
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} kickUsers={this.state.kickUsers} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
-        ) } />
+        )} />
         <Route path ='/canvas' render={(props) =>(
           <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
-        ) } />
+        )} />
         <Route path ='/endgame' render={(props) =>(
-          <EndGame {...props}/>
-        ) } />
+          <EndGame {...props} resetData={this._resetData} />
+        )} />
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )

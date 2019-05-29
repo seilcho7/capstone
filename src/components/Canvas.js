@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
-import {
-    Link
-  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -164,7 +162,10 @@ export default class Canvas extends React.Component {
                     (this.saveableCanvas = canvasDraw)
                     }} />
                     {/* End Game Button */}
-                    <Link onClick={() => console.log("You clicked endgame")} to='/endgame'>
+                    <Link onClick={() => {
+                        console.log("You clicked endgame");
+                        
+                        }} to='/endgame'>
                         <Button1>End Game</Button1>
                     </Link>
                     {/*   User list and user points data render  */}
@@ -199,10 +200,10 @@ export default class Canvas extends React.Component {
                         { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && timesUp === false) ? <div>
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === false) ? <div>
                         You have 30 seconds to answer! Hurry Up. 
                     </div>:
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && timesUp === true) ? <div>
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === true) ? <div>
                         Your time is up. Submit answer. 
                     </div>:
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
