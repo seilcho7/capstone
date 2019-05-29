@@ -90,6 +90,7 @@ export default class Canvas extends React.Component {
                             console.log('nextplayer',nextPlayer)
 
                             this.setState({
+                                hideGrid: false,
                                 disabled: false,
                                 picked:false,
                                 activePlayer: nextPlayer,
@@ -263,7 +264,8 @@ export default class Canvas extends React.Component {
             answer: this.state.userAnswer,
             name: this.props.name}))
         this.setState({
-            submittedAnswer: true
+            submittedAnswer: true,
+            userAnswer: ''
         })
     }
 
