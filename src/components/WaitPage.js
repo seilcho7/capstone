@@ -53,6 +53,7 @@ class WaitPage extends React.Component {
       } else {
         return (
             <Wrapper>
+              {this.props.kickUsers ? <Redirect to="/host-or-join" /> : null}
                 <h1>waiting for host to start game</h1>
                 { this.props.gameStart && !this.props.isHost ? <Redirect to='/canvas' /> : <div></div>}
                 <div className={styles.leaveButtonContainer}>
@@ -61,9 +62,9 @@ class WaitPage extends React.Component {
                 {gifs.map(gif => (
                     <Gif src={gif.images.original.url} />
                     ))}
-                <Button1>
+                {/* <Button1>
                     <StyledLink to='/join' className={styles.leaveButton}>Leave</StyledLink>
-                </Button1>
+                </Button1> */}
           </Wrapper>
         );
       }

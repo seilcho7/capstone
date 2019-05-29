@@ -7,9 +7,9 @@ import logo from '../img/picme-logo.png';
 function HowToPlay() {
   return (
       <Wrapper>
-            <Link to='/'>
+            {/* <Link to='/'> */}
               <AppLogo src={logo} />
-            </Link>
+            {/* </Link> */}
        <Heading>How to play</Heading>
        <Text>
        Join as a host or player. As the host, you will receive a prompt to draw. Your friends will then make their best guesses, and you choose the closest (or favorite) answer. 

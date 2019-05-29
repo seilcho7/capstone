@@ -9,9 +9,9 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
     return (
         <Wrapper>
             <div className={styles.pinNum}>
-           <Link to='/'>
+           {/* <Link to='/'> */}
               <AppLogo src={logo} />
-            </Link>
+            {/* </Link> */}
                 <h3>join this game using the pin:</h3>
                 <Pin>{pin}</Pin>
             </div>
@@ -21,9 +21,9 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
                 </ul>
             </div>
             <div className={styles.buttonContainer}>
-                <Link to='/canvas' onClick={confirmHost}>
+                {users[0] ? <Link to='/canvas' onClick={confirmHost}>
                     <Button1>start</Button1>
-                </Link>
+                </Link> : null}
                 <Link to='/host-or-join' onClick={resetData}>
                     <Button2>cancel</Button2>
                 </Link>
