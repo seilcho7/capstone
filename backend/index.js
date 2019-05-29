@@ -80,8 +80,8 @@ wss.on('connection', function connection(socket) {
         //  on room number as well as what the activePlayer selected 
 
         if(nextPlayer && selectedAnswer && timerOn === false ) {
-           const awardPoint= await User.givePoint(roomPin, selectedAnswer)
-           console.log(awardPoint)
+            const awardPoint= await User.givePoint(roomPin, selectedAnswer)
+            console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
             console.log(userData)
             oldPoints = []
