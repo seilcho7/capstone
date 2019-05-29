@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
+import '../css/Canvas.css'
+import Confetti from 'react-dom-confetti';
 import {
     Link
   } from 'react-router-dom';
@@ -28,7 +30,8 @@ export default class Canvas extends React.Component {
             receivedPoint: false,
             selectedUser: '',
             timerOn: true,
-            picked: false,
+            picked: false, 
+            completed: false,
             disabled: false,
             hideGrid: false ,
             timesUp: false
@@ -71,10 +74,16 @@ export default class Canvas extends React.Component {
                         break;
                     case 'nextPlayer':
                         console.log('nextPlayer did a thing')
+                        console.log('completed is gon be trueeeeee');
+                        console.log(this.state.completed);
                         this.setState({
                             receivedPoint: true,
                             selectedUser,
+                            completed: true
                         })
+                        console.log(this.state.completed);
+                        if(this.state.selectedUser !== this.state.activePlayer) {
+                        }
                         
                         setTimeout(() => {
                             console.log('activeplayer', this.state.activePlayer)
@@ -94,7 +103,8 @@ export default class Canvas extends React.Component {
                             console.log('nextplayer',nextPlayer)
                             this.setState({
                                 timerOn: true,
-                                receivedPoint: false
+                                receivedPoint: false,
+                                completed: false
                             })
                         }, 4500);
                     
@@ -116,6 +126,7 @@ export default class Canvas extends React.Component {
 }
     
     render() {
+
         if(this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
@@ -125,56 +136,58 @@ export default class Canvas extends React.Component {
                 )
             }
         }
-        // let max = this.state.prompts.length;
-        // let min = 0;
-        // let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+        
 
         return (
             <div>
+                <div className='logoAndTimer'>
             <AppLogo src={logo} />
+                    {/*   Host disabled canvas ternary render  */}
+                    {this.state.timerOn ? <ReactCountdownClock seconds={30}
+                            color="#E50066"
+                            alpha={1}
+                            size={100}
+                            paused={false}
+                            onComplete={this._hideTimer}
+                            // pausedText="00"
+                            // onComplete={}
+                        /> : null }
+                    </div>
             <Wrapper> 
                 {/* Prompts */}
                 <div>
-                {(this.state.selectedUser === this.state.playerNumber) ? <h1>YOU DID IT</h1> : null}
+                {(this.state.selectedUser === this.state.playerNumber) ? 
+                <div>
+                    <h1>YOU DID IT</h1>
+                </div> : null}
                     <p>
                         {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
-                {/*   Host disabled canvas ternary render  */}
-                {this.state.timerOn ? <ReactCountdownClock seconds={30}
-                        color="#E50066"
-                        alpha={1}
-                        size={100}
-                        paused={false}
-                        onComplete={this._hideTimer}
-                        // pausedText="00"
-                        // onComplete={}
-                    /> : null }
-                
                 { this.props.hostStatus  ?  
-                <div >
-                    {/* <ReactCountdownClock seconds={20}
-                        color="#E50066"
-                        alpha={1}
-                        size={100}
-                        paused={false}
-                        // pausedText="00"
-                        // onComplete={}
-                    /> */}
-                    
+                <div>
+                    <div className='canvasAndAnswers'>
+                 
                     <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
+                    {/*   User list and user points data render  */}
+                    {/* <h4> Answers </h4> */}
+                        <div className='answerList'>
+                            answers:
+                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                        </div>
+                    </div>
+                    <div>
+                        {/* users and respective points to render on the screen */}
+                        <ul className='users'>
+                            {this.props.users ? this.props.users.map((user, i) => (<li key={i}>{user}: {' '}{this.state.pointsArray[i]}</li>)) : null}
+                        </ul> 
+                    </div>
                     {/* End Game Button */}
                     <Link onClick={() => console.log("You clicked endgame")} to='/endgame'>
-                        <Button1>End Game</Button1>
+                        <Button1>end game</Button1>
                     </Link>
-                    {/*   User list and user points data render  */}
-                    <ul>
-                        {this.props.users ? this.props.users.map((user, i) => (<li key={i}>Player:{' '}{user} Points{' '}:{this.state.pointsArray[i]}</li>)) : null}
-                    </ul> 
-                    <h4> Answers </h4>
-                        {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {
@@ -198,7 +211,12 @@ export default class Canvas extends React.Component {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
-                        { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
+                    {/* <div className='answerChoices'>
+                        {(this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i} onClick={this._chooseAnswer} value={answer}> {answer}</li>)) : null}
+                    </div> */}
+                   
+                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li className='answerChoices' key={i} onClick={this._chooseAnswer} value={answer}>{answer}</li>)) : null}
+                    
                     </div> : 
                     // Answer Submit form
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false && this.state.timesUp === false) ? 
@@ -212,8 +230,12 @@ export default class Canvas extends React.Component {
                     // (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
                     // <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
                     // Submitted answer 
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck! </div> : <div></div>
-                    }
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
+                    : null}
+                    {(this.state.activePlayer !== this.state.playerNumber && this.props.isHost === false) ? 
+                    <Confetti active= {this.state.completed} /> : null }
+
+                    
                 </Wrapper>
                 </div>
         )
@@ -301,7 +323,7 @@ const Button = styled.button`
 `;
 
 const AppLogo = styled.img`
-    height: 70px;
+    height: 100px;
 `
 // start game button  
 const Button1 = styled.button`
@@ -309,7 +331,6 @@ const Button1 = styled.button`
     color: white;
     width: 200px;
     height: 50px;
-    margin-top: 80px;
     margin-bottom: 10px;
     border-radius: 25px;
     border-color: black;

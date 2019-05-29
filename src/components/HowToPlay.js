@@ -12,7 +12,7 @@ function HowToPlay() {
             {/* </Link> */}
        <Heading>How to play</Heading>
        <Text>
-       Join as a host or player. As the host, you will receive a prompt to draw. Your friends will then make their best guesses, and you choose the closest (or favorite) answer. 
+       Start with connecting one screen as a host. When it's your turn, you'll be given a prompt to draw. As you're drawing, your friends will have to give their best guesses to what you're attempting to draw. Then you'll get to choose your favorite answer out of the bunch. Choose the closest answer or just your fave – player with the most points win!
        </Text>
           <Link to='/host-or-join'>
               <Button1>let's play!</Button1>
