@@ -109,17 +109,6 @@ wss.on('connection', function connection(socket) {
             // console.log(roomPin);
         }
         
-        // if (showJoin) {
-        //     showJoinButton = showJoin;
-        // } else {
-        //     showJoinButton = true;
-        // }
-
-        // if (showHost) {
-        //     showHostButton = showHost;
-        // } else {
-        //     showHostButton = false;
-        // }
         if (showJoin && !showHost) {
             showJoinButton = true;
             showHostButton = false;
