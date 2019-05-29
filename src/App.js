@@ -137,7 +137,6 @@ class App extends React.Component {
           <WaitPage {...props} kickUsers={this.state.kickUsers} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
-
           <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
         ) } />
         <Route path ='/endgame' render={(props) =>(
