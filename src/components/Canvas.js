@@ -182,7 +182,7 @@ export default class Canvas extends React.Component {
                     {/* <h4> Answers </h4> */}
                         <div className='answerList'>
                             answers:
-                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<button key={i}>{answer}</button>)): null}
+                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                         </div>
                     </div>
                     <div>
@@ -222,7 +222,7 @@ export default class Canvas extends React.Component {
                         {(this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i} onClick={this._chooseAnswer} value={answer}> {answer}</li>)) : null}
                     </div> */}
                    
-                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button><li className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</li></button>)) : null}
+                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
                     
                     </div> : 
                     // Answer Submit form
