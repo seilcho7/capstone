@@ -199,20 +199,19 @@ export default class Canvas extends React.Component {
                         { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
-                    <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
-
-                    : (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === false) ? <div>
-                        You have 30 seconds to answer! Hurry Up. 
-                    </div>:
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === true) ? <div>
-                        Your time is up. Submit answer. 
-                    </div>:
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false && this.state.timesUp === false) ? 
+                        <div> You have 30 seconds to answer! Hurry Up. 
+                            <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
+                        </div>
+                        : 
+                    // (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === false) ? <div> You have 30 seconds to answer! Hurry Up. </div> : null
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === true) ? <div> Your time is up. Submit answer.                             <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
+                    </div> : 
                     // (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
                     // <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
                     // Submitted answer 
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
-                    : null}
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck! </div> : <div></div>
+                    }
                 </Wrapper>
                 </div>
         )
