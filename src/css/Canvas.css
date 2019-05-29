@@ -14,23 +14,21 @@
     margin-top: 20px;
     list-style: none;
     font-size: 24px;
-    width: 100%;
     font-weight: bold;
     color: yellow;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .answerList {
     display: flex;
     flex-direction: column;
     margin: 30px;
-    line-height: 20px;
+    line-height: 80px;
 }
 
 .answerChoices {
     display: flex;
     justify-content: center;
-    flex-direction: row;
     list-style: none;
     background-color: #FF2D55;
     color: white;
@@ -52,8 +50,9 @@
     color: white;
 }
 
-.countdown {
+.logoAndTimer {
     display: flex;
-    justify-content: end;
-    margin: 0px;
+    justify-content: space-between;
+    margin-right: 20px;
+    margin-top: 20px;
 }

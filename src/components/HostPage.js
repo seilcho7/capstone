@@ -42,7 +42,7 @@ export const Wrapper = styled.div`
 `;
 
 const AppLogo = styled.img`
-  height: 150px;
+  height: 180px;
 `
 const Pin = styled.div`
   font-size: 60px;
