@@ -14,7 +14,6 @@ import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
-import EndGame from './components/EndGame';
 // import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
@@ -225,7 +224,9 @@ class App extends React.Component {
       showJoin: false,
       kickUsers: true,
       joined: styles.joinButton,
-      isHost: false
+      isHost: false,
+      endGame: false,
+      users: ''
     }, () => {
       this.connection.send(JSON.stringify({
         showJoin: false,
@@ -233,7 +234,8 @@ class App extends React.Component {
         roomId: this.state.roomId, 
         saveRoomId: this.state.saveRoomId, 
         showHost: this.state.showHost,
-        isHost: this.state.isHost
+        isHost: this.state.isHost,
+        users: this.state.users
       }))
     })
   }

@@ -82,9 +82,10 @@ class WaitPage extends React.Component {
   `;
 
   const Gif = styled.img`
-    width: 325px; 
-    height: 325px;
+    width: 290px; 
+    height: 290px;
     border-radius: 50%;
+    margin-bottom: 20px;
   `;
   
   const StyledLink = styled(Link)`
