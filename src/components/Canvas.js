@@ -27,7 +27,8 @@ export default class Canvas extends React.Component {
             timerOn: true,
             picked: false,
             disabled: false,
-            hideGrid: false 
+            hideGrid: false ,
+            timesUp: false
         }
     }
     
@@ -191,11 +192,14 @@ export default class Canvas extends React.Component {
                         { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
-                    
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && timesUp === false) ? <div>
+                        You have 30 seconds to answer! Hurry Up. 
+                    </div>:
+                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && timesUp === true) ? <div>
+                        Your time is up. Submit answer. 
+                    </div>:
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
-                    <div> You have 30 seconds to answer. Hurry up. 
                     <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
-                    </div>
                     // Submitted answer 
                     : (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
                     : null}
@@ -251,7 +255,8 @@ export default class Canvas extends React.Component {
     _hideTimer = () => {
         this.setState({
             disabled: true,
-            hideGrid: true
+            hideGrid: true,
+            timesUp: true
         })
     }
 }
