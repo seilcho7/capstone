@@ -14,6 +14,7 @@ import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
+import EndGame from './components/EndGame';
 // import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
@@ -139,7 +140,9 @@ class App extends React.Component {
 
           <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
         ) } />
-
+        <Route path ='/endgame' render={(props) =>(
+          <EndGame {...props}/>
+        ) } />
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )
