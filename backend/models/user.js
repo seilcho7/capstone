@@ -84,11 +84,10 @@ class User {
         `)
     }
 
-    // Remove user based on Room ID
-    static removeUsers(roomId) {
+    // Remove all users
+    static removeUsers() {
         return db.none(`
-            DELETE FROM users 
-            WHERE room_id='${roomId}';
+            DELETE FROM users;
         `)
     }
 

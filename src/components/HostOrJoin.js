@@ -12,20 +12,21 @@ function generatePin() {
     return pin;
 }
 
-export default function HostOrJoin({handleClickHost, disableHost}) {
+export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
     return (
         <HomePage>
              <Link to='/'>
               <AppLogo src={logo} />
             </Link>
-                {!disableHost ?
+                {showHost?
                 <Link onClick={() => (handleClickHost(generatePin()))} to='/host'>
                     <Button1>host</Button1>
                 </Link> : null}
-    
+                    
+                {showJoin ?
                 <Link to='/join'>
                     <Button2>join</Button2>
-                </Link>
+                </Link> : null} 
             
         </HomePage>
     )

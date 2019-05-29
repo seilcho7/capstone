@@ -28,6 +28,12 @@ class Drawing {
         WHERE user_id= ($2)   
         `,[drawingData, userid] )
     }
+    // Remove all drawings
+    static removeDrawing() {
+        return db.none(`
+            DELETE FROM drawing;
+        `)
+    }
 }
 
 module.exports= Drawing; 
