@@ -36,7 +36,9 @@ class App extends React.Component {
       answerChoices: ['bird', 'birdDog', 'Flying Panda!'],
       start: false,
       pointsArray: '',
-      disableHost: false
+      showHost: true,
+      kickUsers: false,
+      showJoin: false
     };  
   }
 
@@ -49,7 +51,7 @@ class App extends React.Component {
       console.log(e.data);
       const data = JSON.parse(e.data);
       console.log(data);
-      const {users, newUsers, roomPin, start, pointsArray, disableHostButton} = JSON.parse(e.data)
+      const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton} = JSON.parse(e.data)
       console.log("================= You put a console log here =================");
       console.log(newUsers);
 
@@ -84,10 +86,22 @@ class App extends React.Component {
             this.setState({
               pointsArray
             })
-          case 'disableHostButton':
+            break;
+          case 'showHostButton':
             this.setState({
-              disableHost: disableHostButton
+              showHost: showHostButton
             })
+            break;
+          case 'kickUsers':
+            this.setState({
+              kickUsers
+            })
+            break;
+          case 'showJoinButton':
+            this.setState({
+              showJoin: showJoinButton
+            })
+            break;
           default: 
             console.log('Not working - NEW switch')
             break;
@@ -110,16 +124,16 @@ class App extends React.Component {
             <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
           )}/> */}
         <Route path='/host-or-join' render={(props) => (
-            <HostOrJoin {...props} handleClickHost={this._setPin} disableHost={this.state.disableHost} />
+            <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
           )} />
         <Route path='/host' render={(props) => (
             <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
           )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} pinMatch={this._pinMatch}/>
+            <JoinPage {...props} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
         )} />
         <Route path ='/wait' render={(props) =>(
-          <WaitPage {...props} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
+          <WaitPage {...props} kickUsers={this.state.kickUsers} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
         ) } />
         <Route path ='/canvas' render={(props) =>(
 
@@ -141,13 +155,7 @@ class App extends React.Component {
       drawEnd: true
     })
   }
-  _pinMatch =() => {
-    if(this.state.gamePin === this.state.socketRoomId) {
-      this.setState({
-        joined: styles.joinButtonActivated
-      })
-    }
-  }
+  
   _handleChangeName =(event)=> {
     console.log (event.target.value)
     this.setState({
@@ -171,7 +179,7 @@ class App extends React.Component {
       this.connection.send(JSON.stringify({
         name: this.state.name,
         gamePin: this.state.gamePin,
-        disableHost: this.state.disableHost
+        showHost: this.state.showHost
       }))
       // window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
@@ -181,19 +189,33 @@ class App extends React.Component {
   _setPin = (roomId) => {
     this.setState({
       roomId,
-      disableHost: true
+      showHost: false,
+      kickUsers: false,
+      showJoin: true
     }, () => {
-      this.connection.send(JSON.stringify({roomId: this.state.roomId, disableHost: this.state.disableHost}));
+      this.connection.send(JSON.stringify({
+        showJoin: this.state.showJoin, 
+        kickUsers: this.state.kickUsers, 
+        roomId: this.state.roomId, 
+        showHost: this.state.showHost
+      }));
     })
   }
   _resetData = () => {
     this.setState({
       saveRoomId: this.state.roomId,
-      roomId: '',
-      socketRoomId: '',
-      disableHost: false
+      roomId: true,
+      showHost: true,
+      kickUsers: true,
+      showJoin: false
     }, () => {
-      this.connection.send(JSON.stringify({saveRoomId: this.state.saveRoomId, disableHost: this.state.disableHost}))
+      this.connection.send(JSON.stringify({
+        showJoin: this.state.showJoin, 
+        kickUsers: this.state.kickUsers, 
+        roomId: this.state.roomId, 
+        saveRoomId: this.state.saveRoomId, 
+        showHost: this.state.showHost
+      }))
     })
   }
 
@@ -201,7 +223,10 @@ class App extends React.Component {
     this.setState({
       isHost: true
     }, () => {
-      this.connection.send(JSON.stringify({start: true, roomId: this.state.socketRoomId}));
+      this.connection.send(JSON.stringify({
+        start: true, 
+        roomId: this.state.socketRoomId
+      }));
     })
     console.log(this.state.isHost);
     console.log(this.state.start);

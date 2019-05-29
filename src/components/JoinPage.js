@@ -5,7 +5,7 @@ import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 import { Button1, Button2, Wrapper } from './HostPage';
 
-export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate, pinMatch}){
+export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate}){
         return (
             <Wrapper>
                 <div className={styles.text}>
@@ -23,10 +23,10 @@ export default function JoinPage ({nameValue, name, pinValue, pin, submit, activ
                 </div>
             <div className={styles.ButtonContainer}>
             <Link to= '/wait' onClick={submit} className={activate}>
-                 <Button1 onClick={submit} className={styles.joinButton}> Join </Button1></Link>
-                 <Link to='/host-or-join' className={styles.cancelButton}>
+                 <Button1 onClick={submit} className={styles.joinButton}> join </Button1></Link>
+                 {/* <Link to='/host-or-join' className={styles.cancelButton}>
                      <Button2>cancel</Button2>
-                 </Link>
+                 </Link> */}
                 {/* <Link to= '/wait' onClick={submit} className={activate}> Join </Link> */}
                 {/* <Link to='/host-or-join' className={styles.cancelButton}>Cancel</Link> */}
             </div>

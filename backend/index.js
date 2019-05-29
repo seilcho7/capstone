@@ -12,25 +12,27 @@ const wss = new WebSocket.Server({
     path: '/ws',
     server // piggyback the websocket server onto our http server
 }); 
-const newUsers = [];
 
 app.use(express.urlencoded({extended: true}));
 
 const PORT = process.env.PORT;
 
 // This is my "database"
-const db = [];
+let newUsers = [];
+let db = [];
 let roomPin = '';
 let userAnswers = [];
 let pointsArray = [];
-let disableHostButton = false;
+let showHostButton = true;
+let showJoinButton = false;
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
 
     socket.send(JSON.stringify({
         roomPin,
-        disableHostButton
+        showHostButton,
+        showJoinButton
     }))
     // socket.send(JSON.stringify(getData()));
     // getData();
@@ -38,8 +40,8 @@ wss.on('connection', function connection(socket) {
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
 
-        const users = [];   
-        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, disableHost} = JSON.parse(data);
+        let users = [];   
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
@@ -65,11 +67,11 @@ wss.on('connection', function connection(socket) {
             userAnswers.push(answer) 
 
             if (userAnswers.length > newUsers.length-1) {
-                console.log('splice triggered')
+                // console.log('splice triggered')
                 // userAnswers.push(answer) 
-                console.log(userAnswers)
+                // console.log(userAnswers)
                 userAnswers.splice(0,newUsers.length-1)
-                console.log(userAnswers)
+                // console.log(userAnswers)
             } 
         }
         // if nextPlayer reaches last player, nextPlayer is p.0 
@@ -87,8 +89,8 @@ wss.on('connection', function connection(socket) {
             for(let i=0; i< userData.length; i++) {
                 pointsArray[i] = oldPoints[i]
             }
-            console.log(userData)
-            console.log(pointsArray)
+            // console.log(userData)
+            // console.log(pointsArray)
             if(nextPlayer >= newUsers.length) {
                 nextPlayer = 0
             }
@@ -97,31 +99,39 @@ wss.on('connection', function connection(socket) {
         if (roomId) {
             await Host.createHost(roomId);
             roomPin = roomId;
-            console.log(disableHostButton);
-            console.log(roomPin);
+            // console.log(roomPin);
+        }
+        if (showJoin) {
+            showJoinButton = showJoin;
+        } else {
+            showJoinButton = true;
         }
 
-        disableHostButton = disableHost;
+        if (showHost) {
+            showHostButton = showHost;
+        } else {
+            showHostButton = false;
+        }
 
         if (saveRoomId) {
             await Host.removeHost(saveRoomId);
-            await User.removeUsers(saveRoomId);
+            await User.removeUsers();
         }
 
         if (start) {
-            console.log(newUsers);
-            console.log(roomId);
+            // console.log(newUsers);
+            // console.log(roomId);
             const userData = await User.getUserByRoomId(roomId);
-            console.log(userData);
+            // console.log(userData);
             userData.map((user) => {
                 if (!users.includes(user)) {
                     newUsers.push(user.name);
                     pointsArray.push(user.points);
-                    console.log(pointsArray)
+                    // console.log(pointsArray)
                 }
             });
-            console.log(pointsArray)
-            console.log(newUsers);
+            // console.log(pointsArray)
+            // console.log(newUsers);
             // wss.clients.forEach(function each(client) {
             //     if (client.readyState === WebSocket.OPEN) {
             //     client.send(
@@ -130,6 +140,15 @@ wss.on('connection', function connection(socket) {
             //     }
             // })
         } 
+        
+        if (kickUsers) {
+            await Drawing.removeDrawing();
+            await User.removeUsers();
+            newUsers = [];
+            pointsArray = [];
+            users = [];
+
+        }
 
         // db.push(message);
         wss.clients.forEach(function each(client) {
@@ -145,7 +164,9 @@ wss.on('connection', function connection(socket) {
                     nextPlayer,
                     pointsArray,
                     timerOn,
-                    disableHostButton
+                    showHostButton,
+                    kickUsers,
+                    showJoinButton
                 }))
             }
         });    
