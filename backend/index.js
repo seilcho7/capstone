@@ -81,7 +81,7 @@ wss.on('connection', function connection(socket) {
 
         if(nextPlayer && selectedAnswer && timerOn === false ) {
             const awardPoint= await User.givePoint(roomPin, selectedAnswer)
-            await User.resetAnswers(roomPin);
+            // await User.resetAnswers(roomPin);
             console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
             console.log(userData)
