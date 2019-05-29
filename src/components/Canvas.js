@@ -242,7 +242,8 @@ export default class Canvas extends React.Component {
             answer: this.state.userAnswer,
             name: this.props.name}))
         this.setState({
-            submittedAnswer: true
+            submittedAnswer: true,
+            userAnswer: ''
         })
     }
 
