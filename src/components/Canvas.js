@@ -25,7 +25,9 @@ export default class Canvas extends React.Component {
             receivedPoint: false,
             selectedUser: '',
             timerOn: true,
-            picked: false        
+            picked: false,
+            disabled: false,
+            hideGrid: false 
         }
     }
     
@@ -67,23 +69,29 @@ export default class Canvas extends React.Component {
                         console.log('nextPlayer did a thing')
                         this.setState({
                             receivedPoint: true,
-                            selectedUser
+                            selectedUser,
                         })
-                        if(this.state.selectedUser !== this.state.activePlayer) {
+                        
                         setTimeout(() => {
+                            console.log('activeplayer', this.state.activePlayer)
+                            console.log('nextplayer',nextPlayer)
+
                             this.setState({
+                                picked:false,
                                 activePlayer: nextPlayer,
                                 submittedAnswer:false,
                                 userAnswers: '',
                                 timerOn: timerOn,
                                 selectedUser: -2
                             })
+                            console.log('activeplayer', this.state.activePlayer)
+                            console.log('nextplayer',nextPlayer)
                             this.setState({
                                 timerOn: true,
                                 receivedPoint: false
                             })
                         }, 4500);
-                    }
+                    
                         console.log(this.state.activePlayer)
                         break;
                     case 'pointsArray':
@@ -127,7 +135,7 @@ export default class Canvas extends React.Component {
                     </p>
                 </div>
                 {/*   Host disabled canvas ternary render  */}
-                {this.state.timerOn ? <ReactCountdownClock seconds={20}
+                {this.state.timerOn ? <ReactCountdownClock seconds={30}
                         color="#E50066"
                         alpha={1}
                         size={100}
@@ -148,7 +156,7 @@ export default class Canvas extends React.Component {
                         // onComplete={}
                     /> */}
                     
-                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled ref={canvasDraw => {
+                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
                     {/*   User list and user points data render  */}
@@ -176,15 +184,18 @@ export default class Canvas extends React.Component {
                         this._sendDrawing();
                     }}>
 
-                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} ref={canvasDraw => {
+                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
                         { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i}><button onClick={this._chooseAnswer} value={answer}>{answer}</button></li>)) : null}
                     </div> : 
                     // Answer Submit form
+                    
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
+                    <div> You have 30 seconds to answer. Hurry up. 
                     <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
+                    </div>
                     // Submitted answer 
                     : (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
                     : null}
@@ -220,8 +231,7 @@ export default class Canvas extends React.Component {
     _chooseAnswer = (event) => {
         this.setState({
             userAnswers: '',
-            picked: true,
-            timerOn: false
+            picked: true
         })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
@@ -240,7 +250,8 @@ export default class Canvas extends React.Component {
     }
     _hideTimer = () => {
         this.setState({
-            timerOn: false
+            disabled: true,
+            hideGrid: true
         })
     }
 }

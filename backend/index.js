@@ -95,10 +95,11 @@ wss.on('connection', function connection(socket) {
                     selectedUser = i
                 }
             }
-            console.log(selectedUser)
-            console.log(userData)
-            console.log(pointsArray)
+            
+            console.log(nextPlayer) 
+            console.log(newUsers.length)
             if(nextPlayer >= newUsers.length) {
+                console.log('IF STATEMENT TRIGGEERED')
                 nextPlayer = 0
             }
         }
