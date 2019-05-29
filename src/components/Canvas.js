@@ -34,7 +34,8 @@ export default class Canvas extends React.Component {
             completed: false,
             disabled: false,
             hideGrid: false ,
-            timesUp: false
+            timesUp: false,
+            answerStyle: 'answerChoicesShow'
         }
     }
     
@@ -50,7 +51,7 @@ export default class Canvas extends React.Component {
         this.props.connection.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
                     case 'drawData':
@@ -93,17 +94,18 @@ export default class Canvas extends React.Component {
                                 disabled: false,
                                 picked:false,
                                 activePlayer: nextPlayer,
-                                submittedAnswer:false,
+                                submittedAnswer: false,
                                 userAnswers: '',
                                 timerOn: timerOn,
-                                selectedUser: -2
+                                selectedUser: -2,
+                                changeClass: 'answerChoicesHidden'
                             })
                             console.log('activeplayer', this.state.activePlayer)
                             console.log('nextplayer',nextPlayer)
                             this.setState({
                                 timerOn: true,
                                 receivedPoint: false,
-                                completed: false
+                                completed: false,
                             })
                         }, 4500);
                     
@@ -113,6 +115,11 @@ export default class Canvas extends React.Component {
                         console.log('pointsArray did a thing')
                         this.setState({
                             pointsArray
+                        })
+                        break;
+                    case 'changeClass':
+                        this.setState({
+                            changeClass
                         })
                 default:
                     break;
@@ -214,7 +221,7 @@ export default class Canvas extends React.Component {
                         {(this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i} onClick={this._chooseAnswer} value={answer}> {answer}</li>)) : null}
                     </div> */}
                    
-                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li className='answerChoices' key={i} onClick={this._chooseAnswer} value={answer}>{answer}</li>)) : null}
+                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button><li className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</li></button>)) : null}
                     
                     </div> : 
                     // Answer Submit form
@@ -246,7 +253,7 @@ export default class Canvas extends React.Component {
 
     _setDrawingData = (object) => {
         this.setState({
-            drawingData: object
+            drawingData: object,
         })
     }
 
@@ -259,12 +266,13 @@ export default class Canvas extends React.Component {
 
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
-        this.props.connection.send(JSON.stringify({
-            answer: this.state.userAnswer,
-            name: this.props.name}))
         this.setState({
             submittedAnswer: true
         })
+        this.props.connection.send(JSON.stringify({
+            answer: this.state.userAnswer,
+            name: this.props.name,
+            changeClass: 'answerChoicesShow'}))
     }
 
     _chooseAnswer = (event) => {
