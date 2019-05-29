@@ -14,7 +14,6 @@ import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
-import EndGame from './components/EndGame';
 // import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
@@ -39,7 +38,7 @@ class App extends React.Component {
       pointsArray: '',
       showHost: true,
       kickUsers: false,
-      showJoin: false
+      endGame: false
     };  
   }
 
@@ -49,12 +48,13 @@ class App extends React.Component {
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      console.log(e.data);
+      // console.log(e.data);
       const data = JSON.parse(e.data);
-      console.log(data);
+      // console.log(data);
       const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton} = JSON.parse(e.data)
       console.log("================= You put a console log here =================");
-      console.log(newUsers);
+      // console.log(newUsers);
+      console.log(Object.keys(data));
 
       Object.keys(data).forEach((key) => {
         switch(key){
@@ -84,9 +84,11 @@ class App extends React.Component {
             })
             break;
           case 'pointsArray':
+            console.log("POINTS ARRRRAAAAY");
             this.setState({
               pointsArray
             })
+            console.log(this.state.pointsArray);
             break;
           case 'showHostButton':
             this.setState({
@@ -119,29 +121,29 @@ class App extends React.Component {
         <Route exact path='/' component={Home} />
         <Route exact path='/how-to-play' component={HowToPlay} />
         <Route path="/answer" component={(props) => (
-            <Answer {...props} answerChoices={this.state.answerChoices} />
-          )}/>
+          <Answer {...props} answerChoices={this.state.answerChoices} />
+        )}/>
         {/* <Route path="/submitanswer" component={(props) => (
             <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
           )}/> */}
         <Route path='/host-or-join' render={(props) => (
-            <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
-          )} />
+          <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
+        )} />
         <Route path='/host' render={(props) => (
-            <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
-          )} />
+          <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
+        )} />
         <Route path='/join' render={(props) => (
-            <JoinPage {...props} resetJoinButton={this._resetJoinButton} resetNamePin={this._resetNamePin} kickUsers={this.state.kickUsers} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
+          <JoinPage {...props} resetJoinButton={this._resetJoinButton} resetNamePin={this._resetNamePin} kickUsers={this.state.kickUsers} nameValue={this.state.name} name={this._handleChangeName} pinValue={this.state.gamePin} pin={this._handleChangePin} submit={this._handleSubmitJoin} activate={this.state.joined} />
         )} />
         <Route path ='/wait' render={(props) =>(
           <WaitPage {...props} kickUsers={this.state.kickUsers} isHost={this.state.isHost} gameStart={this.state.start} handleLeave={this._leaveWaitPage}/>
-        ) } />
+        )} />
         <Route path ='/canvas' render={(props) =>(
-          <Canvas users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
-        ) } />
-        <Route path ='/endgame' render={(props) =>(
-          <EndGame {...props}/>
-        ) } />
+          <Canvas endGame={this.state.endGame} setEndGame={this._setEndGame} resetData={this._resetData} users={this.state.users} hostStatus={this.state.isHost} isHost={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
+        )} />
+        {/* <Route path ='/endgame' render={(props) =>(
+          <EndGame {...props} resetData={this._resetData} users={this.state.users} pointsArray={this.state.pointsArray} />
+        )} /> */}
         {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )
@@ -219,15 +221,21 @@ class App extends React.Component {
       saveRoomId: this.state.roomId,
       roomId: true,
       showHost: true,
+      showJoin: false,
       kickUsers: true,
-      joined: styles.joinButton
+      joined: styles.joinButton,
+      isHost: false,
+      endGame: false,
+      users: ''
     }, () => {
       this.connection.send(JSON.stringify({
         showJoin: false,
         kickUsers: this.state.kickUsers, 
         roomId: this.state.roomId, 
         saveRoomId: this.state.saveRoomId, 
-        showHost: this.state.showHost
+        showHost: this.state.showHost,
+        isHost: this.state.isHost,
+        users: this.state.users
       }))
     })
   }
@@ -248,8 +256,6 @@ class App extends React.Component {
         roomId: this.state.socketRoomId
       }));
     })
-    console.log(this.state.isHost);
-    console.log(this.state.start);
   }
 
   _addAnswerChoice = (newAnswer) => {
@@ -259,6 +265,11 @@ class App extends React.Component {
     console.log("Did you ring?");
   }
 
+  _setEndGame = () => {
+    this.setState({
+      endGame: true
+    })
+  }
 }
 
 

@@ -26,6 +26,7 @@ let pointsArray = [];
 let showHostButton = true;
 let showJoinButton = false;
 let selectedUser = -1;
+// let setEndGame = false;
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -44,6 +45,7 @@ wss.on('connection', function connection(socket) {
         let users = [];   
         const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
+
         // Adds new user to the databass
         const newUser = await Object.keys(JSON.parse(data));
         if(newUser[0]==='name' && newUser[1]==='gamePin') {
@@ -153,7 +155,6 @@ wss.on('connection', function connection(socket) {
             newUsers = [];
             pointsArray = [];
             users = [];
-
         }
 
         // db.push(message);
