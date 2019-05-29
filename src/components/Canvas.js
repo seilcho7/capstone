@@ -81,6 +81,7 @@ export default class Canvas extends React.Component {
                             console.log('nextplayer',nextPlayer)
 
                             this.setState({
+                                disabled: false,
                                 picked:false,
                                 activePlayer: nextPlayer,
                                 submittedAnswer:false,
