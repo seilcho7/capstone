@@ -175,7 +175,7 @@ export default class Canvas extends React.Component {
                     {/* <h4> Answers </h4> */}
                         <div className='answerList'>
                             answers:
-                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<button key={i}>{answer}</button>)): null}
                         </div>
                     </div>
                     <div>
