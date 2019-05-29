@@ -108,16 +108,24 @@ wss.on('connection', function connection(socket) {
             roomPin = roomId;
             // console.log(roomPin);
         }
-        if (showJoin) {
-            showJoinButton = showJoin;
-        } else {
-            showJoinButton = true;
-        }
+        
+        // if (showJoin) {
+        //     showJoinButton = showJoin;
+        // } else {
+        //     showJoinButton = true;
+        // }
 
-        if (showHost) {
-            showHostButton = showHost;
-        } else {
+        // if (showHost) {
+        //     showHostButton = showHost;
+        // } else {
+        //     showHostButton = false;
+        // }
+        if (showJoin && !showHost) {
+            showJoinButton = true;
             showHostButton = false;
+        } else if (!showJoin && showHost) {
+            showJoinButton = false;
+            showHostButton = true;
         }
 
         if (saveRoomId) {

@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from '../css/JoinPage.module.css';
-import { Link } from 'react-router-dom'; 
+import { Redirect, Link } from 'react-router-dom'; 
 import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 import { Button1, Button2, Wrapper } from './HostPage';
 
-export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate}){
+export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate, kickUsers}){
         return (
             <Wrapper>
+                { kickUsers ? <Redirect to='/host-or-join' /> : null}
                 <div className={styles.text}>
                 <Link to='/'>
                     <AppLogo src={logo} />

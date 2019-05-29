@@ -192,21 +192,24 @@ export default class Canvas extends React.Component {
                 </div>
         )
     }
+
     _sendDrawing = () => {  
         this.props.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
-      }
+    }
 
     _setDrawingData = (object) => {
         this.setState({
-          drawingData: object
+            drawingData: object
         })
-      }
+    }
+
     _handleChangeAnswer =(event)=> {
         console.log (event.target.value)
         this.setState({
             userAnswer: event.target.value
         })
     }
+
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
         this.props.connection.send(JSON.stringify({
@@ -238,6 +241,7 @@ export default class Canvas extends React.Component {
         console.log(promptArray[randomNum]);
         return promptArray[randomNum];
     }
+
     _hideTimer = () => {
         this.setState({
             timerOn: false
@@ -269,6 +273,6 @@ const Button = styled.button`
 `;
 
 const AppLogo = styled.img`
-  height: 70px;
+    height: 70px;
 `
 
