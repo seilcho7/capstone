@@ -24,116 +24,119 @@ export default class Canvas extends React.Component {
             pointsArray: '',
             prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena', 'jake from state farm', 'tony the tiger eating the fruit loops bird', 'running turtle', 'm&m rapping', 'a packet of eminems', 'couch on fire', 'embarassing photo of spongebob', 'christmas tree during halloween', 'crying dinosaur', 'pug on a treadmill', 'pirate in a hammock', 'person with donuts for eyes', 'cowboy on a polar bear', 'flamingo doing ballet', 'coal under pressure', 'shakesbeer', 'souperhero', 'a person under a tack'],
             randomNum: 0,
-            timerOn: true,
             receivedPoint: false,
             selectedUser: '',
             timerOn: true,
             picked: false, 
             completed: false,
             disabled: false,
-
             hideGrid: false ,
             timesUp: false,
-            answerStyle: 'answerChoicesShow'
+            answerStyle: 'answerChoicesShow',
+            hideCanvas: 'showMe',
+            hideAnswers: 'hideMe'
         }
     }
     
     componentDidMount(){
-    let max = this.state.prompts.length;
-    let min = 0;
-    this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
-    if(this.props.connection) {
-        this.setState({
-            playerNumber:this.props.users.indexOf(this.props.name)
-        })
-
-        this.props.connection.onmessage = (e) => {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
-            Object.keys(data).forEach((key) => {
-                switch(key){
-                    case 'drawData':
-                        console.log("drawData did a thing in new switch");
-                        this.setState({
-                            drawingData: drawData
-                        })
-                    break;
-                    case 'userAnswers':
-                        console.log('userAnswers is getting pushed to setState')
-                        if(userAnswers.length >= this.props.users.length -1 && this.state.picked === true) {
-                            this.setState({
-                                userAnswers: '' 
-                            })
-                        } else {
-                        this.setState({
-                            userAnswers
-                        })
-                    }
-                        console.log(this.state.userAnswers)
-                        break;
-                    case 'nextPlayer':
-                        console.log('nextPlayer did a thing')
-                        console.log('completed is gon be trueeeeee');
-                        console.log(this.state.completed);
-                        this.setState({
-                            receivedPoint: true,
-                            selectedUser,
-                            completed: true
-                        })
-                        console.log(this.state.completed);
-                        if(this.state.selectedUser !== this.state.activePlayer) {
-                        }
-                        
-                        setTimeout(() => {
-                            console.log('activeplayer', this.state.activePlayer)
-                            console.log('nextplayer',nextPlayer)
-
-                            this.setState({
-                                hideGrid: false,
-                                disabled: false,
-                                picked:false,
-                                activePlayer: nextPlayer,
-                                submittedAnswer: false,
-                                userAnswers: '',
-                                timerOn: timerOn,
-                                selectedUser: -2,
-                                changeClass: 'answerChoicesHidden'
-                            })
-                            console.log('activeplayer', this.state.activePlayer)
-                            console.log('nextplayer',nextPlayer)
-                            this.setState({
-                                timerOn: true,
-                                receivedPoint: false,
-                                completed: false,
-                            })
-                        }, 4500);
-                    
-                        console.log(this.state.activePlayer)
-                        break;
-                    case 'pointsArray':
-                        console.log('pointsArray did a thing')
-                        this.setState({
-                            pointsArray
-                        })
-                        break;
-
-                    case 'changeClass':
-                        this.setState({
-                            changeClass
-                        })
-                    default:
-                        break;
-                }
+        let max = this.state.prompts.length;
+        let min = 0;
+        this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
+        if(this.props.connection) {
+            this.setState({
+                playerNumber:this.props.users.indexOf(this.props.name)
             })
+
+            this.props.connection.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                console.log(data)
+                const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
+                Object.keys(data).forEach((key) => {
+                    switch(key){
+                        case 'drawData':
+                            console.log("drawData did a thing in new switch");
+                            this.setState({
+                                drawingData: drawData
+                            })
+                        break;
+                        case 'userAnswers':
+                            console.log('userAnswers is getting pushed to setState')
+                            if(userAnswers.length >= this.props.users.length -1 && this.state.picked === true) {
+                                this.setState({
+                                    userAnswers: '' 
+                                })
+                            } else {
+                            this.setState({
+                                userAnswers
+                            })
+                        }
+                            console.log(this.state.userAnswers)
+                            break;
+                        case 'nextPlayer':
+                            console.log('nextPlayer did a thing')
+                            console.log('completed is gon be trueeeeee');
+                            console.log(this.state.completed);
+                            this.setState({
+                                receivedPoint: true,
+                                selectedUser,
+                                completed: true
+                            })
+                            console.log(this.state.completed);
+                            if(this.state.selectedUser !== this.state.activePlayer) {
+                            }
+                            
+                            setTimeout(() => {
+                                console.log('activeplayer', this.state.activePlayer)
+                                console.log('nextplayer',nextPlayer)
+
+                                this.setState({
+                                    hideGrid: false,
+                                    disabled: false,
+                                    picked:false,
+                                    activePlayer: nextPlayer,
+                                    submittedAnswer: false,
+                                    userAnswers: '',
+                                    timerOn: timerOn,
+                                    selectedUser: -2,
+                                    changeClass: 'answerChoicesHidden'
+                                })
+                                console.log('activeplayer', this.state.activePlayer)
+                                console.log('nextplayer',nextPlayer)
+                                this.setState({
+                                    timerOn: true,
+                                    receivedPoint: false,
+                                    completed: false,
+                                    hideCanvas: 'showMe',
+                                    hideAnswers: 'hideMe'
+                                })
+                            }, 3000);
+                        
+                            console.log(this.state.activePlayer)
+                            break;
+                        case 'pointsArray':
+                            console.log('pointsArray did a thing')
+                            this.setState({
+                                pointsArray
+                            })
+                            break;
+
+                        case 'changeClass':
+                            this.setState({
+                                changeClass
+                            })
+                        default:
+                            break;
+                    }
+                })
+            }
+        } else {
+            console.log('no props! Start again from the beginning :)')
         }
-    } else {
-        console.log('no props! Start again from the beginning :)')
     }
-}
     
     render() {
 
+        // If statement that checks if the person is a host or not
         if (this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
@@ -148,9 +151,9 @@ export default class Canvas extends React.Component {
         return (
             <div>
                 <div className='logoAndTimer'>
-            <AppLogo src={logo} />
+                    <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
-                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={30}
+                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={20}
                             color="#E50066"
                             alpha={1}
                             size={100}
@@ -159,90 +162,110 @@ export default class Canvas extends React.Component {
                             // pausedText="00"
                             // onComplete={}
                         /> : null }
-                    </div>
-            <Wrapper> 
-                {/* Prompts */}
-                <div>
-                {(this.state.selectedUser === this.state.playerNumber) ? 
-                <div>
-                    <h1>YOU DID IT</h1>
-                </div> : null}
-                    <p>
-                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
-                    </p>
                 </div>
-                { this.props.hostStatus ?  
-                <div>
-                    <div className='canvasAndAnswers'>
-                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
-                    (this.saveableCanvas = canvasDraw)
-                    }} />
-                    {/*   User list and user points data render  */}
-                    {/* <h4> Answers </h4> */}
-                        <div className='answerList'>
-                            answers:
-                            {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
-                        </div>
-                    </div>
+                <Wrapper> 
+                    {/* Prompts */}
                     <div>
-                        {/* users and respective points to render on the screen */}
-                        <ul className='users'>
-                            {this.props.users ? this.props.users.map((user, i) => (<li key={i}>{user}: {' '}{this.state.pointsArray[i]}</li>)) : null}
-                        </ul> 
+                        {(this.state.selectedUser === this.state.playerNumber) ? 
+                            <div>
+                                <h1>YOU DID IT</h1>
+                            </div> : null}
+                            <p>
+                                {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
+                            </p>
                     </div>
-                    {/* End Game Button */}
-                    <Link to="/" onClick={() => {
-                        this.props.setEndGame();
-                        this.props.resetData();
-                        }} >
-                        <Button1>END GAME</Button1>
-                    </Link>
-                </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
-                // {/* //  User enabled canvas ternary render */}
-                    <div onTouchEnd={async() => {
-                        const saveData = await this.saveableCanvas.getSaveData();
-                        const object = [];
-                        object.push(saveData);
-                        this._setDrawingData(object);
-                        console.log(object);
-                        this._sendDrawing();
-                    }}
-                    onMouseUp={async() => {
-                        const saveData = await this.saveableCanvas.getSaveData();
-                        const object = [];
-                        object.push(saveData); 
-                        this._setDrawingData(object);
-                        console.log(object);
-                        this._sendDrawing();
-                    }}>
 
-                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
-                            (this.saveableCanvas = canvasDraw)
-                        }} />
-                        {/* Maps user answers as buttons to the active player */}
-                    {/* <div className='answerChoices'>
-                        {(this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<li key={i} onClick={this._chooseAnswer} value={answer}> {answer}</li>)) : null}
-                    </div> */}
-                    { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}   
-                    </div> : 
-                    // Answer Submit form
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false && this.state.timesUp === false) ? 
-                        <div> You have 30 seconds to answer! Hurry Up. 
-                            <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
-                        </div>
-                        : 
-                    // (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === false) ? <div> You have 30 seconds to answer! Hurry Up. </div> : null
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === true) ? <div> Your time is up. Submit answer.                             <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
-                    </div> : 
-                    // (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false) ?
-                    // <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/>
-                    // Submitted answer 
-                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
-                    : null}
-                    {(this.state.activePlayer !== this.state.playerNumber && this.props.isHost === false) ? 
-                    <Confetti active= {this.state.completed} /> : null }
+                    {/* Checks if Person is a host based on host status */}
+                    { this.props.hostStatus ?  
+                        // ============ THIS IS THE FIRST CONDITION AFTER THIS.PROPS.HOSTSTATUS TERNARY ===========
+                        <div>
+                            <div className='canvasAndAnswers'>
+                                {/* Canvas for the Host */}
+                                <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
+                                    (this.saveableCanvas = canvasDraw)
+                                    }} />
+                                    {/*   User list and user points data render  */}
+                                    {/* <h4> Answers </h4> */}
+                                    <div className='answerList'>
+                                        answers:
+                                        {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                                    </div>
+                            </div>
+                            <div>
+                                {/* users and respective points to render on the screen */}
+                                <ul className='users'>
+                                    {this.props.users ? this.props.users.map((user, i) => (<li key={i}>{user}: {' '}{this.state.pointsArray[i]}</li>)) : null}
+                                </ul> 
+                            </div>
+                            {/* End Game Button */}
+                            <Link to="/" onClick={() => {
+                                this.props.setEndGame();
+                                this.props.resetData();
+                                }} >
+                                <Button1>END GAME</Button1>
+                            </Link>
+                        </div> : 
+                        // ============ THIS IS THE SECOND CONDITION AFTER THIS.PROPS.HOSTSTATUS TERNARY ===========
+                            (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
+                            // =================== THIS IS THE FIRST CONDITION AFTER ACTIVEPLAYER === PLAYERNUMBER ===================
+                                // {/* User enabled canvas ternary render */}
+                                    <div onTouchEnd={async() => {
+                                        const saveData = await this.saveableCanvas.getSaveData();
+                                        const object = [];
+                                        object.push(saveData);
+                                        this._setDrawingData(object);
+                                        console.log(object);
+                                        this._sendDrawing();
+                                        }}
+                                        onMouseUp={async() => {
+                                            const saveData = await this.saveableCanvas.getSaveData();
+                                            const object = [];
+                                            object.push(saveData); 
+                                            this._setDrawingData(object);
+                                            console.log(object);
+                                            this._sendDrawing();
+                                        }}>
+
+                                    {/* Canvas for ACTIVE PLAYER */}
+                                    <div className={this.state.hideCanvas}>
+                                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                                            (this.saveableCanvas = canvasDraw)
+                                            }} />
+                                    </div>
+
+                                    {/* Answers for ACTIVE PLAYER */}
+                                    <div className={this.state.hideAnswers}>
+                                        { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
+                                    </div>
+
+                                    {/* Maps user answers as buttons to the active player */}
+                                        {/* { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}    */}
+                                    </div> :
+                                    // =================== THIS IS THE SECOND CONDITION AFTER ACTIVEPLAYER === PLAYERNUMBER ===================
+                                    // Answer Submit form 
+                                    // ================= THIS IS THE CONDITION IF TIME IS NOT UP
+                                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === false && this.state.timesUp === false) ? 
+                                        <div> You have 30 seconds to answer! Hurry Up. 
+                                            <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
+                                        </div>: 
+                                            // =============== THIS IS THE CONDITION IF TIME IS UP ===================
+                                            (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer=== false && this.state.timesUp === true) ? 
+                                                <div> 
+                                                    Your time is up. Submit answer.                            
+                                                    <AnswerSubmit answerValue={this.state.userAnswer} handleChangeAnswer={this._handleChangeAnswer} submitAnswer={this._handleSubmit}/> 
+                                                </div> : 
+                                                    // Submitted answer 
+                                                    // ============================ THIS IS THE CONDITION IF PLAYER SUBMIT ANSWER ============================
+                                                    (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? 
+                                                        <div> Submitted answer! Good luck</div> 
+                                                        : null
+                                                        // ============== THIS IS vvvvvvvvv THE ENDING BRACE FOR HOST STATUS ==============
+                                                    } 
+                                                    {// Confetti
+                                                    (this.state.selectedUser == this.state.playerNumber) ? 
+                                                        <Confetti active= {this.state.completed} /> : null }
                 </Wrapper>
-                </div>
+            </div>
         )
     }
 
@@ -278,7 +301,7 @@ export default class Canvas extends React.Component {
     _chooseAnswer = (event) => {
         this.setState({
             userAnswers: '',
-            picked: true
+            picked: true,
         })
         this.props.connection.send(JSON.stringify({
             nextPlayer: this.state.activePlayer+1,
@@ -300,7 +323,9 @@ export default class Canvas extends React.Component {
         this.setState({
             disabled: true,
             hideGrid: true,
-            timesUp: true
+            timesUp: true,
+            hideCanvas: 'hideMe',
+            hideAnswers: 'showMe'
         })
     }
 }
