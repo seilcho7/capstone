@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from '../css/HostOrJoin.module.css';
 import { Link } from 'react-router-dom';
 import logo from '../img/picme-logo.png';
 import '../css/App.css';
 import styled from 'styled-components';
+import { Wrapper, Button2 } from './Home';
 
 
 function generatePin() {
@@ -14,7 +14,7 @@ function generatePin() {
 
 export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
     return (
-        <HomePage>
+        <Wrapper>
              {/* <Link to='/'> */}
                 <AppLogo src={logo} />
             {/* </Link> */}
@@ -27,18 +27,11 @@ export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
                 </Link>
     
             
-        </HomePage>
+        </Wrapper>
     )
 }
 
 // STYLED COMPONENTS
-
-const HomePage = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 100px;
-`;
 
 // start game button  
 const Button1 = styled.button`
@@ -60,6 +53,7 @@ const Button1 = styled.button`
     }
 `;
 
+
 const Button3 = styled.button`
     background-color: black;
     width: 200px;
@@ -67,25 +61,6 @@ const Button3 = styled.button`
     margin-top: 80px;
     margin-bottom: 10px;
     border-color: black;
-`;
-
-// how to play button
-const Button2 = styled.button`
-    background-color: #5856D6;
-    color: white;
-    width: 200px;
-    height: 50px;
-    margin: 10px;
-    border-radius: 25px;
-    border-color: black;
-    font-family: 'Montserrat';
-    font-weight: bold;
-    font-size: 20px;
-    &:hover {
-        cursor: pointer;
-        background-color: #393898;
-        color: white;
-    }
 `;
 
 const AppLogo = styled.img`
