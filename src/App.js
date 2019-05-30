@@ -29,7 +29,7 @@ class App extends React.Component {
       roomId: '',
       saveRoomId: '',
       socketRoomId: '',
-      users: '',
+      users: [],
       redirect: false,
       joined: styles.joinButton,
       isHost: false,
@@ -51,7 +51,7 @@ class App extends React.Component {
       // console.log(e.data);
       const data = JSON.parse(e.data);
       // console.log(data);
-      const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton} = JSON.parse(e.data)
+      const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton, endGame} = JSON.parse(e.data)
       console.log("================= You put a console log here =================");
       // console.log(newUsers);
       console.log(Object.keys(data));
@@ -105,13 +105,16 @@ class App extends React.Component {
               showJoin: showJoinButton
             })
             break;
+          case 'endGame':
+            this.setState({
+              endGame
+            })
+            break;
           default: 
             console.log('Not working - NEW switch')
             break;
         }
       })
-      // console.log(this.state.socketRoomId.roomId);
-      // console.log (this.state.drawing)
     }
   }
   
@@ -187,7 +190,7 @@ class App extends React.Component {
     })
   }
 
-  _handleSubmitJoin = e =>{
+  _handleSubmitJoin = e => {
     if (this.state.gamePin === this.state.socketRoomId) {
       this.connection.send(JSON.stringify({
         name: this.state.name,
@@ -226,16 +229,17 @@ class App extends React.Component {
       joined: styles.joinButton,
       isHost: false,
       endGame: false,
-      users: ''
+      users: []
     }, () => {
       this.connection.send(JSON.stringify({
         showJoin: false,
-        kickUsers: this.state.kickUsers, 
-        roomId: this.state.roomId, 
-        saveRoomId: this.state.saveRoomId, 
-        showHost: this.state.showHost,
-        isHost: this.state.isHost,
-        users: this.state.users
+        kickUsers: false,
+        roomId: '',
+        saveRoomId: '',
+        showHost: true,
+        isHost: false,
+        users: [],
+        endGame: false
       }))
     })
   }
@@ -268,6 +272,10 @@ class App extends React.Component {
   _setEndGame = () => {
     this.setState({
       endGame: true
+    }, () => {
+      this.connection.send(JSON.stringify({
+        endGame: true
+      }));
     })
   }
 }

@@ -6,7 +6,7 @@ import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
 import '../css/Canvas.css'
 import Confetti from 'react-dom-confetti';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -31,10 +31,10 @@ export default class Canvas extends React.Component {
             picked: false, 
             completed: false,
             disabled: false,
-
             hideGrid: false ,
             timesUp: false,
-            answerStyle: 'answerChoicesShow'
+            answerStyle: 'answerChoicesShow',
+            endGame: false
         }
     }
     
@@ -47,10 +47,12 @@ export default class Canvas extends React.Component {
             playerNumber:this.props.users.indexOf(this.props.name)
         })
 
+        const originalOnMessage = this.props.connection.onmessage;
         this.props.connection.onmessage = (e) => {
+            originalOnMessage(e);
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass, endGame} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
                     case 'drawData':
@@ -133,7 +135,7 @@ export default class Canvas extends React.Component {
 }
     
     render() {
-
+        
         if (this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
@@ -147,6 +149,7 @@ export default class Canvas extends React.Component {
 
         return (
             <div>
+                {this.props.endGame ? <Redirect to="/"/> : null}
                 <div className='logoAndTimer'>
             <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
@@ -191,12 +194,13 @@ export default class Canvas extends React.Component {
                         </ul> 
                     </div>
                     {/* End Game Button */}
-                    <Link to="/" onClick={() => {
-                        this.props.setEndGame();
-                        this.props.resetData();
-                        }} >
-                        <Button1>END GAME</Button1>
+                    <Link to="/">
+                        <Button1 onClick={() => {
+                            this.props.setEndGame();
+                            this.props.resetData();
+                        }}>END GAME</Button1>
                     </Link>
+                    
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {

@@ -26,7 +26,6 @@ let pointsArray = [];
 let showHostButton = true;
 let showJoinButton = false;
 let selectedUser = -1;
-// let setEndGame = false;
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -41,9 +40,8 @@ wss.on('connection', function connection(socket) {
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {
-
-        let users = [];   
-        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass} = JSON.parse(data);
+        let users = []; 
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, endGame} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
 
         // Adds new user to the databass
@@ -63,6 +61,8 @@ wss.on('connection', function connection(socket) {
                 users.push(user.name);
             }
         });
+
+
 
         // Pushes answer to array and removes answers if everyone has submitted 
         if(answer && name) {
@@ -175,7 +175,8 @@ wss.on('connection', function connection(socket) {
                     kickUsers,
                     showJoinButton,
                     selectedUser,
-                    changeClass
+                    changeClass,
+                    endGame
                 }))
             }
         });    
