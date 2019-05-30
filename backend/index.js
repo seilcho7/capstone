@@ -27,6 +27,7 @@ let showHostButton = true;
 let showJoinButton = false;
 let selectedUser = '';
 // let setEndGame = false;
+let users = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
@@ -40,10 +41,8 @@ wss.on('connection', function connection(socket) {
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
-    socket.on('message', async (data) => {
-
-        let users = [];   
-        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, toggleAnswers} = JSON.parse(data);
+    socket.on('message', async (data) => {   
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, toggleAnswers, endGame, resetGame, resetUserAnswer} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
 
         // Adds new user to the databass
@@ -53,16 +52,26 @@ wss.on('connection', function connection(socket) {
             console.log(confirmedNewUser);
         }
         
-        const userData = await User.getUserByRoomId(gamePin);
-        const usersString = JSON.stringify(userData);
-        const usersObject = JSON.parse(usersString);
+        // const userData = await User.getUserByRoomId(gamePin);
+        // const usersString = JSON.stringify(userData);
+        // const usersObject = JSON.parse(usersString);
 
         // Adds all users inside users array
-        usersObject.map((user) => {
-            if (!users.includes(user)) {
-                users.push(user.name);
-            }
-        });
+        if (name) {
+            if (!users.includes(name)) {
+                users.push(name);
+            } else if (resetGame) {
+                users = [];
+            }   
+        }
+        console.log(users);
+        // if (users) {
+        //     usersObject.map((user) => {
+        //         if (!users.includes(user)) {
+        //             users.push(user.name);
+        //         }
+        //     });
+        // }
 
         // Pushes answer to array and removes answers if everyone has submitted 
         if(answer && name) {
@@ -76,7 +85,11 @@ wss.on('connection', function connection(socket) {
                 userAnswers.splice(0,newUsers.length-1)
                 // console.log(userAnswers)
             } 
+        } else if (endGame || resetUserAnswer) {
+            userAnswers = [];
         }
+
+        console.log(userAnswers);
         // if nextPlayer reaches last player, nextPlayer is p.0 
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
@@ -173,6 +186,8 @@ wss.on('connection', function connection(socket) {
                     showJoinButton,
                     selectedUser,
                     changeClass,
+                    endGame,
+                    resetGame,
                     toggleAnswers
                 }))
             }
