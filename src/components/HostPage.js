@@ -5,13 +5,10 @@ import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
 
 export default function HostPage({pin, resetData, users, confirmHost}) {
-    // console.log(pin);
     return (
         <Wrapper>
             <div className={styles.pinNum}>
-           {/* <Link to='/'> */}
-              <AppLogo src={logo} />
-            {/* </Link> */}
+                <AppLogo src={logo} />
                 <h3>join this game using the pin:</h3>
                 <Pin>{pin}</Pin>
             </div>
@@ -42,10 +39,10 @@ export const Wrapper = styled.div`
 `;
 
 const AppLogo = styled.img`
-  height: 180px;
+    height: 180px;
 `
 const Pin = styled.div`
-  font-size: 60px;
+    font-size: 60px;
 `
 
 export const Button1 = styled.button`

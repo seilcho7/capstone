@@ -38,7 +38,8 @@ class App extends React.Component {
       pointsArray: '',
       showHost: true,
       kickUsers: false,
-      endGame: false
+      endGame: false,
+      resetGame: false
     };  
   }
 
@@ -51,7 +52,7 @@ class App extends React.Component {
       // console.log(e.data);
       const data = JSON.parse(e.data);
       // console.log(data);
-      const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton} = JSON.parse(e.data)
+      const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton, endGame} = JSON.parse(e.data)
       console.log("================= You put a console log here =================");
       // console.log(newUsers);
       console.log(Object.keys(data));
@@ -103,6 +104,11 @@ class App extends React.Component {
           case 'showJoinButton':
             this.setState({
               showJoin: showJoinButton
+            })
+            break;
+          case 'endGame':
+            this.setState({
+              endGame
             })
             break;
           default: 
@@ -202,40 +208,47 @@ class App extends React.Component {
 
   _setPin = (roomId) => {
     this.setState({
-      roomId,
+      roomId: roomId,
       showHost: false,
+      showJoin: true,
       kickUsers: false,
-      showJoin: true
+      resetGame: false
     }, () => {
       this.connection.send(JSON.stringify({
-        showJoin: this.state.showJoin, 
-        kickUsers: this.state.kickUsers, 
-        roomId: this.state.roomId, 
-        showHost: this.state.showHost
+        roomId: this.state.roomId,
+        showHost: false,
+        showJoin: true,
+        kickUsers: false,
+        resetGame: false
       }));
     })
   }
 
   _resetData = () => {
     this.setState({
-      saveRoomId: this.state.roomId,
-      roomId: true,
+      saveRoomId: '',
+      roomId: '',
       showHost: true,
       showJoin: false,
       kickUsers: true,
       joined: styles.joinButton,
       isHost: false,
       endGame: false,
-      users: ''
+      users: [],
+      resetGame: true,
+      start: false
     }, () => {
       this.connection.send(JSON.stringify({
+        saveRoomId: '',
+        roomId: '',
         showJoin: false,
-        kickUsers: this.state.kickUsers, 
-        roomId: this.state.roomId, 
-        saveRoomId: this.state.saveRoomId, 
-        showHost: this.state.showHost,
-        isHost: this.state.isHost,
-        users: this.state.users
+        showHost: true,
+        kickUsers: true,
+        isHost: false,
+        endGame: false,
+        users: [],
+        resetGame: true,
+        start: false
       }))
     })
   }
@@ -268,6 +281,10 @@ class App extends React.Component {
   _setEndGame = () => {
     this.setState({
       endGame: true
+    }, () => {
+      this.connection.send(JSON.stringify({
+        endGame: true
+      }));
     })
   }
 }

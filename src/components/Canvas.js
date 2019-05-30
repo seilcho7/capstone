@@ -6,7 +6,7 @@ import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
 import '../css/Canvas.css'
 import Confetti from 'react-dom-confetti';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
@@ -31,10 +31,10 @@ export default class Canvas extends React.Component {
             picked: false, 
             completed: false,
             disabled: false,
-
             hideGrid: false ,
             timesUp: false,
-            answerStyle: 'answerChoicesShow'
+            answerStyle: 'answerChoicesShow',
+            endGame: false
         }
     }
     
@@ -47,7 +47,9 @@ export default class Canvas extends React.Component {
             playerNumber:this.props.users.indexOf(this.props.name)
         })
 
+        const originalOnMessage = this.props.connection.onmessage;
         this.props.connection.onmessage = (e) => {
+            originalOnMessage(e);
             const data = JSON.parse(e.data);
             console.log(data)
             const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
@@ -133,7 +135,6 @@ export default class Canvas extends React.Component {
 }
     
     render() {
-
         if (this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
@@ -144,9 +145,9 @@ export default class Canvas extends React.Component {
             }
         }
         
-
         return (
             <div>
+                {this.props.endGame ? <Redirect to="/" /> : null}
                 <div className='logoAndTimer'>
             <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
@@ -173,7 +174,7 @@ export default class Canvas extends React.Component {
                 </div>
                 { this.props.hostStatus ?  
                 <div>
-                    <div className='canvasAndAnswers'>
+                    {!this.props.endGame ? <div className='canvasAndAnswers'>
                     <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
@@ -183,20 +184,20 @@ export default class Canvas extends React.Component {
                             answers:
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                         </div>
-                    </div>
+                    </div> : null}
                     <div>
                         {/* users and respective points to render on the screen */}
                         <ul className='users'>
                             {this.props.users ? this.props.users.map((user, i) => (<li key={i}>{user}: {' '}{this.state.pointsArray[i]}</li>)) : null}
                         </ul> 
                     </div>
+
                     {/* End Game Button */}
-                    <Link to="/" onClick={() => {
+                    <Button1 onClick={() => {
                         this.props.setEndGame();
                         this.props.resetData();
-                        }} >
-                        <Button1>END GAME</Button1>
-                    </Link>
+                        }}>END GAME</Button1>
+
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {
@@ -302,6 +303,33 @@ export default class Canvas extends React.Component {
             hideGrid: true,
             timesUp: true
         })
+    }
+
+    _resetAll = () => {
+        this.setState = {
+            saveableCanvas: '',
+            userAnswer: '',
+            drawingData: '',
+            userAnswers: '',
+            submittedAnswer: false,
+            playerNumber: '',
+            activePlayer: 0,
+            currentPoints: 0,
+            pointsArray: '',
+            prompts: ['talking bird', 'bird dog', 'flying panda', 'chicken taco', 'wizard on a pole', 'Seil on a seal', 'airplane pencil', 'aliens telling secrets', 'intelligent soil', 'fighting noodles', 'fake moon landing', 'dog on a boat', 'pitcher of nachos', 'missed high five', 'shakey knees', 'dinosaur baby', 'radishmouse', 'harambae', 'owl in pants', 'a lunch tray on fire', 'banana big toe', 'cat fart', 'lazy zebra', 'crying hyena', 'jake from state farm', 'tony the tiger eating the fruit loops bird', 'running turtle', 'm&m rapping', 'a packet of eminems', 'couch on fire', 'embarassing photo of spongebob', 'christmas tree during halloween', 'crying dinosaur', 'pug on a treadmill', 'pirate in a hammock', 'person with donuts for eyes', 'cowboy on a polar bear', 'flamingo doing ballet', 'coal under pressure', 'shakesbeer', 'souperhero', 'a person under a tack'],
+            randomNum: 0,
+            timerOn: true,
+            receivedPoint: false,
+            selectedUser: '',
+            timerOn: true,
+            picked: false, 
+            completed: false,
+            disabled: false,
+            hideGrid: false ,
+            timesUp: false,
+            answerStyle: 'answerChoicesShow',
+            endGame: false
+        }
     }
 }
 
