@@ -92,7 +92,6 @@ export default class Canvas extends React.Component {
                         setTimeout(() => {
                             console.log('activeplayer', this.state.activePlayer)
                             console.log('nextplayer',nextPlayer)
-
                             this.setState({
                                 hideGrid: false,
                                 disabled: false,
@@ -184,8 +183,8 @@ export default class Canvas extends React.Component {
                 </div>
                 { this.props.hostStatus ?  
                 <div>
-                    {!this.props.endGame ? <div className='canvasAndAnswers'>
-                    <CanvasDraw lazyRadius={0} immediateLoading={true} disabled hideGrid={true}ref={canvasDraw => {
+                    <div className='canvasAndAnswers'>
+                    <CanvasDraw catenaryColor={'#FFFFFF'} brushRadius={0} lazyRadius={0} immediateLoading={true} disabled hideGrid={false} ref={canvasDraw => {
                     (this.saveableCanvas = canvasDraw)
                     }} />
                     {/*   User list and user points data render  */}
@@ -194,7 +193,7 @@ export default class Canvas extends React.Component {
                         <div className={this.state.toggleAnswers}>
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                         </div>
-                    </div> : null}
+                    </div>
                     <div>
                         {/* users and respective points to render on the screen */}
                         <ul className='users'>
@@ -229,7 +228,7 @@ export default class Canvas extends React.Component {
                         this._sendDrawing();
                     }}>
 
-                        <CanvasDraw disable={this._showTargetElement} className='canvas' lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                        <CanvasDraw disable={this._showTargetElement} className='canvas' lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
