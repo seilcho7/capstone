@@ -25,7 +25,7 @@ let userAnswers = [];
 let pointsArray = [];
 let showHostButton = true;
 let showJoinButton = false;
-let selectedUser = -1;
+let selectedUser = '';
 // let setEndGame = false;
 
 wss.on('connection', function connection(socket) {
@@ -43,7 +43,7 @@ wss.on('connection', function connection(socket) {
     socket.on('message', async (data) => {
 
         let users = [];   
-        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass} = JSON.parse(data);
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, toggleAnswers} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
 
         // Adds new user to the databass
@@ -84,9 +84,7 @@ wss.on('connection', function connection(socket) {
         if(nextPlayer && selectedAnswer && timerOn === false ) {
             const awardPoint= await User.givePoint(roomPin, selectedAnswer)
             // await User.resetAnswers(roomPin);
-            console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
-            console.log(userData)
             oldPoints = []
             userData.forEach((user)=>{
                 oldPoints.push(user.points)
@@ -97,10 +95,9 @@ wss.on('connection', function connection(socket) {
                 if (userData[i].answer == selectedAnswer){
                     selectedUser = i
                 }
+                console.log(selectedUser);
             }
             
-            console.log(nextPlayer) 
-            console.log(newUsers.length)
             if(nextPlayer >= newUsers.length) {
                 console.log('IF STATEMENT TRIGGEERED')
                 nextPlayer = 0
@@ -175,7 +172,8 @@ wss.on('connection', function connection(socket) {
                     kickUsers,
                     showJoinButton,
                     selectedUser,
-                    changeClass
+                    changeClass,
+                    toggleAnswers
                 }))
             }
         });    
