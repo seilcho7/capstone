@@ -89,7 +89,6 @@ wss.on('connection', function connection(socket) {
             userAnswers = [];
         }
 
-        console.log(drawData);
         // if nextPlayer reaches last player, nextPlayer is p.0 
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
