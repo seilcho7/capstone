@@ -44,9 +44,6 @@ export default class Canvas extends React.Component {
     }
     
     componentDidMount(){
-        let max = this.state.prompts.length;
-        let min = 0;
-        this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
         if(this.props.connection) {
             this.setState({
                 playerNumber:this.props.users.indexOf(this.props.name)
@@ -90,8 +87,11 @@ export default class Canvas extends React.Component {
                         console.log(this.state.completed);
                         
                         setTimeout(() => {
-                            console.log('activeplayer', this.state.activePlayer)
-                            console.log('nextplayer',nextPlayer)
+                            console.log('activeplayer', this.state.activePlayer);
+                            console.log('nextplayer',nextPlayer);
+                            let max = this.state.prompts.length;
+                            let min = 0;
+                            this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
                             this.setState({
                                 hideGrid: false,
                                 disabled: false,
@@ -167,7 +167,7 @@ export default class Canvas extends React.Component {
                 <div className='logoAndTimer'>
                     <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
-                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={20}
+                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={25}
                             color="#E50066"
                             alpha={1}
                             size={100}
