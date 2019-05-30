@@ -7,8 +7,11 @@ import ReactCountdownClock from 'react-countdown-clock';
 import '../css/Canvas.css'
 import Confetti from 'react-dom-confetti';
 import { Link } from 'react-router-dom';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 export default class Canvas extends React.Component {
+    targetElement = null;
+  
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
     constructor(props) {
         super(props);
@@ -39,6 +42,9 @@ export default class Canvas extends React.Component {
     }
     
     componentDidMount(){
+    // this is for 
+    this.targetElement = document.querySelector('.canvas');
+
     let max = this.state.prompts.length;
     let min = 0;
     this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
@@ -216,7 +222,7 @@ export default class Canvas extends React.Component {
                         this._sendDrawing();
                     }}>
 
-                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                        <CanvasDraw disable={this._showTargetElement} className='canvas' lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
@@ -262,6 +268,13 @@ export default class Canvas extends React.Component {
             userAnswer: event.target.value
         })
     }
+
+    _showTargetElement = () => {
+        // ... some logic to show target element
+        
+        // 3. Disable body scroll
+        disableBodyScroll(this.targetElement);
+      };
 
     _handleSubmit = () => {
         console.log('submitted! Now have to send to the host')
