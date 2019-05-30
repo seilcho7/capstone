@@ -3,7 +3,8 @@ import styles from '../css/JoinPage.module.css';
 import { Redirect, Link } from 'react-router-dom'; 
 import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
-import { Button1, Button2, Wrapper } from './HostPage';
+import { Button1 } from './HostPage';
+import { Wrapper } from './Home';
 
 // export default function JoinPage ({nameValue, name, pinValue, pin, submit, activate, kickUsers}){
 export default class JoinPage extends React.Component {
@@ -53,7 +54,8 @@ export default class JoinPage extends React.Component {
 
 
 const AppLogo = styled.img`
-    height: 150px;
+    height: 180px;
+    margin-bottom: 30px;
 `
 
 export const Input = styled.input`

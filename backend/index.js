@@ -25,7 +25,7 @@ let userAnswers = [];
 let pointsArray = [];
 let showHostButton = true;
 let showJoinButton = false;
-let selectedUser = -1;
+let selectedUser = '';
 // let setEndGame = false;
 let users = [];
 
@@ -41,8 +41,8 @@ wss.on('connection', function connection(socket) {
     // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
     // socket.send(JSON.stringify(db));
-    socket.on('message', async (data) => {  
-        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, endGame, resetGame} = JSON.parse(data);
+    socket.on('message', async (data) => {   
+        const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, toggleAnswers, endGame, resetGame, resetUserAnswer} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
 
         // Adds new user to the databass
@@ -85,7 +85,11 @@ wss.on('connection', function connection(socket) {
                 userAnswers.splice(0,newUsers.length-1)
                 // console.log(userAnswers)
             } 
+        } else if (endGame || resetUserAnswer) {
+            userAnswers = [];
         }
+
+        console.log(userAnswers);
         // if nextPlayer reaches last player, nextPlayer is p.0 
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
@@ -93,9 +97,7 @@ wss.on('connection', function connection(socket) {
         if(nextPlayer && selectedAnswer && timerOn === false ) {
             const awardPoint= await User.givePoint(roomPin, selectedAnswer)
             // await User.resetAnswers(roomPin);
-            console.log(awardPoint)
             const userData = await User.getUserByRoomId(roomPin);
-            console.log(userData)
             oldPoints = []
             userData.forEach((user)=>{
                 oldPoints.push(user.points)
@@ -106,10 +108,9 @@ wss.on('connection', function connection(socket) {
                 if (userData[i].answer == selectedAnswer){
                     selectedUser = i
                 }
+                console.log(selectedUser);
             }
             
-            console.log(nextPlayer) 
-            console.log(newUsers.length)
             if(nextPlayer >= newUsers.length) {
                 console.log('IF STATEMENT TRIGGEERED')
                 nextPlayer = 0
@@ -186,7 +187,8 @@ wss.on('connection', function connection(socket) {
                     selectedUser,
                     changeClass,
                     endGame,
-                    resetGame
+                    resetGame,
+                    toggleAnswers
                 }))
             }
         });    

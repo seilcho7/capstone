@@ -6,7 +6,7 @@ import '../css/App.css';
 
 function Home() {
     return (
-        <HomePage>
+        <Wrapper>
             {/* <Link to='/'> */}
                 <AppLogo src={logo} />
             {/* </Link> */}
@@ -17,7 +17,7 @@ function Home() {
             <Link to='/how-to-play'>
                 <Button2>how to play</Button2>
             </Link>
-        </HomePage>
+        </Wrapper>
     );
 }
 
@@ -26,7 +26,7 @@ export default Home;
 
 // STYLED COMPONENTS
 
-const HomePage = styled.div`
+export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,7 +39,6 @@ const Button1 = styled.button`
     color: white;
     width: 200px;
     height: 50px;
-    margin-top: 80px;
     margin-bottom: 10px;
     border-radius: 25px;
     border-color: black;
@@ -54,7 +53,7 @@ const Button1 = styled.button`
 `;
 
 // how to play button
-const Button2 = styled.button`
+export const Button2 = styled.button`
     background-color: #5856D6;
     color: white;
     width: 200px;
@@ -74,4 +73,5 @@ const Button2 = styled.button`
 
 const AppLogo = styled.img`
   height: 180px;
+  margin-bottom: 80px;
 `

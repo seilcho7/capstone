@@ -3,7 +3,7 @@
     align-items: center;
     flex-wrap: wrap;
     list-style: none;
-    font-size: 40px;
+    font-size: 5vh;
     font-weight: bold;
     margin: 0px;
 }
@@ -19,7 +19,15 @@
     justify-content: space-evenly;
 }
 
-.answerList {
+.answerListHidden {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    line-height: 80px;
+    visibility: hidden;
+}
+
+.answerListShow {
     display: flex;
     flex-direction: column;
     margin: 30px;
@@ -42,7 +50,7 @@
     text-align: center;
     align-items: center;
     margin-left: 25%;
-    visibility: hidden;
+    display: none
 }
 
 .answerChoicesShow {
@@ -52,7 +60,7 @@
     background-color: #FF2D55;
     color: white;
     width: 200px;
-    height: 50px;
+    height: 200%;
     margin: 10px;
     border-radius: 25px;
     font-family: 'Montserrat';

@@ -3,6 +3,7 @@ import styles from '../css/HostPage.module.css';
 import { Link } from 'react-router-dom';
 import logo from '../img/picme-logo.png';
 import styled from 'styled-components';
+import { Wrapper } from './Home';
 
 export default function HostPage({pin, resetData, users, confirmHost}) {
     return (
@@ -30,14 +31,6 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
     )
 }
 
-export const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    margin-top: 20px;
-`;
-
 const AppLogo = styled.img`
     height: 180px;
 `
@@ -51,7 +44,6 @@ export const Button1 = styled.button`
     width: 200px;
     height: 50px;
     margin-top: 0px;
-    margin-bottom: 10px;
     border-radius: 25px;
     border-color: black;
     font-family: 'Montserrat';
@@ -63,6 +55,7 @@ export const Button1 = styled.button`
         color: white;
     }
 `;
+
 
 // how to play button
 export const Button2 = styled.button`
