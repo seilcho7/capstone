@@ -113,6 +113,11 @@ export default class Canvas extends React.Component {
                                 hideCanvas: 'showMe',
                                 hideAnswers: 'hideMe'
                             })
+                            if (this.props.hostStatus) {
+                                this.setState({
+                                    drawingData: ''
+                                })
+                            }
                         }, 3000);
                         break;
                         // CASE POINTSARRAY
@@ -233,7 +238,7 @@ export default class Canvas extends React.Component {
                             {/* HIDE CANVAS AND HIDE ANSWERS HERE */}
                              {/* Canvas for ACTIVE PLAYER */}
                             <div className={this.state.hideCanvas}>
-                                <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                                <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                                     (this.saveableCanvas = canvasDraw)
                                     }} />
                             </div>
