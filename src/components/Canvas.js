@@ -5,10 +5,12 @@ import logo from '../img/picme-logo.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
 import '../css/Canvas.css'
-import Confetti from 'react-dom-confetti';
+import Confetti from 'react-confetti'
 import { Link } from 'react-router-dom';
 
 export default class Canvas extends React.Component {
+    targetElement = null;
+  
     // {handleSend, drawingData, saveableCanvas, setDrawingData, hostStatus}
     constructor(props) {
         super(props);
@@ -31,7 +33,6 @@ export default class Canvas extends React.Component {
             picked: false, 
             completed: false,
             disabled: false,
-
             hideGrid: false ,
             timesUp: false,
             answerStyle: 'answerChoicesShow'
@@ -39,6 +40,7 @@ export default class Canvas extends React.Component {
     }
     
     componentDidMount(){
+
     let max = this.state.prompts.length;
     let min = 0;
     this.state.randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
@@ -50,7 +52,7 @@ export default class Canvas extends React.Component {
         this.props.connection.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass, toggleAnswers} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
                     case 'drawData':
@@ -82,8 +84,6 @@ export default class Canvas extends React.Component {
                             completed: true
                         })
                         console.log(this.state.completed);
-                        if(this.state.selectedUser !== this.state.activePlayer) {
-                        }
                         
                         setTimeout(() => {
                             console.log('activeplayer', this.state.activePlayer)
@@ -97,15 +97,16 @@ export default class Canvas extends React.Component {
                                 submittedAnswer: false,
                                 userAnswers: '',
                                 timerOn: timerOn,
-                                selectedUser: -2,
-                                changeClass: 'answerChoicesHidden'
+                                selectedUser: '',
+                                changeClass: 'answerChoicesHidden',
+                                toggleAnswers: 'answerListHidden',
                             })
                             console.log('activeplayer', this.state.activePlayer)
                             console.log('nextplayer',nextPlayer)
                             this.setState({
                                 timerOn: true,
                                 receivedPoint: false,
-                                completed: false,
+                                completed: false
                             })
                         }, 4500);
                     
@@ -117,10 +118,14 @@ export default class Canvas extends React.Component {
                             pointsArray
                         })
                         break;
-
                     case 'changeClass':
                         this.setState({
                             changeClass
+                        })
+                        break;
+                    case 'toggleAnswers':
+                        this.setState({
+                            toggleAnswers
                         })
                     default:
                         break;
@@ -145,6 +150,7 @@ export default class Canvas extends React.Component {
         }
         
 
+        const { width, height } = 400
         return (
             <div>
                 <div className='logoAndTimer'>
@@ -164,9 +170,11 @@ export default class Canvas extends React.Component {
                 {/* Prompts */}
                 <div>
                 {(this.state.selectedUser === this.state.playerNumber) ? 
-                <div>
-                    <h1>YOU DID IT</h1>
-                </div> : null}
+                <div>   <Confetti
+                width={width}
+                height={height}
+                run={this.state.completed}
+              /> <h1>You win this round!</h1> </div>  : null}
                     <p>
                         {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
                     </p>
@@ -179,8 +187,8 @@ export default class Canvas extends React.Component {
                     }} />
                     {/*   User list and user points data render  */}
                     {/* <h4> Answers </h4> */}
-                        <div className='answerList'>
-                            answers:
+                        
+                        <div className={this.state.toggleAnswers}>
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                         </div>
                     </div>
@@ -195,7 +203,7 @@ export default class Canvas extends React.Component {
                         this.props.setEndGame();
                         this.props.resetData();
                         }} >
-                        <Button1>END GAME</Button1>
+                        <EndButton>END GAME</EndButton>
                     </Link>
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
@@ -216,7 +224,7 @@ export default class Canvas extends React.Component {
                         this._sendDrawing();
                     }}>
 
-                        <CanvasDraw lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                        <CanvasDraw disable={this._showTargetElement} className='canvas' lazyRadius={0} brushRadius={5} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                             (this.saveableCanvas = canvasDraw)
                         }} />
                         {/* Maps user answers as buttons to the active player */}
@@ -239,8 +247,8 @@ export default class Canvas extends React.Component {
                     // Submitted answer 
                     (this.state.activePlayer !== this.state.playerNumber && this.state.submittedAnswer === true) ? <div> Submitted answer! Good luck</div> 
                     : null}
-                    {(this.state.activePlayer !== this.state.playerNumber && this.props.isHost === false) ? 
-                    <Confetti active= {this.state.completed} /> : null }
+                    {/* {(this.state.activePlayer !== this.state.playerNumber && this.state.selectedUser === this.state.playerNumber) ? 
+                    <Confetti active= {this.state.completed} /> : null } */}
                 </Wrapper>
                 </div>
         )
@@ -272,7 +280,8 @@ export default class Canvas extends React.Component {
         this.props.connection.send(JSON.stringify({
             answer: this.state.userAnswer,
             name: this.props.name,
-            changeClass: 'answerChoicesShow'}))
+            changeClass: 'answerChoicesShow',
+            toggleAnswers: 'answerListShow'}))
     }
 
     _chooseAnswer = (event) => {
@@ -314,38 +323,22 @@ const Wrapper = styled.div`
     background-color: black;
 `;
     
-const Button = styled.button`
-    background-color: #1A2230;
+const EndButton = styled.button`
+    background-color: #E50066;
     color: white;
-    width: 125px;
-    height: 25px;
-    border-radius: 4px;
+    width: 150px;
+    height: 35px;
+    border-color: black;
+    border-radius: 25px;
     font-family: 'Avenir';
     font-size: 16px;
+    margin-left: 29%;
     &:hover {
         cursor: pointer;
-        background-color: red;
+        background-color: darkred;
     }
 `;
 
 const AppLogo = styled.img`
     height: 100px;
 `
-// start game button  
-const Button1 = styled.button`
-    background-color: #FF2D55;
-    color: white;
-    width: 200px;
-    height: 50px;
-    margin-bottom: 10px;
-    border-radius: 25px;
-    border-color: black;
-    font-family: 'Montserrat';
-    font-weight: bold;
-    font-size: 20px;
-    &:hover {
-        cursor: pointer;
-        background-color: #b82640;;
-        color: white;
-    }
-`;

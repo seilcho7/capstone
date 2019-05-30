@@ -45,6 +45,7 @@ class App extends React.Component {
   componentDidMount() {
     // const { host } = window.location;
     const url = `ws://localhost:4000/ws`;
+    // const url = `ws://192.168.1.102:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
