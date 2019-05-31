@@ -1,10 +1,7 @@
 import React from 'react';
 import {
-  Link,
   Route,
 } from 'react-router-dom';
-import axios from 'axios';
-import qs from 'qs';
 import Home from './components/Home';
 import Canvas from './components/Canvas';
 import HostPage from './components/HostPage';
@@ -14,7 +11,6 @@ import HowToPlay from './components/HowToPlay';
 import WaitPage from './components/WaitPage';
 import styles from './css/JoinPage.module.css';
 import Answer from './components/Answer';
-// import SubmitAnswer from './components/SubmitAnswer';
 
 class App extends React.Component {
 
@@ -44,53 +40,36 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // const { host } = window.location;
-    const url = `ws://localhost:4000/ws`;
-    // const url = `ws://192.168.0.113:4000/ws`;
+    // const url = `ws://localhost:4000/ws`;
+    const url = `ws://192.168.0.113:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
-      // console.log(e.data);
       const data = JSON.parse(e.data);
-      // console.log(data);
       const {users, newUsers, roomPin, start, pointsArray, showHostButton, kickUsers, showJoinButton, endGame} = JSON.parse(e.data)
-      console.log("================= You put a console log here =================");
-      // console.log(newUsers);
-      console.log(Object.keys(data));
 
       Object.keys(data).forEach((key) => {
         switch(key){
-          // case 'drawData':
-          //   console.log("drawData did a thing in new switch");
-          //   this.setState({
-          //     drawingData: drawData
-          //   })
-          //   break;
           case 'users': 
-            console.log("users did a thing in new switch");
             this.setState({
               users: users
             })
             break;
           case 'roomPin': 
-            console.log("roomId did a thing in new switch");
             this.setState({
               socketRoomId: roomPin
             })
             break;
           case 'start': 
-            console.log("start did a thing in new switch");
             this.setState({
               start,
               users: newUsers,
             })
             break;
           case 'pointsArray':
-            console.log("POINTS ARRRRAAAAY");
             this.setState({
               pointsArray
             })
-            console.log(this.state.pointsArray);
             break;
           case 'showHostButton':
             this.setState({
@@ -117,8 +96,6 @@ class App extends React.Component {
             break;
         }
       })
-      // console.log(this.state.socketRoomId.roomId);
-      // console.log (this.state.drawing)
     }
   }
   
@@ -130,9 +107,6 @@ class App extends React.Component {
         <Route path="/answer" component={(props) => (
           <Answer {...props} answerChoices={this.state.answerChoices} />
         )}/>
-        {/* <Route path="/submitanswer" component={(props) => (
-            <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
-          )}/> */}
         <Route path='/host-or-join' render={(props) => (
           <HostOrJoin {...props} resetData={this._resetData} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
         )} />
@@ -165,7 +139,6 @@ class App extends React.Component {
   }
   
   _handleChangeName =(event)=> {
-    console.log (event.target.value)
     this.setState({
         name: event.target.value
     })
@@ -177,8 +150,6 @@ class App extends React.Component {
   }
 
   _handleChangePin =(event)=> {
-    console.log (event.target.value)
-    
     this.setState({
         gamePin: event.target.value
     })
@@ -202,7 +173,6 @@ class App extends React.Component {
         gamePin: this.state.gamePin,
         showHost: this.state.showHost
       }))
-      // window.location.assign('http://localhost:3000/wait')
     } else if(this.state.gamePin !== this.state.socketRoomId){
       alert("WRONG PIN")
     }
