@@ -198,7 +198,6 @@ export default class Canvas extends React.Component {
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                             {this.state.selectedAnswer ?  <li>Picked: {this.state.selectedAnswer}</li> : null}
                         </div>
-
                     </div>
                     <div>
                         {/* users and respective points to render on the screen */}
