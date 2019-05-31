@@ -15,7 +15,7 @@ const wss = new WebSocket.Server({
 }); 
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.static(path.join(_dirname, '..', 'build')));
+app.use(express.static(path.join(__dirname, '..', 'build')));
 
 const PORT = process.env.PORT;
 let newUsers = [];
