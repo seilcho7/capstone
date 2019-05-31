@@ -8,6 +8,7 @@ import '../css/Canvas.css';
 import Confetti from 'react-confetti';
 import { Link, Redirect } from 'react-router-dom';
 import { bigIntLiteral } from '@babel/types';
+import { SketchField, Tools } from 'react-sketch';
 
 export default class Canvas extends React.Component {
     targetElement = null;
@@ -149,14 +150,12 @@ export default class Canvas extends React.Component {
     }
     
     render() {
+        let { drawingData } = this.state;
         // If statement that checks if the person is a host or not
         if (this.props.hostStatus){
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
                 console.log("YOU ARE INSIDE THE OF set interval. check to see if data is still there")
-                this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
-                    this.state.drawingData
-                )
             }
         }
 
@@ -173,8 +172,6 @@ export default class Canvas extends React.Component {
                             size={100}
                             paused={false}
                             onComplete={this._hideTimer}
-                            // pausedText="00"
-                            // onComplete={}
                         /> : null }
                     </div>
             <Wrapper> 
@@ -193,9 +190,16 @@ export default class Canvas extends React.Component {
                 { this.props.hostStatus ?  
                 <div>
                     <div className='canvasAndAnswers'>
-                    <CanvasDraw catenaryColor={'#FFFFFF'} brushRadius={0} lazyRadius={0} immediateLoading={true} disabled hideGrid={false} ref={canvasDraw => {
-                    (this.saveableCanvas = canvasDraw)
-                    }} />
+                        <SketchField width='400px' 
+                            height='400px' 
+                            tool={Tools.Pencil} 
+                            lineColor='white'
+                            backgroundColor='black'
+                            value={drawingData}
+                            forceValue={true}
+                            lineWidth={3} ref={canvasDraw => {
+                                        (this._sketch = canvasDraw)
+                                        }} />
                     {/*   User list and user points data render  */}
                     {/* <h4> Answers </h4> */}
                         
@@ -220,7 +224,7 @@ export default class Canvas extends React.Component {
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
                     <div onTouchEnd={async() => {
-                        const saveData = await this.saveableCanvas.getSaveData();
+                        const saveData = await this._sketch.toJSON();
                         const object = [];
                         object.push(saveData);
                         this._setDrawingData(object);
@@ -228,18 +232,31 @@ export default class Canvas extends React.Component {
                         this._sendDrawing();
                     }}
                     onMouseUp={async() => {
-                        const saveData = await this.saveableCanvas.getSaveData();
+                        const saveData = await this._sketch.toJSON();
+                        console.log(this._sketch);
                         const object = [];
                         object.push(saveData); 
                         this._setDrawingData(object);
                         console.log(object);
-                        this._sendDrawing();
+                        this._sendDrawing(this._sketch.toJSON());
+                        {setInterval(
+                            this._sendDrawing(this._sketch.toJSON()),1000)}
                     }}>
                             {/* HIDE CANVAS AND HIDE ANSWERS HERE */}
                              {/* Canvas for ACTIVE PLAYER */}
-                            <div className={this.state.hideCanvas}>
-                                <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                            {/* <div className={this.state.hideCanvas}> */}
+                            <div>
+                                {/* <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                                     (this.saveableCanvas = canvasDraw)
+                                    }} /> */}
+                                <SketchField width='400px' 
+                                    height='400px' 
+                                    tool={Tools.Pencil} 
+                                    lineColor='white'
+                                    backgroundColor='black'
+                                    onChange={() => {this._sendDrawing(this._sketch.toJSON())}}
+                                    lineWidth={3} ref={canvasDraw => {
+                                                (this._sketch = canvasDraw)
                                     }} />
                             </div>
 
@@ -272,8 +289,8 @@ export default class Canvas extends React.Component {
         )
     }
 
-    _sendDrawing = () => {  
-        this.props.connection.send(JSON.stringify({drawData: this.state.drawingData[0]}));
+    _sendDrawing = (poop) => {  
+        this.props.connection.send(JSON.stringify({drawData: poop}));
     }
 
     _setDrawingData = (object) => {
