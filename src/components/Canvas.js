@@ -124,7 +124,6 @@ export default class Canvas extends React.Component {
                         // CASE POINTSARRAY
                         case 'pointsArray':
                             console.log('pointsArray did a thing')
-                            // console.log(this._sketch.toJSON());
                             this.setState({
                                 pointsArray
                             })
@@ -157,10 +156,6 @@ export default class Canvas extends React.Component {
             console.log("YOU ARE IN IF HOSTSTATUS")
             if(this.state.drawingData){
                 console.log("YOU ARE INSIDE THE OF set interval. check to see if data is still there")
-                // this.saveableCanvas.loadSaveData( //get derived states from props CONVERT TO CLASS
-                //     this.state.drawingData
-                
-                // )
             }
         }
 
@@ -177,8 +172,6 @@ export default class Canvas extends React.Component {
                             size={100}
                             paused={false}
                             onComplete={this._hideTimer}
-                            // pausedText="00"
-                            // onComplete={}
                         /> : null }
                     </div>
             <Wrapper> 
@@ -197,19 +190,16 @@ export default class Canvas extends React.Component {
                 { this.props.hostStatus ?  
                 <div>
                     <div className='canvasAndAnswers'>
-                    {/* <CanvasDraw catenaryColor={'#FFFFFF'} brushRadius={0} lazyRadius={0} immediateLoading={true} disabled hideGrid={false} ref={canvasDraw => {
-                    (this.saveableCanvas = canvasDraw)
-                    }} /> */}
-                    <SketchField width='400px' 
-                         height='400px' 
-                         tool={Tools.Pencil} 
-                         lineColor='white'
-                         backgroundColor='black'
-                         value={drawingData}
-                         forceValue={true}
-                         lineWidth={3} ref={canvasDraw => {
-                                    (this._sketch = canvasDraw)
-                                    }} />
+                        <SketchField width='400px' 
+                            height='400px' 
+                            tool={Tools.Pencil} 
+                            lineColor='white'
+                            backgroundColor='black'
+                            value={drawingData}
+                            forceValue={true}
+                            lineWidth={3} ref={canvasDraw => {
+                                        (this._sketch = canvasDraw)
+                                        }} />
                     {/*   User list and user points data render  */}
                     {/* <h4> Answers </h4> */}
                         
