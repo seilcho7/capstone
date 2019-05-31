@@ -3,17 +3,14 @@ import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import logo from '../img/picme-logo.png';
 
-
 function HowToPlay() {
   return (
       <Wrapper>
-            {/* <Link to='/'> */}
               <AppLogo src={logo} />
-            {/* </Link> */}
-       <Heading>How to play</Heading>
-       <Text>
-       Start with connecting one screen as a host. When it's your turn, you'll be given a prompt to draw. As you're drawing, your friends will have to give their best guesses to what you're attempting to draw. Then you'll get to choose your favorite answer out of the bunch. Choose the closest answer or just your fave – player with the most points win!
-       </Text>
+        <Heading>How to play</Heading>
+        <Text>
+        Start with connecting one screen as a host. When it's your turn, you'll be given a prompt to draw. As you're drawing, your friends will have to give their best guesses to what you're attempting to draw. Then you'll get to choose your favorite answer out of the bunch. Choose the closest answer or just your fave – player with the most points win!
+        </Text>
           <Link to='/host-or-join'>
               <Button1>let's play!</Button1>
             </Link>

@@ -5,19 +5,16 @@ import '../css/App.css';
 import styled from 'styled-components';
 import { Wrapper, Button2 } from './Home';
 
-
 function generatePin() {
     let random = Math.floor((Math.random() * 8999) + 1000);
     let pin = random.toString();
     return pin;
 }
 
-export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
+export default function HostOrJoin({handleClickHost, showHost, resetData}) {
     return (
         <Wrapper>
-             {/* <Link to='/'> */}
-                <AppLogo src={logo} />
-            {/* </Link> */}
+                <AppLogo onClick={resetData} src={logo} />
                 {showHost ?
                 <Link onClick={() => (handleClickHost(generatePin()))} to='/host'>
                     <Button1>host</Button1>
@@ -25,8 +22,6 @@ export default function HostOrJoin({handleClickHost, showHost, showJoin}) {
                 <Link to='/join'>
                     <Button2>join</Button2>
                 </Link>
-    
-            
         </Wrapper>
     )
 }
@@ -53,7 +48,6 @@ const Button1 = styled.button`
     }
 `;
 
-
 const Button3 = styled.button`
     background-color: black;
     width: 200px;
@@ -64,5 +58,5 @@ const Button3 = styled.button`
 `;
 
 const AppLogo = styled.img`
-  height: 180px;
+    height: 180px;
 `
