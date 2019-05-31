@@ -17,7 +17,6 @@ app.use(express.urlencoded({extended: true}));
 
 const PORT = process.env.PORT;
 let newUsers = [];
-let db = [];
 let roomPin = '';
 let userAnswers = [];
 let pointsArray = [];
