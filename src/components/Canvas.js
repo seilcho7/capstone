@@ -175,8 +175,8 @@ export default class Canvas extends React.Component {
                 height={height}
                 run={this.state.completed}
                 /> <h1>You win this round!</h1> </div>  : null}
-                    <p>
-                        {(this.state.activePlayer === this.state.playerNumber) ? `Draw: ` + this.state.prompts[this.state.randomNum] : null}
+                    <p className='promptText'>
+                        {(this.state.activePlayer === this.state.playerNumber) ? `Draw Below: ` + this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
                 { this.props.hostStatus ?  
