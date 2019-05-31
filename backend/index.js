@@ -6,6 +6,7 @@ const WebSocket = require('ws');
 const User = require('./models/user');
 const Drawing = require('./models/drawing');
 const Host = require('./models/host');
+const path = require('path');
 
 const server = http.createServer(app);      // create a plain http server that uses the express app
 const wss = new WebSocket.Server({
@@ -14,6 +15,7 @@ const wss = new WebSocket.Server({
 }); 
 
 app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(_dirname, '..', 'build')));
 
 const PORT = process.env.PORT;
 let newUsers = [];
