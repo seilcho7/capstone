@@ -40,7 +40,8 @@ export default class Canvas extends React.Component {
             endGame: false,
             resetUserAnswer: false,
             hideCanvas: 'showMe',
-            hideAnswers: 'hideMe'
+            hideAnswers: 'hideMe',
+            selectedAnswer: ''
         }
     }
     
@@ -55,9 +56,15 @@ export default class Canvas extends React.Component {
             originalOnMessage(e);
             const data = JSON.parse(e.data);
             console.log(data)
-            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass, toggleAnswers} = JSON.parse(e.data);
+            const {drawData, userAnswers, nextPlayer, pointsArray, timerOn, selectedUser, changeClass, toggleAnswers, selectedAnswer} = JSON.parse(e.data);
             Object.keys(data).forEach((key) => {
                 switch(key){
+                    case 'selectedAnswer':
+                        console.log("selectedAnswer did a thing in new switch");
+                        this.setState({
+                            selectedAnswer
+                        })
+                    break;
                     case 'drawData':
                         console.log("drawData did a thing in new switch");
                         this.setState({
@@ -158,6 +165,7 @@ export default class Canvas extends React.Component {
                 console.log("YOU ARE INSIDE THE OF set interval. check to see if data is still there")
             }
         }
+        console.log(this.state.selectedAnswer);
 
         const { width, height } = 400
         return (
@@ -166,7 +174,7 @@ export default class Canvas extends React.Component {
                 <div className='logoAndTimer'>
                     <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
-                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={25}
+                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={20}
                             color="#E50066"
                             alpha={1}
                             size={100}
@@ -184,7 +192,7 @@ export default class Canvas extends React.Component {
                 run={this.state.completed}
                 /> <h1>You win this round!</h1> </div>  : null}
                     <p>
-                        {(this.state.activePlayer === this.state.playerNumber) ? this.state.prompts[this.state.randomNum] : null}
+                        {(this.state.activePlayer === this.state.playerNumber) ? `Draw: ` + this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
                 { this.props.hostStatus ?  
@@ -205,7 +213,9 @@ export default class Canvas extends React.Component {
                         
                         <div className={this.state.toggleAnswers}>
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
+                            {this.state.selectedAnswer ?  <li>Picked: {this.state.selectedAnswer}</li> : null}
                         </div>
+
                     </div>
                     <div>
                         {/* users and respective points to render on the screen */}
@@ -217,9 +227,10 @@ export default class Canvas extends React.Component {
                     <EndButton onClick={() => {
                         this.props.setEndGame();
                         this.props.resetData();
-                        this.setState({
-                            userAnswers: ''
-                        })
+                        this.props.connection.send(JSON.stringify({
+                            userAnswers: '',
+                            selectedAnswer: ''
+                        }));
                         }}>END GAME</EndButton>
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
@@ -238,6 +249,7 @@ export default class Canvas extends React.Component {
                         object.push(saveData); 
                         this._setDrawingData(object);
                         console.log(object);
+                        this.props.connection.send(JSON.stringify({selectedAnswer: ''}));
                         this._sendDrawing(this._sketch.toJSON());
                         {setInterval(
                             this._sendDrawing(this._sketch.toJSON()),1000)}
@@ -350,6 +362,7 @@ export default class Canvas extends React.Component {
                     name: this.props.name,
                     toggleAnswers: 'answerListShow',
                     changeClass: 'answerChoicesShow',
+                    selectedAnswer: ''
                 }))
             } else {
                 this.props.connection.send(JSON.stringify({
@@ -357,6 +370,7 @@ export default class Canvas extends React.Component {
                     name: this.props.name,
                     toggleAnswers: 'answerListShow',
                     changeClass: 'answerChoicesShow',
+                    selectedAnswer: ''
                 }))
             }
         }

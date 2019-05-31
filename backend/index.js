@@ -16,8 +16,6 @@ const wss = new WebSocket.Server({
 app.use(express.urlencoded({extended: true}));
 
 const PORT = process.env.PORT;
-
-// This is my "database"
 let newUsers = [];
 let db = [];
 let roomPin = '';
@@ -26,21 +24,16 @@ let pointsArray = [];
 let showHostButton = true;
 let showJoinButton = false;
 let selectedUser = '';
-// let setEndGame = false;
 let users = [];
 
 wss.on('connection', function connection(socket) {
     console.log('new connection');
-
     socket.send(JSON.stringify({
         roomPin,
         showHostButton,
         showJoinButton
     }))
-    // socket.send(JSON.stringify(getData()));
-    // getData();
     // on new connection if db .length is greater than one needs to send a stringified version of db[db.length-1]
-    // socket.send(JSON.stringify(db));
     socket.on('message', async (data) => {   
         const {drawData, name, gamePin, roomId, start, saveRoomId, answer, selectedAnswer, timerOn, showHost, kickUsers, showJoin, changeClass, toggleAnswers, endGame, resetGame, resetUserAnswer} = JSON.parse(data);
         let {nextPlayer} =JSON.parse(data)
@@ -51,11 +44,6 @@ wss.on('connection', function connection(socket) {
             const confirmedNewUser= await User.add(gamePin, name);
             console.log(confirmedNewUser);
         }
-        
-        // const userData = await User.getUserByRoomId(gamePin);
-        // const usersString = JSON.stringify(userData);
-        // const usersObject = JSON.parse(usersString);
-
         // Adds all users inside users array
         if (name) {
             if (!users.includes(name)) {
@@ -64,38 +52,23 @@ wss.on('connection', function connection(socket) {
                 users = [];
             }   
         }
-        console.log(users);
-        // if (users) {
-        //     usersObject.map((user) => {
-        //         if (!users.includes(user)) {
-        //             users.push(user.name);
-        //         }
-        //     });
-        // }
-
         // Pushes answer to array and removes answers if everyone has submitted 
         if(answer && name) {
             await User.updateAnswer(name, answer)
             userAnswers.push(answer) 
 
             if (userAnswers.length > newUsers.length-1) {
-                // console.log('splice triggered') 
-                // userAnswers.push(answer) 
-                // console.log(userAnswers)
-                userAnswers.splice(0,newUsers.length-1)
-                // console.log(userAnswers)
+                userAnswers.splice(0,newUsers.length-1) 
             } 
         } else if (endGame || resetUserAnswer) {
             userAnswers = [];
         }
-
         // if nextPlayer reaches last player, nextPlayer is p.0 
         //  This also now is used for determining who receives a point based 
         //  on room number as well as what the activePlayer selected 
 
         if(nextPlayer && selectedAnswer && timerOn === false ) {
             const awardPoint= await User.givePoint(roomPin, selectedAnswer)
-            // await User.resetAnswers(roomPin);
             const userData = await User.getUserByRoomId(roomPin);
             oldPoints = []
             userData.forEach((user)=>{
@@ -119,7 +92,6 @@ wss.on('connection', function connection(socket) {
         if (roomId) {
             await Host.createHost(roomId);
             roomPin = roomId;
-            // console.log(roomPin);
         }
         
         if (showJoin && !showHost) {
@@ -136,26 +108,13 @@ wss.on('connection', function connection(socket) {
         }
 
         if (start) {
-            // console.log(newUsers);
-            // console.log(roomId);
             const userData = await User.getUserByRoomId(roomId);
-            // console.log(userData);
             userData.map((user) => {
                 if (!users.includes(user)) {
                     newUsers.push(user.name);
                     pointsArray.push(user.points);
-                    // console.log(pointsArray)
                 }
             });
-            // console.log(pointsArray)
-            // console.log(newUsers);
-            // wss.clients.forEach(function each(client) {
-            //     if (client.readyState === WebSocket.OPEN) {
-            //     client.send(
-            //         newUsers
-            //     )
-            //     }
-            // })
         } 
         
         if (kickUsers) {
@@ -166,10 +125,8 @@ wss.on('connection', function connection(socket) {
             users = [];
         }
 
-        // db.push(message);
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
-                // client.send(JSON.stringify(db[db.length-1]));
                 client.send(JSON.stringify({
                     roomPin,
                     users,
@@ -187,7 +144,8 @@ wss.on('connection', function connection(socket) {
                     changeClass,
                     endGame,
                     resetGame,
-                    toggleAnswers
+                    toggleAnswers,
+                    selectedAnswer
                 }))
             }
         });    
