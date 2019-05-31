@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from '../css/WaitPage.module.css';
 import { Link, Redirect} from 'react-router-dom';
-// import { getDiffieHellman } from 'crypto';
 import styled from 'styled-components';
-import { Button1} from './HostPage';
-
-
 
 class WaitPage extends React.Component {
     constructor(props) {
@@ -18,7 +14,6 @@ class WaitPage extends React.Component {
         };
     }
     
-    
     componentDidMount() {
         let max = this.state.gifType.length;
         let min = 0;
@@ -28,7 +23,6 @@ class WaitPage extends React.Component {
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(result);
             this.setState({
               isLoaded: true,
               gifs: result.data
@@ -45,7 +39,6 @@ class WaitPage extends React.Component {
   
     render() {
       const { error, isLoaded, gifs } = this.state;
-      console.log(gifs);
       if (error) {
         return <div>Error: {error.message}</div>;
       } else if (!isLoaded) {
@@ -62,9 +55,6 @@ class WaitPage extends React.Component {
                 {gifs.map(gif => (
                     <Gif src={gif.images.original.url} />
                     ))}
-                {/* <Button1>
-                    <StyledLink to='/join' className={styles.leaveButton}>Leave</StyledLink>
-                </Button1> */}
           </Wrapper>
         );
       }
