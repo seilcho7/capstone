@@ -90,5 +90,5 @@
 
 .showMe {
     display: block;
-    position: fixed;
+    z-index: 100
 }

@@ -45,8 +45,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // const { host } = window.location;
-    // const url = `ws://localhost:4000/ws`;
-    const url = `ws://10.150.41.84:4000/ws`;
+    const url = `ws://localhost:4000/ws`;
+    // const url = `ws://10.150.41.84:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
@@ -173,6 +173,11 @@ class App extends React.Component {
     this.setState({
         name: event.target.value
     })
+    if((this.state.name.length > 0) && this.state.gamePin === this.state.socketRoomId) {
+      this.setState({
+        joined: styles.joinButtonActivated
+      })
+    }
   }
 
   _handleChangePin =(event)=> {
@@ -181,7 +186,7 @@ class App extends React.Component {
     this.setState({
         gamePin: event.target.value
     })
-    if(event.target.value === this.state.socketRoomId) {
+    if(event.target.value === this.state.socketRoomId && this.state.name.length > 0) {
       this.setState({
         joined: styles.joinButtonActivated
       })

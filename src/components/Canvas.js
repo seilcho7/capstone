@@ -166,7 +166,7 @@ export default class Canvas extends React.Component {
                 <div className='logoAndTimer'>
                     <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
-                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={25}
+                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={105}
                             color="#E50066"
                             alpha={1}
                             size={100}
@@ -190,6 +190,7 @@ export default class Canvas extends React.Component {
                 { this.props.hostStatus ?  
                 <div>
                     <div className='canvasAndAnswers'>
+                            
                         <SketchField width='400px' 
                             height='400px' 
                             tool={Tools.Pencil} 
@@ -223,25 +224,7 @@ export default class Canvas extends React.Component {
                         }}>END GAME</EndButton>
                 </div> : (this.state.activePlayer === this.state.playerNumber && this.state.picked ===false) ?
                 // {/* //  User enabled canvas ternary render */}
-                    <div onTouchEnd={async() => {
-                        const saveData = await this._sketch.toJSON();
-                        const object = [];
-                        object.push(saveData);
-                        this._setDrawingData(object);
-                        console.log(object);
-                        this._sendDrawing();
-                    }}
-                    onMouseUp={async() => {
-                        const saveData = await this._sketch.toJSON();
-                        console.log(this._sketch);
-                        const object = [];
-                        object.push(saveData); 
-                        this._setDrawingData(object);
-                        console.log(object);
-                        this._sendDrawing(this._sketch.toJSON());
-                        {setInterval(
-                            this._sendDrawing(this._sketch.toJSON()),1000)}
-                    }}>
+                    <div>
                             {/* HIDE CANVAS AND HIDE ANSWERS HERE */}
                              {/* Canvas for ACTIVE PLAYER */}
                             {/* <div className={this.state.hideCanvas}> */}
@@ -249,6 +232,13 @@ export default class Canvas extends React.Component {
                                 {/* <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                                     (this.saveableCanvas = canvasDraw)
                                     }} /> */}
+                                    
+                        {/* Answers for ACTIVE PLAYER */}
+                            <div className={this.state.hideAnswers}>
+                                { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
+                            </div>
+
+                                <div className='canvasBorder'>
                                 <SketchField width='400px' 
                                     height='400px' 
                                     tool={Tools.Pencil} 
@@ -258,12 +248,9 @@ export default class Canvas extends React.Component {
                                     lineWidth={3} ref={canvasDraw => {
                                                 (this._sketch = canvasDraw)
                                     }} />
+                                </div>
                             </div>
 
-                            {/* Answers for ACTIVE PLAYER */}
-                            <div className={this.state.hideAnswers}>
-                                { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
-                            </div>
                         </div> : 
                     // =================== THIS IS THE SECOND CONDITION AFTER ACTIVEPLAYER === PLAYERNUMBER ===================
                                     // Answer Submit form 
