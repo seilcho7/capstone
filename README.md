@@ -2,7 +2,7 @@
 
 ## PicMe – Draw with Friends, Anywhere!
 
-<img src="./img/picme-logo.png" width="500">
+<img src="./src/img/picme-logo.png" width="500">
 
 
 ## Description 
