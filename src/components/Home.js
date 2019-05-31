@@ -7,9 +7,7 @@ import '../css/App.css';
 function Home() {
     return (
         <Wrapper>
-            {/* <Link to='/'> */}
                 <AppLogo src={logo} />
-            {/* </Link> */}
             <Link to='/host-or-join'>
                 <Button1>start game</Button1>
             </Link>
@@ -72,6 +70,6 @@ export const Button2 = styled.button`
 `;
 
 const AppLogo = styled.img`
-  height: 180px;
-  margin-bottom: 80px;
+    height: 180px;
+    margin-bottom: 80px;
 `

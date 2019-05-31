@@ -26,7 +26,6 @@ export default function HostPage({pin, resetData, users, confirmHost}) {
                     <Button2>cancel</Button2>
                 </Link>
             </div>
-        
         </Wrapper>
     )
 }
@@ -55,7 +54,6 @@ export const Button1 = styled.button`
         color: white;
     }
 `;
-
 
 // how to play button
 export const Button2 = styled.button`

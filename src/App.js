@@ -45,8 +45,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // const { host } = window.location;
-    const url = `ws://localhost:4000/ws`;
-    // const url = `ws://10.150.41.84:4000/ws`;
+    // const url = `ws://localhost:4000/ws`;
+    const url = `ws://192.168.0.113:4000/ws`;
     this.connection = new WebSocket(url);
 
     this.connection.onmessage = (e) => {
@@ -134,7 +134,7 @@ class App extends React.Component {
             <SubmitAnswer {...props} submitAnswer={this._addAnswerChoice}/>
           )}/> */}
         <Route path='/host-or-join' render={(props) => (
-          <HostOrJoin {...props} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
+          <HostOrJoin {...props} resetData={this._resetData} showJoin={this.state.showJoin} isHost={this.state.isHost} handleClickHost={this._setPin} showHost={this.state.showHost} />
         )} />
         <Route path='/host' render={(props) => (
           <HostPage {...props} users={this.state.users} pin={this.state.roomId} resetData={this._resetData} confirmHost={this._confirmHost} />
@@ -148,10 +148,6 @@ class App extends React.Component {
         <Route path ='/canvas' render={(props) =>(
           <Canvas endGame={this.state.endGame} setEndGame={this._setEndGame} resetData={this._resetData} users={this.state.users} hostStatus={this.state.isHost} connection={this.connection} name={this.state.name} points={this.state.pointsArray}/>
         )} />
-        {/* <Route path ='/endgame' render={(props) =>(
-          <EndGame {...props} resetData={this._resetData} users={this.state.users} pointsArray={this.state.pointsArray} />
-        )} /> */}
-        {/* {this.state.start && !this.state.isHost ? <Canvas setDrawingData={this._setDrawingData} handleSend={this._sendDrawing} drawing={this.state.drawingData} saveableCanvas={this.saveableCanvas} /> : null} */}
       </div>
     )
   }
