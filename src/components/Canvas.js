@@ -175,13 +175,14 @@ export default class Canvas extends React.Component {
                 height={height}
                 run={this.state.completed}
                 /> <h1>You win this round!</h1> </div>  : null}
-                    <p>
-                        {(this.state.activePlayer === this.state.playerNumber) ? `Draw: ` + this.state.prompts[this.state.randomNum] : null}
+                    <p className='promptText'>
+                        {(this.state.activePlayer === this.state.playerNumber) ? `Draw Below: ` + this.state.prompts[this.state.randomNum] : null}
                     </p>
                 </div>
                 { this.props.hostStatus ?  
                 <div>
                     <div className='canvasAndAnswers'>
+                            
                         <SketchField width='400px' 
                             height='400px' 
                             tool={Tools.Pencil} 
@@ -220,6 +221,16 @@ export default class Canvas extends React.Component {
                             {/* HIDE CANVAS AND HIDE ANSWERS HERE */}
                              {/* Canvas for ACTIVE PLAYER */}
                             <div>
+                                {/* <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
+                                    (this.saveableCanvas = canvasDraw)
+                                    }} /> */}
+
+                        {/* Answers for ACTIVE PLAYER */}
+                            <div className={this.state.hideAnswers}>
+                                { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
+                            </div>
+
+                                <div className='canvasBorder'>
                                 <SketchField width='400px' 
                                     height='400px' 
                                     tool={Tools.Pencil} 
@@ -229,10 +240,7 @@ export default class Canvas extends React.Component {
                                     lineWidth={3} ref={canvasDraw => {
                                                 (this._sketch = canvasDraw)
                                     }} />
-                            </div>
-                            {/* Answers for ACTIVE PLAYER */}
-                            <div className={this.state.hideAnswers}>
-                                { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
+                                </div>
                             </div>
                         </div> : 
                     // =================== THIS IS THE SECOND CONDITION AFTER ACTIVEPLAYER === PLAYERNUMBER ===================

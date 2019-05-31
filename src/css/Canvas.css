@@ -90,5 +90,11 @@
 
 .showMe {
     display: block;
-    position: fixed;
+    z-index: 100
+}
+
+.promptText {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
