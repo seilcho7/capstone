@@ -232,7 +232,7 @@ export default class Canvas extends React.Component {
                                 {/* <CanvasDraw brushColor={'#000'} lazyRadius={0} brushRadius={3} immediateLoading={true} disabled={this.state.disabled} hideGrid={this.state.hideGrid} ref={canvasDraw => {
                                     (this.saveableCanvas = canvasDraw)
                                     }} /> */}
-                                    
+
                         {/* Answers for ACTIVE PLAYER */}
                             <div className={this.state.hideAnswers}>
                                 { (this.state.userAnswers !== '') ? this.state.userAnswers.map((answer, i )=>(<button className={this.state.changeClass} key={i} onClick={this._chooseAnswer} value={answer}>{answer}</button>)) : null}
