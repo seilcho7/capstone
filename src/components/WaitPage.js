@@ -19,7 +19,7 @@ class WaitPage extends React.Component {
         let min = 0;
         let randomNum = Math.floor(Math.random() * (+max - +min)) + +min;
 
-      fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.gifType[randomNum]}&api_key=1bfsUoRTBMhc1TV6tyg8jyIc8ddhB23f&limit=1`)
+      fetch(`https://api.giphy.com/v1/gifs/search?q=${this.state.gifType[randomNum]}&api_key=1bfsUoRTBMhc1TV6tyg8jyIc8ddhB23f&limit=1`)
         .then(res => res.json())
         .then(
           (result) => {
