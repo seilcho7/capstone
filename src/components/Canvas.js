@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../img/picme-logo.png';
-import pencil from '../img/pencil.png';
 import AnswerSubmit from './AnswerSubmit'
 import ReactCountdownClock from 'react-countdown-clock';
 import '../css/Canvas.css';
@@ -199,7 +198,6 @@ export default class Canvas extends React.Component {
                             {this.state.userAnswers ? this.state.userAnswers.map((answer, i )=>(<li key={i}>{answer}</li>)): null}
                             {this.state.selectedAnswer ?  <li>Picked: {this.state.selectedAnswer}</li> : null}
                         </div>
-
                     </div>
                     <div>
                         {/* users and respective points to render on the screen */}
@@ -264,7 +262,6 @@ export default class Canvas extends React.Component {
                                                         // ============== THIS IS vvvvvvvvv THE ENDING BRACE FOR HOST STATUS ==============
                                                     } 
                 </Wrapper>
-                <img className='pencil' src={pencil} />
             </div>
         )
     }
