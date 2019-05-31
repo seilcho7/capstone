@@ -158,7 +158,7 @@ export default class Canvas extends React.Component {
                 <div className='logoAndTimer'>
                     <AppLogo src={logo} />
                     {/*   Host disabled canvas ternary render  */}
-                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={20}
+                    {this.state.timerOn && !this.props.endGame ? <ReactCountdownClock seconds={25}
                             color="#E50066"
                             alpha={1}
                             size={100}
