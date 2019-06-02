@@ -1,7 +1,5 @@
 # PicMe – Draw with Friends, Anywhere!
 
-## Play Here: https://picme.seilcho7.dev/
-
 
 <img src="./src/img/picme-logo.png" width="500">
 
